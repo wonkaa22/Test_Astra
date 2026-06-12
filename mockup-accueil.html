@@ -26,7 +26,7 @@
   .main-block { background: #16192a; border-radius: 18px; border: 1px solid rgba(255,255,255,0.07); padding: 20px; display: grid; grid-template-columns: 210px 1fr; gap: 16px; }
 
   /* COL GAUCHE */
-  .col-left { display: flex; flex-direction: column; gap: 0; }
+  .col-left { display: flex; flex-direction: column; gap: 0; align-self: stretch; }
   .welcome-text { font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.9); line-height: 1.3; margin-bottom: 12px; flex-shrink: 0; }
   .welcome-text em { font-size: 22px; font-style: italic; color: #D4A373; display: block; }
   .welcome-text strong { font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
@@ -103,14 +103,15 @@
   .dot.active { background: #D4A373; }
 
   /* 5 — STAFF */
-  .w-staff { grid-column: 2; grid-row: 2; overflow: hidden; align-self: start; }
+  .w-staff-col { grid-column: 2; grid-row: 2 / 4; display: flex; flex-direction: column; gap: 10px; }
+  .w-staff { overflow: hidden; }
   .staff-grid { display: flex; gap: 5px; padding: 1px 8px 6px; justify-content: center; }
   .staff-item { flex: 1; max-width: 110px; border-radius: 9px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 3/2; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); }
   .staff-name-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,13,20,0.65); padding: 5px 8px; font-size: 10px; color: #fff; transition: height 0.25s, background 0.25s; height: 24px; overflow: hidden; }
   .staff-item:hover .staff-name-bar { height: 48px; background: rgba(10,13,20,0.82); }
   .staff-name-bar .staff-role { font-size: 9px; color: #D4A373; margin-top: 2px; opacity: 0; transition: opacity 0.2s 0.1s; }
   .staff-item:hover .staff-name-bar .staff-role { opacity: 1; }
-  .w-staff-image { grid-column: 2; grid-row: 3; min-height: 60px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 11px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .w-staff-image { flex: 1; min-height: 90px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 11px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
   .w-staff .widget-label { padding: 5px 12px 3px; }
 
   /* 6 — DERNIERS MESSAGES */
@@ -237,16 +238,17 @@
         </div>
       </div>
 
-      <div class="widget w-staff">
-        <div class="widget-label">Staff</div>
-        <div class="staff-grid">
-          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#2d3a52,#1a2235);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Admin · Fondatrice</div></div></div>
-          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2d52,#1a1a35);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Lore</div></div></div>
-          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#522d2d,#351a1a);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Events</div></div></div>
+      <div class="w-staff-col">
+        <div class="widget w-staff">
+          <div class="widget-label">Staff</div>
+          <div class="staff-grid">
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#2d3a52,#1a2235);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Admin · Fondatrice</div></div></div>
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2d52,#1a1a35);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Lore</div></div></div>
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#522d2d,#351a1a);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Events</div></div></div>
+          </div>
         </div>
+        <div class="widget w-staff-image">image décorative</div>
       </div>
-
-      <div class="widget w-staff-image">image décorative</div>
 
       <div class="widget w-lastposts">
         <div class="widget-label">Derniers messages</div>

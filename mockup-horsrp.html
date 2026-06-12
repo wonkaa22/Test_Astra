@@ -107,22 +107,56 @@
     gap: 10px;
     padding: 18px 16px;
   }
-
-  /* Titre de la catégorie à droite */
-  .horsrp-cat-name {
-    flex-shrink: 0;
-    width: 200px;
+  /* Ligne boutons + titre "Détente" côte à côte */
+  .horsrp-mid-top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 18px 20px;
+    gap: 20px;
+    flex: 1;
+  }
+  .horsrp-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+    width: 260px;
+  }
+  /* Titre centré verticalement au niveau du bouton du milieu */
+  .horsrp-cat-name {
+    flex: 1;
     font-family: 'Cormorant Garamond', serif;
     font-size: 34px;
     font-weight: 600;
     font-style: italic;
     color: rgba(255,255,255,0.88);
     text-align: center;
-    border-left: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Image dans Entraide et partage */
+  .entraide-inner {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .entraide-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .entraide-img {
+    flex-shrink: 0;
+    width: 160px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.08);
+    font-size: 11px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
   }
 
   /* ═══════════════════════════════════════
@@ -210,7 +244,7 @@
     .horsrp-title-bar { font-size: 20px; }
     .horsrp-content { padding: 12px; gap: 12px; }
 
-    /* Mobile : image en haut pleine largeur, titre + boutons en dessous */
+    /* Mobile : image en haut pleine largeur, boutons + titre en dessous */
     .horsrp-top { flex-direction: column; }
     .horsrp-img {
       width: 100%;
@@ -218,15 +252,12 @@
       border-right: none;
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    .horsrp-cat-name {
-      width: 100%;
-      border-left: none;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 12px;
-      font-size: 28px;
-      justify-content: flex-start;
-    }
+    .horsrp-mid-top { flex-direction: column; align-items: flex-start; }
+    .horsrp-buttons { width: 100%; }
+    .horsrp-cat-name { font-size: 26px; text-align: left; }
     .btn-grid-2 { grid-template-columns: 1fr; }
+    /* Entraide mobile : image disparaît, boutons pleine largeur */
+    .entraide-img { display: none; }
   }
 </style>
 </head>
@@ -247,12 +278,16 @@
       <div class="horsrp-top">
         <div class="horsrp-img">image décorative</div>
         <div class="horsrp-mid">
-          <a href="#" class="forum-btn">Jeux</a>
-          <a href="#" class="forum-btn">Discussions</a>
-          <a href="#" class="forum-btn">Top-sites</a>
+          <div class="horsrp-mid-top">
+            <div class="horsrp-buttons">
+              <a href="#" class="forum-btn">Jeux</a>
+              <a href="#" class="forum-btn">Discussions</a>
+              <a href="#" class="forum-btn">Top-sites</a>
+            </div>
+            <div class="horsrp-cat-name">Détente</div>
+          </div>
           <div class="last-msg">Dernier message posté dans ce forum</div>
         </div>
-        <div class="horsrp-cat-name">Détente</div>
       </div>
 
       <!-- Grille inférieure -->
@@ -261,11 +296,16 @@
         <!-- Entraide et partage -->
         <div class="sub-block">
           <div class="sub-title">Entraide et partage</div>
-          <div class="btn-grid-2">
-            <a href="#" class="forum-btn">Galeries</a>
-            <a href="#" class="forum-btn">Graphisme</a>
+          <div class="entraide-inner">
+            <div class="entraide-left">
+              <div class="btn-grid-2">
+                <a href="#" class="forum-btn">Galeries</a>
+                <a href="#" class="forum-btn">Graphisme</a>
+              </div>
+              <div class="last-msg">Dernier message posté dans ce forum</div>
+            </div>
+            <div class="entraide-img">image décorative</div>
           </div>
-          <div class="last-msg">Dernier message posté dans ce forum</div>
         </div>
 
         <!-- Archives -->

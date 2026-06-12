@@ -26,7 +26,7 @@
   .main-block { background: #16192a; border-radius: 18px; border: 1px solid rgba(255,255,255,0.07); padding: 20px; display: grid; grid-template-columns: 210px 1fr; gap: 16px; }
 
   /* COL GAUCHE */
-  .col-left { display: flex; flex-direction: column; gap: 0; }
+  .col-left { display: flex; flex-direction: column; gap: 0; align-self: start; }
   .welcome-text { font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.9); line-height: 1.3; margin-bottom: 12px; flex-shrink: 0; }
   .welcome-text em { font-size: 22px; font-style: italic; color: #D4A373; display: block; }
   .welcome-text strong { font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
@@ -68,7 +68,7 @@
   .widget-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(212,163,115,0.7); padding: 10px 12px 6px; font-family: 'Inter', sans-serif; font-weight: 500; }
 
   /* 2 — PRÉDÉFINIS 3×3 */
-  .w-predefinis { grid-column: 1; grid-row: 1; }
+  .w-predefinis { grid-column: 1; grid-row: 1; align-self: start; }
   .predef-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 0 10px 10px; }
   .predef-item { aspect-ratio: 2/3; border-radius: 7px; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); overflow: hidden; position: relative; cursor: pointer; }
   .predef-overlay { position: absolute; inset: 0; background: rgba(127,80,86,0); transition: background 0.25s; display: flex; align-items: flex-end; padding: 6px; }
@@ -103,7 +103,7 @@
   .dot.active { background: #D4A373; }
 
   /* 5 — STAFF */
-  .w-staff { grid-column: 2; grid-row: 2; overflow: hidden; }
+  .w-staff { grid-column: 2; grid-row: 2; overflow: hidden; align-self: start; }
   .staff-grid { display: flex; gap: 5px; padding: 1px 8px 4px; justify-content: center; }
   .staff-item { flex: 1; max-width: 110px; border-radius: 9px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 3/2; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); }
   .staff-name-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,13,20,0.65); padding: 5px 8px; font-size: 10px; color: #fff; transition: height 0.25s, background 0.25s; height: 24px; overflow: hidden; }

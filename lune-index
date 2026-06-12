@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Cachée – Phase Lunaire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; font-family: Georgia, serif; }
+
+  .widget {
+    background: #252a3a;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 16px 18px 14px;
+    color: #c8cfe0;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glow {
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 140px; height: 140px;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  .glow-nuit  { background: radial-gradient(circle, rgba(110,95,200,0.13) 0%, transparent 68%); }
+  .glow-jour  { background: radial-gradient(circle, rgba(190,110,50,0.12) 0%, transparent 68%); }
+
+  .header {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(160,170,200,0.4);
+    margin-bottom: 12px;
+    font-family: Georgia, serif;
+  }
+
+  .season-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 9px;
+    border-radius: 99px;
+    margin-bottom: 13px;
+  }
+  .badge-nuit {
+    background: rgba(100,90,160,0.2);
+    border: 1px solid rgba(130,120,200,0.2);
+    color: #a099d0;
+  }
+  .badge-jour {
+    background: rgba(160,80,40,0.2);
+    border: 1px solid rgba(190,110,60,0.2);
+    color: #c49070;
+  }
+
+  .main-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 13px;
+  }
+  .icon-wrap {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .phase-info { flex: 1; }
+  .step-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c8cfe0;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 11px;
+    color: rgba(180,185,210,0.5);
+    line-height: 1.55;
+  }
+
+  .sep {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-bottom: 11px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(160,170,200,0.35);
+    margin-bottom: 5px;
+    letter-spacing: 0.03em;
+  }
+  .progress-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    height: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    position: relative;
+    transition: width 0.4s ease;
+  }
+  .fill-nuit { background: linear-gradient(90deg, #3a3060, #7a6fd0); }
+  .fill-jour { background: linear-gradient(90deg, #5a2e10, #c47830); }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 99px;
+  }
+
+  .step-markers {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1px;
+    margin-bottom: 11px;
+  }
+  .step-dot { width: 1px; height: 4px; background: rgba(255,255,255,0.1); }
+
+  .next-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .next-label { font-size: 10px; color: rgba(160,170,200,0.3); letter-spacing: 0.05em; }
+  .next-info  { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(190,190,220,0.6); }
+  .next-glyph { font-size: 13px; }
+  .next-days  { font-size: 10px; color: rgba(160,170,200,0.3); }
+
+  .footer {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .date-str { font-size: 9px; color: rgba(160,170,200,0.2); letter-spacing: 0.07em; }
+  .cycles-link {
+    font-size: 9px;
+    color: rgba(160,170,200,0.35);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid rgba(160,170,200,0.15);
+    padding-bottom: 1px;
+  }
+  .cycles-link:hover { color: rgba(160,170,200,0.6); }
+</style>
+</head>
+<body>
+<div class="widget" id="widget">
+  <div class="glow" id="glow"></div>
+  <div class="header">⬡ Face cachée de la Lune</div>
+  <div class="season-badge" id="seasonBadge"></div>
+  <div class="main-row">
+    <div class="icon-wrap" id="iconWrap"></div>
+    <div class="phase-info">
+      <div class="step-name" id="stepName">…</div>
+      <div class="step-desc" id="stepDesc">…</div>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="progress-label">
+    <span>Progression du cycle</span>
+    <span id="progressPct">0 %</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <div class="step-markers">
+    <div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+    <div class="step-dot"></div><div class="step-dot"></div>
+  </div>
+  <div class="next-row">
+    <span class="next-label">PROCHAINE ÉTAPE →</span>
+    <span class="next-info">
+      <span class="next-glyph" id="nextGlyph"></span>
+      <span id="nextName"></span>
+      <span class="next-days" id="nextDays"></span>
+    </span>
+  </div>
+  <div class="footer">
+    <span class="date-str" id="dateStr"></span>
+    <a href="LIEN_PAGE_EXPLICATIVE" class="cycles-link">Comprendre les cycles ↗</a>
+  </div>
+</div>
+
+<script>
+const YEAR_OFFSET = 46;
+const SYNODIC    = 29.53058867;
+
+function julianDay(date) {
+  const y = date.getFullYear(), mo = date.getMonth()+1, d = date.getDate();
+  const a = Math.floor((14-mo)/12);
+  const yr = y+4800-a, m = mo+12*a-3;
+  return d + Math.floor((153*m+2)/5) + 365*yr
+       + Math.floor(yr/4) - Math.floor(yr/100) + Math.floor(yr/400) - 32045 - 0.5;
+}
+
+function moonPhase(date) {
+  let p = ((julianDay(date) - 2451550.1) % SYNODIC) / SYNODIC;
+  if (p < 0) p += 1;
+  return p;
+}
+
+function hiddenPhase(p) { return (p + 0.5) % 1; }
+
+const STEPS = {
+  jour: [
+    { key:'aube',       minF:0,   maxF:0.2, season:'jour',
+      name:'L\'Aube',
+      descs:['La première lueur rase l\'horizon, les ombres s\'étirent à l\'infini.','La lumière arrive en oblique, froide et aveuglante après l\'obscurité.','Le sol commence à se réchauffer. Les premières heures de clarté.'] },
+    { key:'jour_plein', minF:0.2, maxF:0.8, season:'jour',
+      name:'Le Jour Plein',
+      descs:['Le Soleil est haut. Pas d\'ombre. La chaleur est sans merci.','Lumière directe, aveuglante. Aucun abri naturel ne tient.','Le régolite brûle. La surface est un désert de lumière blanche.','Midi lunaire : le ciel noir tranche avec la roche éclatante.','La chaleur atteint son pic. Rester à l\'extérieur est dangereux.'] },
+    { key:'declin',     minF:0.8, maxF:1.0, season:'jour',
+      name:'Le Déclin',
+      descs:['La lumière rougit, les ombres s\'allongent à nouveau.','Le Soleil s\'approche de l\'horizon. La nuit n\'est plus loin.','Dernières heures de chaleur. Le ciel vire à l\'ocre sombre.'] },
+  ],
+  nuit: [
+    { key:'nuit_profonde',   minF:0,   maxF:0.2, season:'nuit',
+      name:'La Nuit Profonde',
+      descs:['Obscurité absolue. Les étoiles sont la seule source de lumière.','Pas un photon du Soleil. Seul le cosmos lointain éclaire.','Le froid s\'installe rapidement. La nuit vient de tomber.'] },
+    { key:'nuit_stable',     minF:0.2, maxF:0.8, season:'nuit',
+      name:'La Nuit Stable',
+      descs:['Un tapis d\'étoiles sans limites. Rien d\'autre.','Le silence et le froid règnent. La Voie Lactée est nette.','Nuit profonde et stable. Le froid atteint son minimum.','Des milliers d\'étoiles, immobiles. Pas le moindre frémissement.','La nuit est à son apogée. Le temps semble suspendu.'] },
+    { key:'nuit_finissante', minF:0.8, maxF:1.0, season:'nuit',
+      name:'La Nuit Finissante',
+      descs:['Une lueur rasante pointe à l\'horizon. L\'aube approche.','Les étoiles pâlissent à l\'est. Le Soleil n\'est plus loin.','La nuit touche à sa fin. Quelques heures encore.'] },
+  ]
+};
+
+const BADGE_LABELS = { jour: 'Le Grand Jour', nuit: 'La Nuit' };
+
+function svgNuit() {
+  return `<svg width="44" height="44" viewBox="0 0 46 46" fill="none">
+    <circle cx="23" cy="23" r="18" fill="#1a1d2e" stroke="rgba(120,110,190,0.25)" stroke-width="0.75"/>
+    <circle cx="23" cy="23" r="13" fill="none" stroke="rgba(120,110,190,0.12)" stroke-width="0.5"/>
+    <text x="23" y="28" text-anchor="middle" font-size="17" fill="rgba(160,155,210,0.85)" font-family="Georgia,serif">✦</text>
+    <text x="11" y="16" text-anchor="middle" font-size="7"  fill="rgba(160,155,210,0.35)" font-family="Georgia,serif">✧</text>
+    <text x="36" y="32" text-anchor="middle" font-size="5"  fill="rgba(160,155,210,0.25)" font-family="Georgia,serif">✦</text>
+    <text x="33" y="13" text-anchor="middle" font-size="6"  fill="rgba(160,155,210,0.2)"  font-family="Georgia,serif">✧</text>
+  </svg>`;
+}
+
+function svgJour() {
+  return `<svg width="44" height="44" viewBox="0 0 46 46" fill="none">
+    <line x1="23" y1="2"  x2="23" y2="8"  stroke="rgba(190,130,70,0.3)"  stroke-width="1"/>
+    <line x1="23" y1="38" x2="23" y2="44" stroke="rgba(190,130,70,0.3)"  stroke-width="1"/>
+    <line x1="2"  y1="23" x2="8"  y2="23" stroke="rgba(190,130,70,0.3)"  stroke-width="1"/>
+    <line x1="38" y1="23" x2="44" y2="23" stroke="rgba(190,130,70,0.3)"  stroke-width="1"/>
+    <line x1="8.5"  y1="8.5"  x2="12.7" y2="12.7" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>
+    <line x1="33.3" y1="33.3" x2="37.5" y2="37.5" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>
+    <line x1="37.5" y1="8.5"  x2="33.3" y2="12.7" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>
+    <line x1="12.7" y1="33.3" x2="8.5"  y2="37.5" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>
+    <circle cx="23" cy="23" r="11" fill="#1e1810" stroke="rgba(190,130,70,0.35)" stroke-width="0.75"/>
+    <circle cx="23" cy="23" r="7"  fill="rgba(190,130,70,0.1)" stroke="rgba(190,130,70,0.22)" stroke-width="0.5"/>
+    <circle cx="23" cy="23" r="3"  fill="rgba(190,130,70,0.45)"/>
+  </svg>`;
+}
+
+function svgBadgeNuit() {
+  return `<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#a099d0" stroke-width="1"/><circle cx="5" cy="5" r="1.5" fill="#a099d0"/></svg>`;
+}
+
+function svgBadgeJour() {
+  return `<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="#c49070"/><line x1="5" y1="0" x2="5" y2="2.5" stroke="#c49070" stroke-width="1"/><line x1="5" y1="7.5" x2="5" y2="10" stroke="#c49070" stroke-width="1"/><line x1="0" y1="5" x2="2.5" y2="5" stroke="#c49070" stroke-width="1"/><line x1="7.5" y1="5" x2="10" y2="5" stroke="#c49070" stroke-width="1"/></svg>`;
+}
+
+function getStepInfo(hp) {
+  const isJour = hp < 0.5;
+  const season = isJour ? 'jour' : 'nuit';
+  const fracInSeason = isJour ? hp / 0.5 : (hp - 0.5) / 0.5;
+  const steps  = STEPS[season];
+  const step   = steps.find(s => fracInSeason >= s.minF && fracInSeason < s.maxF) || steps[steps.length-1];
+  const stepRange  = step.maxF - step.minF;
+  const fracInStep = Math.min((fracInSeason - step.minF) / stepRange, 0.9999);
+  const descIdx    = Math.min(Math.floor(fracInStep * step.descs.length), step.descs.length-1);
+  const daysInStep    = stepRange * (SYNODIC / 2);
+  const daysRemaining = (1 - fracInStep) * daysInStep;
+  const stepIdx = steps.indexOf(step);
+  let nextStep;
+  if (stepIdx < steps.length - 1) {
+    nextStep = steps[stepIdx + 1];
+  } else {
+    const nextSeason = season === 'jour' ? 'nuit' : 'jour';
+    nextStep = STEPS[nextSeason][0];
+  }
+  return { step, fracInStep, descIdx, daysRemaining, nextStep, globalPct: Math.round(hp * 100) };
+}
+
+function render() {
+  const now  = new Date();
+  const hp   = hiddenPhase(moonPhase(now));
+  const { step, descIdx, daysRemaining, nextStep, globalPct } = getStepInfo(hp);
+  const season = step.season;
+
+  document.getElementById('glow').className = 'glow glow-' + season;
+
+  const badge = document.getElementById('seasonBadge');
+  badge.className = 'season-badge badge-' + season;
+  badge.innerHTML = (season === 'nuit' ? svgBadgeNuit() : svgBadgeJour()) + BADGE_LABELS[season];
+
+  document.getElementById('iconWrap').innerHTML  = season === 'nuit' ? svgNuit() : svgJour();
+  document.getElementById('stepName').textContent = step.name;
+  document.getElementById('stepDesc').textContent = step.descs[descIdx];
+
+  const fill = document.getElementById('progressFill');
+  fill.style.width = globalPct + '%';
+  fill.className   = 'progress-fill fill-' + season;
+  document.getElementById('progressPct').textContent = globalPct + ' %';
+
+  const nextGlyphMap = { aube:'☀', jour_plein:'☀', declin:'☀', nuit_profonde:'☾', nuit_stable:'✦', nuit_finissante:'☾' };
+  document.getElementById('nextGlyph').textContent = nextGlyphMap[nextStep.key] || '·';
+  document.getElementById('nextGlyph').style.color = season === 'nuit' ? 'rgba(160,155,210,0.65)' : 'rgba(190,130,70,0.65)';
+  document.getElementById('nextName').textContent  = nextStep.name;
+  const d = Math.floor(daysRemaining), h = Math.round((daysRemaining - d) * 24);
+  document.getElementById('nextDays').textContent  = d > 0 ? `dans ${d}j ${h}h` : `dans ${h}h`;
+
+  const shown = new Date(now);
+  shown.setFullYear(shown.getFullYear() - YEAR_OFFSET);
+  const opts = { weekday:'long', day:'numeric', month:'long', year:'numeric' };
+  document.getElementById('dateStr').textContent = shown.toLocaleDateString('fr-FR', opts);
+}
+
+render();
+setInterval(render, 30 * 60 * 1000);
+</script>
+</body>
+</html>

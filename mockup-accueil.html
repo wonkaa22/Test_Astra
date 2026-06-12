@@ -183,7 +183,7 @@
     .w-moon       { grid-column: 2; grid-row: 3; min-height: 140px; }
 
     /* Images prédéfinis : limiter la hauteur pour ne pas exploser */
-    .predef-item { max-height: 80px; }
+    .predef-item { aspect-ratio: 1/1; max-height: none; }
 
     /* Footer */
     .footer { flex-wrap: wrap; justify-content: center; gap: 12px; }
@@ -204,7 +204,7 @@
 
     /* Main-block */
     .main-block { padding: 12px; gap: 10px; }
-    .text-image-group { max-height: 160px; }
+    .text-image-group { max-height: 260px; }
 
     /* Col-right : 1 colonne, tout s'empile */
     .col-right { grid-template-columns: 1fr; grid-template-rows: auto; }
@@ -224,7 +224,7 @@
     .w-moon       { order: 6; }
 
     /* Images prédéfinis */
-    .predef-item { max-height: 70px; }
+    .predef-item { aspect-ratio: 3/2; max-height: none; }
 
     /* Staff : images plus petites */
     .staff-item { max-width: 90px; }

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mockup Accueil — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .forum-width { width: 1050px; max-width: 100%; }
+
+  /* NAVBAR */
+  .navbar { background: #11151D; border-radius: 14px 14px 24px 24px; display: flex; align-items: center; gap: 16px; padding: 12px 28px; height: 76px; }
+  .moon-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.85); font-size: 18px; flex-shrink: 0; }
+  .pill { background: #1a2235; border-radius: 999px; display: flex; align-items: center; gap: 8px; padding: 6px 20px 6px 6px; height: 56px; }
+  .btn-plus { width: 44px; height: 44px; border-radius: 50%; background: #7F5056; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; flex-shrink: 0; }
+  .av-slot { width: 40px; height: 40px; border-radius: 50%; background: #2d3a52; border: 2px solid #374158; flex-shrink: 0; }
+  .nav-spacer { flex: 1; }
+  .nav-links { display: flex; gap: 7px; }
+  .nav-link { padding: 7px 13px; border-radius: 20px; border: 0.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); font-size: 12.5px; white-space: nowrap; }
+
+  /* BANNIÈRE */
+  .banner { width: 100%; height: 180px; border-radius: 14px; background: linear-gradient(135deg, #1a2235 0%, #2d1a20 50%, #1a2235 100%); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 13px; letter-spacing: 0.1em; font-family: 'Cormorant Garamond', serif; font-style: italic; border: 1px solid rgba(255,255,255,0.06); }
+
+  /* GRAND ENCADRÉ */
+  .main-block { background: #16192a; border-radius: 18px; border: 1px solid rgba(255,255,255,0.07); padding: 20px; display: grid; grid-template-columns: 210px 1fr; gap: 16px; }
+
+  /* COL GAUCHE */
+  .col-left { display: flex; flex-direction: column; gap: 0; }
+  .welcome-text { font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.9); line-height: 1.3; margin-bottom: 12px; flex-shrink: 0; }
+  .welcome-text em { font-size: 22px; font-style: italic; color: #D4A373; display: block; }
+  .welcome-text strong { font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
+
+  /* Texte : remplit l'espace restant, scroll interne, angles doux normaux */
+  .text-block {
+    background: #0f1220;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-bottom: none;
+    padding: 14px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+  .text-block-inner { height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(212,163,115,0.2) transparent; padding-right: 6px; }
+  .text-block-inner::-webkit-scrollbar { width: 3px; }
+  .text-block-inner::-webkit-scrollbar-thumb { background: rgba(212,163,115,0.25); border-radius: 3px; }
+  .text-block p { font-size: 13.5px; color: rgba(255,255,255,0.6); line-height: 1.8; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+  /* Image : hauteur fixe, arrondie en bas, collée sous le texte */
+  .left-image {
+    height: 80px;
+    border-radius: 0 0 16px 16px;
+    background: linear-gradient(160deg, #2d1a28 0%, #1e2438 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: none;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.12); font-size: 11px; font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
+  }
+  .left-image-label { }
+
+  /* COL DROITE */
+  .col-right { display: grid; grid-template-columns: 175px 1fr 195px; grid-template-rows: auto auto; gap: 14px; align-content: start; }
+
+  .widget { background: #0f1220; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; position: relative; }
+  .widget-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(212,163,115,0.7); padding: 10px 12px 6px; font-family: 'Inter', sans-serif; font-weight: 500; }
+
+  /* 2 — PRÉDÉFINIS 3×3 */
+  .w-predefinis { grid-column: 1; grid-row: 1; }
+  .predef-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 0 10px 10px; }
+  .predef-item { aspect-ratio: 2/3; border-radius: 7px; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); overflow: hidden; position: relative; cursor: pointer; }
+  .predef-overlay { position: absolute; inset: 0; background: rgba(127,80,86,0); transition: background 0.25s; display: flex; align-items: flex-end; padding: 6px; }
+  .predef-item:hover .predef-overlay { background: rgba(127,80,86,0.55); }
+  .predef-overlay span { font-size: 9px; color: rgba(255,255,255,0); transition: color 0.25s; line-height: 1.3; }
+  .predef-item:hover .predef-overlay span { color: #fff; }
+
+  /* 3 — PRÉLIENS */
+  .w-preliens { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; }
+  .prelien-scroll { flex: 1; overflow-y: auto; padding: 4px 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(212,163,115,0.2) transparent; }
+  .prelien-scroll::-webkit-scrollbar { width: 3px; }
+  .prelien-scroll::-webkit-scrollbar-thumb { background: rgba(212,163,115,0.25); border-radius: 3px; }
+  .prelien-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 0.5px solid rgba(255,255,255,0.07); font-size: 11.5px; }
+  .prelien-row:last-child { border-bottom: none; }
+  .prelien-name { color: #D4A373; font-weight: 500; cursor: pointer; }
+  .prelien-name:hover { text-decoration: underline; }
+  .prelien-info { color: rgba(255,255,255,0.4); font-size: 10.5px; }
+
+  /* 4 — CAROUSEL */
+  .w-carousel { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; }
+  .carousel-body { flex: 1; position: relative; min-height: 260px; overflow: hidden; }
+  .carousel-slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; opacity: 0; transition: opacity 0.4s; }
+  .carousel-slide.active { opacity: 1; }
+  .slide-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #D4A373; margin-bottom: 4px; }
+  .slide-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+  .slide-desc { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+  .carousel-nav { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-top: 0.5px solid rgba(255,255,255,0.07); }
+  .carousel-arrow { width: 26px; height: 26px; border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 13px; cursor: pointer; }
+  .carousel-arrow:hover { background: rgba(255,255,255,0.12); }
+  .carousel-dots { display: flex; gap: 5px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.2s; }
+  .dot.active { background: #D4A373; }
+
+  /* 5 — STAFF */
+  .w-staff { grid-column: 2; grid-row: 2; overflow: hidden; }
+  .staff-grid { display: flex; gap: 8px; padding: 2px 10px 6px; justify-content: center; }
+  .staff-item { flex: 1; max-width: 110px; border-radius: 9px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 3/2; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); }
+  .staff-name-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,13,20,0.65); padding: 5px 8px; font-size: 10px; color: #fff; transition: height 0.25s, background 0.25s; height: 24px; overflow: hidden; }
+  .staff-item:hover .staff-name-bar { height: 48px; background: rgba(10,13,20,0.82); }
+  .staff-name-bar .staff-role { font-size: 9px; color: #D4A373; margin-top: 2px; opacity: 0; transition: opacity 0.2s 0.1s; }
+  .staff-item:hover .staff-name-bar .staff-role { opacity: 1; }
+  .w-staff .widget-label { padding: 5px 12px 3px; }
+
+  /* 6 — DERNIERS MESSAGES */
+  .w-lastposts { grid-column: 3; grid-row: 1; }
+  .lastpost-list { padding: 0 10px 10px; }
+  .lastpost-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid rgba(255,255,255,0.07); }
+  .lastpost-row:last-child { border-bottom: none; }
+  .lp-avatar { width: 28px; height: 28px; border-radius: 50%; background: #2d3a52; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+  .lp-info { flex: 1; min-width: 0; }
+  .lp-title { font-size: 11px; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+  .lp-title:hover { color: #D4A373; }
+  .lp-author { font-size: 10px; color: #D76C58; }
+  .lp-date { font-size: 9.5px; color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+  /* 7 — PHASE LUNAIRE */
+  .w-moon { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px; text-align: center; }
+  .moon-phase-icon { font-size: 38px; line-height: 1; }
+  .moon-phase-name { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #D4A373; font-style: italic; }
+  .moon-phase-info { font-size: 10.5px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+  .moon-phase-link { font-size: 10px; color: rgba(212,163,115,0.6); cursor: pointer; margin-top: 2px; }
+  .moon-phase-link:hover { color: #D4A373; }
+
+  /* FOOTER */
+  .footer { display: flex; align-items: center; gap: 16px; padding: 0 4px; }
+  .footer-topsites { display: flex; gap: 8px; }
+  .topsite-btn { width: 38px; height: 38px; border-radius: 50%; background: #D76C58; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; }
+  .footer-tagline { flex: 1; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+  .footer-partners { display: flex; gap: 8px; }
+  .partner-img { width: 38px; height: 38px; border-radius: 8px; background: #1e2438; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
+  .partner-img:hover { border-color: rgba(212,163,115,0.4); }
+</style>
+</head>
+<body>
+<div class="forum-width">
+
+  <div class="navbar" style="margin-bottom:16px;">
+    <div class="moon-btn">☽</div>
+    <div class="pill"><div class="btn-plus">+</div><div class="av-slot"></div><div class="av-slot" style="opacity:0.4;"></div></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-links"><span class="nav-link">Accueil</span><span class="nav-link">Recherche</span><span class="nav-link">Membres</span><span class="nav-link">Inscription</span><span class="nav-link">Connexion</span></div>
+  </div>
+
+  <div class="banner" style="margin-bottom:16px;">— illustration du forum —</div>
+
+  <div class="main-block">
+    <div class="col-left">
+      <div class="welcome-text"><em>Bienvenue,</em><strong>Invité</strong></div>
+
+      <div class="text-block">
+        <div class="text-block-inner">
+          <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
+          <br>
+          <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
+          <br>
+          <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
+        </div>
+      </div>
+
+      <!-- Image petite, arrondie en BAS, courbe concave en haut (U) -->
+      <div class="left-image"><span class="left-image-label">image décorative</span></div>
+    </div>
+
+    <div class="col-right">
+      <div class="widget w-predefinis">
+        <div class="widget-label">Prédéfinis</div>
+        <div class="predef-grid">
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+        </div>
+      </div>
+
+      <div class="widget w-preliens">
+        <div class="widget-label">Préliens recherchés</div>
+        <div class="prelien-scroll">
+          <div class="prelien-row"><span class="prelien-name">Lorem Ipsum</span><span class="prelien-info">Valero · Ami·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Dolor Sit</span><span class="prelien-info">Brikurbo · Rival·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Amet Consectetur</span><span class="prelien-info">Pontdomo · Famille</span></div>
+          <div class="prelien-row"><span class="prelien-name">Adipiscing Elit</span><span class="prelien-info">Aŭroro · Collègue</span></div>
+          <div class="prelien-row"><span class="prelien-name">Sed Ut Perspiciatis</span><span class="prelien-info">La Profunda · Inconnu·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Unde Omnis Iste</span><span class="prelien-info">Valero · Ennemi·e</span></div>
+        </div>
+      </div>
+
+      <div class="widget w-carousel">
+        <div class="widget-label">En ce moment</div>
+        <div class="carousel-body">
+          <div class="carousel-slide active" style="background:linear-gradient(135deg,#1a2540,#2d1a28);">
+            <div class="slide-label">Événement RP</div>
+            <div class="slide-title">Le Nokfesto approche</div>
+            <div class="slide-desc">Les préparatifs vont bon train dans tous les dômes.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#1a3028,#2d2810);">
+            <div class="slide-label">Bilan</div>
+            <div class="slide-title">Mois de Kvino</div>
+            <div class="slide-desc">Résumé des événements du dernier cycle lunaire.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#28201a,#401a1a);">
+            <div class="slide-label">Annonce</div>
+            <div class="slide-title">Nouvelles recrues</div>
+            <div class="slide-desc">La Sortosipo a accueilli 3 nouveaux arrivants.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#1a2038,#2a1838);">
+            <div class="slide-label">Actualité</div>
+            <div class="slide-title">Tensions à Brikurbo</div>
+            <div class="slide-desc">La Besta Prizorgejo ferme temporairement ses portes.</div>
+          </div>
+        </div>
+        <div class="carousel-nav">
+          <div class="carousel-arrow" id="prev">←</div>
+          <div class="carousel-dots">
+            <div class="dot active" data-i="0"></div>
+            <div class="dot" data-i="1"></div>
+            <div class="dot" data-i="2"></div>
+            <div class="dot" data-i="3"></div>
+          </div>
+          <div class="carousel-arrow" id="next">→</div>
+        </div>
+      </div>
+
+      <div class="widget w-staff">
+        <div class="widget-label">Staff</div>
+        <div class="staff-grid">
+          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#2d3a52,#1a2235);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Admin · Fondatrice</div></div></div>
+          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2d52,#1a1a35);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Lore</div></div></div>
+          <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#522d2d,#351a1a);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Events</div></div></div>
+        </div>
+      </div>
+
+      <div class="widget w-lastposts">
+        <div class="widget-label">Derniers messages</div>
+        <div class="lastpost-list">
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Titre du sujet un peu long…</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">23 h</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Un autre sujet récent</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">1 j</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Sous les kristaloj de Valero</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">2 j</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">La nuit à Brikurbo</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">3 j</div></div>
+        </div>
+      </div>
+
+      <div class="widget w-moon">
+        <div class="moon-phase-icon" id="moon-icon">🌕</div>
+        <div class="moon-phase-name" id="moon-name">Pleine lune</div>
+        <div class="moon-phase-info" id="moon-info">Nuit · Visibilité maximale</div>
+        <div class="moon-phase-link">Voir le calendrier →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:16px;">
+    <div class="footer-topsites"><div class="topsite-btn">A</div><div class="topsite-btn">B</div><div class="topsite-btn">C</div></div>
+    <div class="footer-tagline">— nation lunaire indépendante, fondée en 1887 —</div>
+    <div class="footer-partners"><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div></div>
+  </div>
+</div>
+
+<script>
+  /* Carousel */
+  let current = 0;
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.dot');
+  function goTo(n) {
+    slides[current].classList.remove('active'); dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active'); dots[current].classList.add('active');
+  }
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
+  setInterval(() => goTo(current + 1), 5000);
+
+  /* Phase lunaire réelle calculée en JS
+     Pour le forum : l'admin définit une date fictive (ici on prend la date réelle pour la démo) */
+  (function() {
+    /* ✏️ Pour le forum : remplace new Date() par la date fictive du RPG
+       ex: new Date(1983, 2, 15) = 15 mars 1983 */
+    const date = new Date();
+
+    /* Calcul de la phase lunaire (algorithme de Conway) */
+    let year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+    if (month < 3) { year--; month += 12; }
+    const a = Math.floor(year / 100);
+    const b = Math.floor(a / 4);
+    const c = 2 - a + b;
+    const e = Math.floor(365.25 * (year + 4716));
+    const f = Math.floor(30.6001 * (month + 1));
+    const jd = c + day + e + f - 1524.5;
+    const daysSinceNew = (jd - 2451549.5) % 29.53058867;
+    const phase = daysSinceNew < 0 ? daysSinceNew + 29.53058867 : daysSinceNew;
+
+    const phases = [
+      { max: 1.85,  icon: '🌑', name: 'Nouvelle lune',        info: 'Obscurité totale · Nuit absolue' },
+      { max: 5.55,  icon: '🌒', name: 'Premier croissant',     info: 'Lumière naissante · Aube' },
+      { max: 9.22,  icon: '🌓', name: 'Premier quartier',      info: 'Demi-lune · Équilibre' },
+      { max: 12.91, icon: '🌔', name: 'Lune gibbeuse croiss.', info: 'Lumière croissante · Clarté' },
+      { max: 16.61, icon: '🌕', name: 'Pleine lune',           info: 'Visibilité maximale · Nuit lumineuse' },
+      { max: 20.30, icon: '🌖', name: 'Lune gibbeuse décrois.',info: 'Lumière décroissante' },
+      { max: 23.99, icon: '🌗', name: 'Dernier quartier',      info: 'Demi-lune · Équilibre' },
+      { max: 27.68, icon: '🌘', name: 'Dernier croissant',     info: 'Lumière mourante · Crépuscule' },
+      { max: 29.53, icon: '🌑', name: 'Nouvelle lune',         info: 'Obscurité totale · Nuit absolue' },
+    ];
+
+    const p = phases.find(ph => phase < ph.max) || phases[phases.length - 1];
+    document.getElementById('moon-icon').textContent = p.icon;
+    document.getElementById('moon-name').textContent = p.name;
+    document.getElementById('moon-info').textContent = p.info;
+  })();
+</script>
+</body>
+</html>

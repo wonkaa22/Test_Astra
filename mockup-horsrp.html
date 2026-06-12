@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Hors RP — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+  .forum-width { width: 1050px; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ═══════════════════════════════════════
+     BLOC HORS RP
+     ═══════════════════════════════════════ */
+  .horsrp-block {
+    background: #16192a;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+  }
+
+  /* Header / toggle — identique admin */
+  .horsrp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .horsrp-header:hover { background: rgba(255,255,255,0.02); }
+  .horsrp-title-bar {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.88);
+    letter-spacing: 0.02em;
+  }
+  .horsrp-toggle {
+    background: none;
+    border: 1px solid rgba(212,163,115,0.25);
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(212,163,115,0.7);
+    font-size: 11px;
+    padding: 5px 10px;
+    line-height: 1;
+    transition: transform 0.35s ease, border-color 0.2s, color 0.2s;
+  }
+  .horsrp-toggle:hover { color: #D4A373; border-color: rgba(212,163,115,0.5); }
+  .horsrp-toggle.is-collapsed { transform: rotate(180deg); }
+
+  /* Contenu repliable */
+  .horsrp-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 2400px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.45s ease, opacity 0.3s ease, padding 0.3s ease;
+  }
+  .horsrp-content.is-collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════
+     BLOC SUPÉRIEUR — image + boutons + titre
+     ═══════════════════════════════════════ */
+  .horsrp-top {
+    background: #0f1220;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  /* Image — coins arrondis uniquement à gauche (s'étire avec le contenu) */
+  .horsrp-img {
+    flex-shrink: 0;
+    width: 38%;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3a58 45%, #1a2235 100%);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.08);
+    font-size: 12px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* Zone centrale : boutons + dernier message */
+  .horsrp-mid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 16px;
+  }
+
+  /* Titre de la catégorie à droite */
+  .horsrp-cat-name {
+    flex-shrink: 0;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ═══════════════════════════════════════
+     GRILLE INFÉRIEURE
+     ═══════════════════════════════════════ */
+  .horsrp-lower {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    gap: 16px;
+  }
+
+  /* Sous-blocs partagés */
+  .sub-block {
+    background: #0f1220;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.1;
+  }
+
+  /* Boutons forum */
+  .forum-btn {
+    display: block;
+    width: 100%;
+    padding: 9px 14px;
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.7);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .forum-btn:hover {
+    background: #1a1f33;
+    border-color: rgba(212,163,115,0.3);
+    color: #D4A373;
+  }
+
+  /* Grille 2 colonnes pour Entraide */
+  .btn-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Dernier message */
+  .last-msg {
+    margin-top: auto;
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.025);
+    border-radius: 8px;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(255,255,255,0.28);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.045);
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 1049px) {
+    .forum-width { width: 100%; }
+    .horsrp-lower { grid-template-columns: 1fr; }
+    .horsrp-cat-name { width: 160px; font-size: 26px; }
+    .horsrp-img { width: 35%; }
+  }
+
+  @media (max-width: 599px) {
+    body { padding: 20px 12px; }
+    .horsrp-header { padding: 12px 16px; }
+    .horsrp-title-bar { font-size: 20px; }
+    .horsrp-content { padding: 12px; gap: 12px; }
+
+    /* Mobile : image en haut pleine largeur, titre + boutons en dessous */
+    .horsrp-top { flex-direction: column; }
+    .horsrp-img {
+      width: 100%;
+      min-height: 100px;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .horsrp-cat-name {
+      width: 100%;
+      border-left: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 12px;
+      font-size: 28px;
+      justify-content: flex-start;
+    }
+    .btn-grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="forum-width">
+  <div class="horsrp-block">
+
+    <!-- Header / toggle -->
+    <div class="horsrp-header" id="horsrpHeader">
+      <span class="horsrp-title-bar">0X. Hors RP</span>
+      <button class="horsrp-toggle" id="horsrpToggle" aria-label="Replier la section">▲</button>
+    </div>
+
+    <!-- Contenu repliable -->
+    <div class="horsrp-content" id="horsrpContent">
+
+      <!-- Bloc supérieur — Détente -->
+      <div class="horsrp-top">
+        <div class="horsrp-img">image décorative</div>
+        <div class="horsrp-mid">
+          <a href="#" class="forum-btn">Jeux</a>
+          <a href="#" class="forum-btn">Discussions</a>
+          <a href="#" class="forum-btn">Top-sites</a>
+          <div class="last-msg">Dernier message posté dans ce forum</div>
+        </div>
+        <div class="horsrp-cat-name">Détente</div>
+      </div>
+
+      <!-- Grille inférieure -->
+      <div class="horsrp-lower">
+
+        <!-- Entraide et partage -->
+        <div class="sub-block">
+          <div class="sub-title">Entraide et partage</div>
+          <div class="btn-grid-2">
+            <a href="#" class="forum-btn">Galeries</a>
+            <a href="#" class="forum-btn">Graphisme</a>
+          </div>
+          <div class="last-msg">Dernier message posté dans ce forum</div>
+        </div>
+
+        <!-- Archives -->
+        <div class="sub-block">
+          <div class="sub-title">Archives</div>
+          <a href="#" class="forum-btn">Personnages</a>
+          <a href="#" class="forum-btn">RP</a>
+          <a href="#" class="forum-btn">Gestion</a>
+          <a href="#" class="forum-btn">Détente</a>
+        </div>
+
+      </div>
+
+    </div><!-- /horsrp-content -->
+  </div><!-- /horsrp-block -->
+</div>
+
+<script>
+(function() {
+  var header  = document.getElementById('horsrpHeader');
+  var toggle  = document.getElementById('horsrpToggle');
+  var content = document.getElementById('horsrpContent');
+  header.addEventListener('click', function() {
+    var collapsed = content.classList.toggle('is-collapsed');
+    toggle.classList.toggle('is-collapsed', collapsed);
+    toggle.setAttribute('aria-label', collapsed ? 'Déplier la section' : 'Replier la section');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mockup Accueil — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  .forum-width { width: 1050px; max-width: 100%; }
+
+  /* NAVBAR */
+  .navbar { background: #11151D; border-radius: 14px 14px 24px 24px; display: flex; align-items: center; gap: 16px; padding: 12px 28px; height: 76px; }
+  .moon-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.85); font-size: 18px; flex-shrink: 0; }
+  .pill { background: #1a2235; border-radius: 999px; display: flex; align-items: center; gap: 8px; padding: 6px 20px 6px 6px; height: 56px; }
+  .btn-plus { width: 44px; height: 44px; border-radius: 50%; background: #7F5056; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; flex-shrink: 0; }
+  .av-slot { width: 40px; height: 40px; border-radius: 50%; background: #2d3a52; border: 2px solid #374158; flex-shrink: 0; }
+  .nav-spacer { flex: 1; }
+  .nav-links { display: flex; gap: 7px; }
+  .nav-link { padding: 7px 13px; border-radius: 20px; border: 0.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); font-size: 12.5px; white-space: nowrap; }
+
+  /* BANNIÈRE */
+  .banner { width: 100%; height: 180px; border-radius: 14px; background: linear-gradient(135deg, #1a2235 0%, #2d1a20 50%, #1a2235 100%); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.15); font-size: 13px; letter-spacing: 0.1em; font-family: 'Cormorant Garamond', serif; font-style: italic; border: 1px solid rgba(255,255,255,0.06); }
+
+  /* GRAND ENCADRÉ */
+  .main-block { background: #16192a; border-radius: 18px; border: 1px solid rgba(255,255,255,0.07); padding: 20px; display: grid; grid-template-columns: 210px 1fr; gap: 16px; height: 620px; }
+
+  /* COL GAUCHE */
+  .col-left { display: flex; flex-direction: column; gap: 0; align-self: stretch; min-height: 0; }
+  .welcome-text { font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.9); line-height: 1.3; margin-bottom: 12px; flex-shrink: 0; }
+  .welcome-text em { font-size: 22px; font-style: italic; color: #D4A373; display: block; }
+  .welcome-text strong { font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
+
+  /* Groupe texte + image : flex-column, remplit l'espace restant */
+  .text-image-group { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  /* Texte : remplit l'espace restant, scroll interne, angles doux normaux */
+  .text-block {
+    background: #0f1220;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-bottom: none;
+    padding: 14px;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+  }
+  .text-block-inner { height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(212,163,115,0.2) transparent; padding-right: 6px; }
+  .text-block-inner::-webkit-scrollbar { width: 3px; }
+  .text-block-inner::-webkit-scrollbar-thumb { background: rgba(212,163,115,0.25); border-radius: 3px; }
+  .text-block p { font-size: 13.5px; color: rgba(255,255,255,0.6); line-height: 1.8; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+  /* Image : hauteur fixe, arrondie en bas, collée sous le texte */
+  .left-image {
+    height: 80px;
+    border-radius: 0 0 16px 16px;
+    background: linear-gradient(160deg, #2d1a28 0%, #1e2438 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: none;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.12); font-size: 11px; font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
+  }
+  .left-image-label { }
+
+  /* COL DROITE */
+  .col-right { display: grid; grid-template-columns: 175px 1fr 195px; grid-template-rows: auto 1fr; gap: 10px; }
+
+  .widget { background: #0f1220; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; position: relative; }
+  .widget-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(212,163,115,0.7); padding: 10px 12px 6px; font-family: 'Inter', sans-serif; font-weight: 500; }
+
+  /* 2 — PRÉDÉFINIS 3×3 */
+  .w-predefinis { grid-column: 1; grid-row: 1; align-self: start; }
+  .predef-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 0 10px 10px; }
+  .predef-item { aspect-ratio: 2/3; border-radius: 7px; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); overflow: hidden; position: relative; cursor: pointer; }
+  .predef-overlay { position: absolute; inset: 0; background: rgba(127,80,86,0); transition: background 0.25s; display: flex; align-items: flex-end; padding: 6px; }
+  .predef-item:hover .predef-overlay { background: rgba(127,80,86,0.55); }
+  .predef-overlay span { font-size: 9px; color: rgba(255,255,255,0); transition: color 0.25s; line-height: 1.3; }
+  .predef-item:hover .predef-overlay span { color: #fff; }
+
+  /* 3 — PRÉLIENS */
+  .w-preliens { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
+  .prelien-scroll { flex: 1; overflow-y: auto; padding: 4px 12px 10px; scrollbar-width: thin; scrollbar-color: rgba(212,163,115,0.2) transparent; }
+  .prelien-scroll::-webkit-scrollbar { width: 3px; }
+  .prelien-scroll::-webkit-scrollbar-thumb { background: rgba(212,163,115,0.25); border-radius: 3px; }
+  .prelien-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 0.5px solid rgba(255,255,255,0.07); font-size: 11.5px; }
+  .prelien-row:last-child { border-bottom: none; }
+  .prelien-name { color: #D4A373; font-weight: 500; cursor: pointer; }
+  .prelien-name:hover { text-decoration: underline; }
+  .prelien-info { color: rgba(255,255,255,0.4); font-size: 10.5px; }
+
+  /* 4 — CAROUSEL */
+  .w-carousel { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; }
+  .carousel-body { flex: 1; position: relative; min-height: 200px; overflow: hidden; }
+  .carousel-slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; opacity: 0; transition: opacity 0.4s; }
+  .carousel-slide.active { opacity: 1; }
+  .slide-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #D4A373; margin-bottom: 4px; }
+  .slide-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+  .slide-desc { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+  .carousel-nav { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-top: 0.5px solid rgba(255,255,255,0.07); }
+  .carousel-arrow { width: 26px; height: 26px; border-radius: 50%; border: 0.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 13px; cursor: pointer; }
+  .carousel-arrow:hover { background: rgba(255,255,255,0.12); }
+  .carousel-dots { display: flex; gap: 5px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.2s; }
+  .dot.active { background: #D4A373; }
+
+  /* 5 — STAFF */
+  .w-staff-col { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+  .w-staff { overflow: hidden; }
+  .staff-grid { display: flex; gap: 5px; padding: 1px 8px 6px; justify-content: center; }
+  .staff-item { flex: 1; max-width: 110px; border-radius: 9px; overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 3/2; background: #1e2438; border: 1px solid rgba(255,255,255,0.07); }
+  .staff-name-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,13,20,0.65); padding: 5px 8px; font-size: 10px; color: #fff; transition: height 0.25s, background 0.25s; height: 24px; overflow: hidden; }
+  .staff-item:hover .staff-name-bar { height: 48px; background: rgba(10,13,20,0.82); }
+  .staff-name-bar .staff-role { font-size: 9px; color: #D4A373; margin-top: 2px; opacity: 0; transition: opacity 0.2s 0.1s; }
+  .staff-item:hover .staff-name-bar .staff-role { opacity: 1; }
+  .w-staff-image { flex: 1; min-height: 90px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 11px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .w-staff .widget-label { padding: 5px 12px 3px; }
+
+  /* 6 — DERNIERS MESSAGES */
+  .w-lastposts { grid-column: 3; grid-row: 1; }
+  .lastpost-list { padding: 0 10px 10px; }
+  .lastpost-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid rgba(255,255,255,0.07); }
+  .lastpost-row:last-child { border-bottom: none; }
+  .lp-avatar { width: 28px; height: 28px; border-radius: 50%; background: #2d3a52; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+  .lp-info { flex: 1; min-width: 0; }
+  .lp-title { font-size: 11px; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+  .lp-title:hover { color: #D4A373; }
+  .lp-author { font-size: 10px; color: #D76C58; }
+  .lp-date { font-size: 9.5px; color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+  /* 7 — PHASE LUNAIRE */
+  .w-moon { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  #sel-moon-phase { flex: 1; min-height: 0; width: 100% !important; max-width: none !important; margin: 0 !important; border-radius: 10px !important; overflow-y: auto !important; box-sizing: border-box !important; }
+
+  /* FOOTER */
+  .footer { display: flex; align-items: center; gap: 16px; padding: 0 4px; }
+  .footer-topsites { display: flex; gap: 8px; }
+  .topsite-btn { width: 38px; height: 38px; border-radius: 50%; background: #D76C58; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #fff; cursor: pointer; }
+  .footer-tagline { flex: 1; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+  .footer-partners { display: flex; gap: 8px; }
+  .partner-img { width: 38px; height: 38px; border-radius: 8px; background: #1e2438; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
+  .partner-img:hover { border-color: rgba(212,163,115,0.4); }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     Breakpoints : tablet ≤ 1049px / mobile ≤ 599px
+     ═══════════════════════════════════════════ */
+
+  @media (max-width: 1049px) {
+    /* Conteneur */
+    .forum-width { width: 100%; }
+
+    /* Navbar */
+    .navbar { height: auto; padding: 10px 16px; gap: 10px; }
+    .nav-links { flex-wrap: wrap; gap: 5px; }
+
+    /* Bannière */
+    .banner { height: 130px; }
+
+    /* Main-block : empile col-left au-dessus de col-right, hauteur auto */
+    .main-block { height: auto; grid-template-columns: 1fr; }
+
+    /* Col-left : hauteur naturelle, texte scrollable via max-height */
+    .col-left { min-height: auto; }
+    .text-image-group { max-height: 220px; }
+
+    /* Col-right : 2 colonnes égales, 3 rangées */
+    .col-right {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      min-height: 0;
+    }
+    .w-predefinis { grid-column: 1; grid-row: 1; }
+    .w-preliens   { grid-column: 1; grid-row: 2; min-height: 160px; }
+    .w-carousel   { grid-column: 2; grid-row: 1; }
+    .w-staff-col  { grid-column: 2; grid-row: 2; }
+    .w-lastposts  { grid-column: 1; grid-row: 3; }
+    .w-moon       { grid-column: 2; grid-row: 3; min-height: 140px; }
+
+    /* Images prédéfinis : limiter la hauteur pour ne pas exploser */
+    .predef-item { aspect-ratio: 3/2; max-height: none; }
+
+    /* Footer */
+    .footer { flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .footer-tagline { width: 100%; order: 3; }
+    .footer-partners { flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media (max-width: 599px) {
+    /* Global */
+    body { padding: 20px 12px; gap: 16px; }
+
+    /* Navbar */
+    .navbar { border-radius: 12px 12px 18px 18px; padding: 10px 14px; }
+    .nav-link { font-size: 11px; padding: 5px 10px; }
+
+    /* Bannière */
+    .banner { height: 100px; }
+
+    /* Main-block */
+    .main-block { padding: 12px; gap: 10px; }
+    .text-image-group { max-height: 260px; }
+
+    /* Col-right : 1 colonne, tout s'empile */
+    .col-right { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .w-predefinis,
+    .w-preliens,
+    .w-carousel,
+    .w-staff-col,
+    .w-lastposts,
+    .w-moon { grid-column: 1; grid-row: auto; }
+
+    /* Ordre mobile : carousel en premier, plus engageant */
+    .w-carousel   { order: 1; }
+    .w-lastposts  { order: 2; }
+    .w-predefinis { order: 3; }
+    .w-preliens   { order: 4; }
+    .w-staff-col  { order: 5; }
+    .w-moon       { order: 6; }
+
+    /* Images prédéfinis : encore plus aplaties, staff plus visible */
+    .predef-item { aspect-ratio: 2/1; max-height: none; }
+
+    /* Staff : images plus petites */
+    .staff-item { max-width: 130px; }
+
+    /* Footer */
+    .footer { flex-direction: column; align-items: center; gap: 12px; }
+    .footer-tagline { width: 100%; text-align: center; }
+    .footer-partners { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="forum-width">
+
+  <div class="navbar" style="margin-bottom:16px;">
+    <div class="moon-btn">☽</div>
+    <div class="pill"><div class="btn-plus">+</div><div class="av-slot"></div><div class="av-slot" style="opacity:0.4;"></div></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-links"><span class="nav-link">Accueil</span><span class="nav-link">Recherche</span><span class="nav-link">Membres</span><span class="nav-link">Inscription</span><span class="nav-link">Connexion</span></div>
+  </div>
+
+  <div class="banner" style="margin-bottom:16px;">— illustration du forum —</div>
+
+  <div class="main-block">
+    <div class="col-left">
+      <div class="welcome-text"><em>Bienvenue,</em><strong>Invité</strong></div>
+
+      <div class="text-image-group">
+        <div class="text-block">
+          <div class="text-block-inner">
+            <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
+            <br>
+            <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
+            <br>
+            <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
+          </div>
+        </div>
+        <!-- Image petite, arrondie en BAS, collée directement sous le texte -->
+        <div class="left-image"><span class="left-image-label">image décorative</span></div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="widget w-predefinis">
+        <div class="widget-label">Prédéfinis</div>
+        <div class="predef-grid">
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+          <div class="predef-item"><div class="predef-overlay"><span>Prénom N.<br>Groupe</span></div></div>
+        </div>
+      </div>
+
+      <div class="widget w-preliens">
+        <div class="widget-label">Préliens recherchés</div>
+        <div class="prelien-scroll">
+          <div class="prelien-row"><span class="prelien-name">Lorem Ipsum</span><span class="prelien-info">Valero · Ami·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Dolor Sit</span><span class="prelien-info">Brikurbo · Rival·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Amet Consectetur</span><span class="prelien-info">Pontdomo · Famille</span></div>
+          <div class="prelien-row"><span class="prelien-name">Adipiscing Elit</span><span class="prelien-info">Aŭroro · Collègue</span></div>
+          <div class="prelien-row"><span class="prelien-name">Sed Ut Perspiciatis</span><span class="prelien-info">La Profunda · Inconnu·e</span></div>
+          <div class="prelien-row"><span class="prelien-name">Unde Omnis Iste</span><span class="prelien-info">Valero · Ennemi·e</span></div>
+        </div>
+      </div>
+
+      <div class="widget w-carousel">
+        <div class="widget-label">En ce moment</div>
+        <div class="carousel-body">
+          <div class="carousel-slide active" style="background:linear-gradient(135deg,#1a2540,#2d1a28);">
+            <div class="slide-label">Événement RP</div>
+            <div class="slide-title">Le Nokfesto approche</div>
+            <div class="slide-desc">Les préparatifs vont bon train dans tous les dômes.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#1a3028,#2d2810);">
+            <div class="slide-label">Bilan</div>
+            <div class="slide-title">Mois de Kvino</div>
+            <div class="slide-desc">Résumé des événements du dernier cycle lunaire.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#28201a,#401a1a);">
+            <div class="slide-label">Annonce</div>
+            <div class="slide-title">Nouvelles recrues</div>
+            <div class="slide-desc">La Sortosipo a accueilli 3 nouveaux arrivants.</div>
+          </div>
+          <div class="carousel-slide" style="background:linear-gradient(135deg,#1a2038,#2a1838);">
+            <div class="slide-label">Actualité</div>
+            <div class="slide-title">Tensions à Brikurbo</div>
+            <div class="slide-desc">La Besta Prizorgejo ferme temporairement ses portes.</div>
+          </div>
+        </div>
+        <div class="carousel-nav">
+          <div class="carousel-arrow" id="prev">←</div>
+          <div class="carousel-dots">
+            <div class="dot active" data-i="0"></div>
+            <div class="dot" data-i="1"></div>
+            <div class="dot" data-i="2"></div>
+            <div class="dot" data-i="3"></div>
+          </div>
+          <div class="carousel-arrow" id="next">→</div>
+        </div>
+      </div>
+
+      <div class="w-staff-col">
+        <div class="widget w-staff">
+          <div class="widget-label">Staff</div>
+          <div class="staff-grid">
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#2d3a52,#1a2235);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Admin · Fondatrice</div></div></div>
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2d52,#1a1a35);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Lore</div></div></div>
+            <div class="staff-item"><div style="width:100%;height:100%;background:linear-gradient(135deg,#522d2d,#351a1a);"></div><div class="staff-name-bar">Prénom<div class="staff-role">Modo · Events</div></div></div>
+          </div>
+        </div>
+        <div class="widget w-staff-image">image décorative</div>
+      </div>
+
+      <div class="widget w-lastposts">
+        <div class="widget-label">Derniers messages</div>
+        <div class="lastpost-list">
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Titre du sujet un peu long…</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">23 h</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Un autre sujet récent</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">1 j</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">Sous les kristaloj de Valero</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">2 j</div></div>
+          <div class="lastpost-row"><div class="lp-avatar"></div><div class="lp-info"><div class="lp-title">La nuit à Brikurbo</div><div class="lp-author">Prénom N.</div></div><div class="lp-date">3 j</div></div>
+        </div>
+      </div>
+
+      <div class="w-moon">
+        <div id="sel-moon-phase"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:16px;">
+    <div class="footer-topsites"><div class="topsite-btn">A</div><div class="topsite-btn">B</div><div class="topsite-btn">C</div></div>
+    <div class="footer-tagline">— nation lunaire indépendante, fondée en 1887 —</div>
+    <div class="footer-partners"><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div><div class="partner-img"></div></div>
+  </div>
+</div>
+
+<script>
+  /* Carousel */
+  let current = 0;
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.dot');
+  function goTo(n) {
+    slides[current].classList.remove('active'); dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active'); dots[current].classList.add('active');
+  }
+  document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.i)));
+  setInterval(() => goTo(current + 1), 5000);
+
+  /* Phase lunaire réelle calculée en JS
+     Pour le forum : l'admin définit une date fictive (ici on prend la date réelle pour la démo) */
+  (function() {
+    /* ✏️ Pour le forum : remplace new Date() par la date fictive du RPG
+       ex: new Date(1983, 2, 15) = 15 mars 1983 */
+    const date = new Date();
+
+    /* Calcul de la phase lunaire (algorithme de Conway) */
+    let year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+    if (month < 3) { year--; month += 12; }
+    const a = Math.floor(year / 100);
+    const b = Math.floor(a / 4);
+    const c = 2 - a + b;
+    const e = Math.floor(365.25 * (year + 4716));
+    const f = Math.floor(30.6001 * (month + 1));
+    const jd = c + day + e + f - 1524.5;
+    const daysSinceNew = (jd - 2451549.5) % 29.53058867;
+    const phase = daysSinceNew < 0 ? daysSinceNew + 29.53058867 : daysSinceNew;
+
+    const phases = [
+      { max: 1.85,  icon: '🌑', name: 'Nouvelle lune',        info: 'Obscurité totale · Nuit absolue' },
+      { max: 5.55,  icon: '🌒', name: 'Premier croissant',     info: 'Lumière naissante · Aube' },
+      { max: 9.22,  icon: '🌓', name: 'Premier quartier',      info: 'Demi-lune · Équilibre' },
+      { max: 12.91, icon: '🌔', name: 'Lune gibbeuse croiss.', info: 'Lumière croissante · Clarté' },
+      { max: 16.61, icon: '🌕', name: 'Pleine lune',           info: 'Visibilité maximale · Nuit lumineuse' },
+      { max: 20.30, icon: '🌖', name: 'Lune gibbeuse décrois.',info: 'Lumière décroissante' },
+      { max: 23.99, icon: '🌗', name: 'Dernier quartier',      info: 'Demi-lune · Équilibre' },
+      { max: 27.68, icon: '🌘', name: 'Dernier croissant',     info: 'Lumière mourante · Crépuscule' },
+      { max: 29.53, icon: '🌑', name: 'Nouvelle lune',         info: 'Obscurité totale · Nuit absolue' },
+    ];
+
+    const p = phases.find(ph => phase < ph.max) || phases[phases.length - 1];
+    document.getElementById('moon-icon').textContent = p.icon;
+    document.getElementById('moon-name').textContent = p.name;
+    document.getElementById('moon-info').textContent = p.info;
+  })();
+</script>
+<script>
+(function() {
+  var css = `
+    #sel-moon-phase {
+      background: #252a3a !important;
+      border: 1px solid rgba(255,255,255,0.07) !important;
+      border-radius: 10px !important;
+      padding: 16px 18px 14px !important;
+      color: #c8cfe0 !important;
+      width: 100% !important;
+      max-width: none !important;
+      position: relative !important;
+      overflow: hidden !important;
+      font-family: Georgia, serif !important;
+      box-sizing: border-box !important;
+    }
+    #lune-glow {
+      position: absolute; top: -50px; right: -50px;
+      width: 140px; height: 140px;
+      pointer-events: none; border-radius: 50%;
+    }
+    #lune-header {
+      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(160,170,200,0.4); margin-bottom: 12px;
+    }
+    #lune-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      padding: 3px 9px; border-radius: 99px; margin-bottom: 13px;
+    }
+    #lune-main {
+      display: flex; align-items: flex-start; gap: 13px; margin-bottom: 13px;
+    }
+    #lune-icon {
+      flex-shrink: 0; width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #lune-step-name {
+      font-size: 13px; font-weight: 600; color: #c8cfe0;
+      letter-spacing: 0.03em; margin-bottom: 4px;
+    }
+    #lune-step-desc {
+      font-size: 11px; color: rgba(180,185,210,0.5); line-height: 1.55;
+    }
+    #lune-sep {
+      height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 11px;
+    }
+    #lune-progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: rgba(160,170,200,0.35);
+      margin-bottom: 5px; letter-spacing: 0.03em;
+    }
+    #lune-track {
+      background: rgba(255,255,255,0.06); border-radius: 99px;
+      height: 4px; overflow: hidden; margin-bottom: 4px; position: relative;
+    }
+    #lune-fill {
+      height: 100%; border-radius: 99px; position: relative; transition: width 0.4s ease;
+    }
+    #lune-fill::after {
+      content: ''; position: absolute; right: 0; top: 0; bottom: 0;
+      width: 4px; background: rgba(255,255,255,0.55); border-radius: 99px;
+    }
+    #lune-markers {
+      display: flex; justify-content: space-between;
+      padding: 0 1px; margin-bottom: 11px;
+    }
+    .lune-dot { width: 1px; height: 4px; background: rgba(255,255,255,0.1); }
+    #lune-next {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 12px;
+    }
+    #lune-next-label { font-size: 10px; color: rgba(160,170,200,0.3); letter-spacing: 0.05em; }
+    #lune-next-info  { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(190,190,220,0.6); }
+    #lune-next-days  { font-size: 10px; color: rgba(160,170,200,0.3); }
+    #lune-footer {
+      border-top: 1px solid rgba(255,255,255,0.05); padding-top: 9px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    #lune-date  { font-size: 9px; color: rgba(160,170,200,0.2); letter-spacing: 0.07em; }
+    #lune-link  {
+      font-size: 9px; color: rgba(160,170,200,0.35); text-decoration: none;
+      letter-spacing: 0.04em; border-bottom: 1px solid rgba(160,170,200,0.15);
+      padding-bottom: 1px;
+    }
+  `;
+
+  var styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
+
+  var container = document.getElementById('sel-moon-phase');
+  if (!container) return;
+
+  container.innerHTML = `
+    <div id="lune-glow"></div>
+    <div id="lune-header">⬡ Face cachée de la Lune</div>
+    <div id="lune-badge"></div>
+    <div id="lune-main">
+      <div id="lune-icon"></div>
+      <div style="flex:1">
+        <div id="lune-step-name">…</div>
+        <div id="lune-step-desc">…</div>
+      </div>
+    </div>
+    <div id="lune-sep"></div>
+    <div id="lune-progress-label">
+      <span>Progression du cycle</span>
+      <span id="lune-pct">0 %</span>
+    </div>
+    <div id="lune-track"><div id="lune-fill" style="width:0%"></div></div>
+    <div id="lune-markers">
+      <div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div>
+      <div class="lune-dot"></div><div class="lune-dot"></div>
+    </div>
+    <div id="lune-next">
+      <span id="lune-next-label">PROCHAINE ÉTAPE →</span>
+      <span id="lune-next-info">
+        <span id="lune-next-glyph" style="font-size:13px"></span>
+        <span id="lune-next-name"></span>
+        <span id="lune-next-days"></span>
+      </span>
+    </div>
+    <div id="lune-footer">
+      <span id="lune-date"></span>
+      <a id="lune-link" href="LIEN_PAGE_EXPLICATIVE">Comprendre les cycles ↗</a>
+    </div>
+  `;
+
+  var YEAR_OFFSET = 46;
+  var SYNODIC     = 29.53058867;
+
+  function julianDay(date) {
+    var y = date.getFullYear(), mo = date.getMonth()+1, d = date.getDate();
+    var a = Math.floor((14-mo)/12);
+    var yr = y+4800-a, m = mo+12*a-3;
+    return d + Math.floor((153*m+2)/5) + 365*yr
+         + Math.floor(yr/4) - Math.floor(yr/100) + Math.floor(yr/400) - 32045 - 0.5;
+  }
+
+  function moonPhase(date) {
+    var p = ((julianDay(date) - 2451550.1) % SYNODIC) / SYNODIC;
+    if (p < 0) p += 1;
+    return p;
+  }
+
+  function hiddenPhase(p) { return (p + 0.5) % 1; }
+
+  var STEPS = {
+    jour: [
+      { key:'aube',       minF:0,   maxF:0.2, season:'jour', name:"L'Aube",
+        descs:["La première lueur rase l'horizon, les ombres s'étirent à l'infini.","La lumière arrive en oblique, froide et aveuglante après l'obscurité.","Le sol commence à se réchauffer. Les premières heures de clarté."] },
+      { key:'jour_plein', minF:0.2, maxF:0.8, season:'jour', name:'Le Jour Plein',
+        descs:["Le Soleil est haut. Pas d'ombre. La chaleur est sans merci.","Lumière directe, aveuglante. Aucun abri naturel ne tient.","Le régolite brûle. La surface est un désert de lumière blanche.","Midi lunaire : le ciel noir tranche avec la roche éclatante.","La chaleur atteint son pic. Rester à l'extérieur est dangereux."] },
+      { key:'declin',     minF:0.8, maxF:1.0, season:'jour', name:'Le Déclin',
+        descs:["La lumière rougit, les ombres s'allongent à nouveau.","Le Soleil s'approche de l'horizon. La nuit n'est plus loin.","Dernières heures de chaleur. Le ciel vire à l'ocre sombre."] },
+    ],
+    nuit: [
+      { key:'nuit_profonde',   minF:0,   maxF:0.2, season:'nuit', name:'La Nuit Profonde',
+        descs:["Obscurité absolue. Les étoiles sont la seule source de lumière.","Pas un photon du Soleil. Seul le cosmos lointain éclaire.","Le froid s'installe rapidement. La nuit vient de tomber."] },
+      { key:'nuit_stable',     minF:0.2, maxF:0.8, season:'nuit', name:'La Nuit Stable',
+        descs:["Un tapis d'étoiles sans limites. Rien d'autre.","Le silence et le froid règnent. La Voie Lactée est nette.","Nuit profonde et stable. Le froid atteint son minimum.","Des milliers d'étoiles, immobiles. Pas le moindre frémissement.","La nuit est à son apogée. Le temps semble suspendu."] },
+      { key:'nuit_finissante', minF:0.8, maxF:1.0, season:'nuit', name:'La Nuit Finissante',
+        descs:["Une lueur rasante pointe à l'horizon. L'aube approche.","Les étoiles pâlissent à l'est. Le Soleil n'est plus loin.","La nuit touche à sa fin. Quelques heures encore."] },
+    ]
+  };
+
+  function svgNuit() {
+    return '<svg width="44" height="44" viewBox="0 0 46 46" fill="none">'
+      +'<circle cx="23" cy="23" r="18" fill="#1a1d2e" stroke="rgba(120,110,190,0.25)" stroke-width="0.75"/>'
+      +'<circle cx="23" cy="23" r="13" fill="none" stroke="rgba(120,110,190,0.12)" stroke-width="0.5"/>'
+      +'<text x="23" y="28" text-anchor="middle" font-size="17" fill="rgba(160,155,210,0.85)" font-family="Georgia,serif">✦</text>'
+      +'<text x="11" y="16" text-anchor="middle" font-size="7" fill="rgba(160,155,210,0.35)" font-family="Georgia,serif">✧</text>'
+      +'<text x="36" y="32" text-anchor="middle" font-size="5" fill="rgba(160,155,210,0.25)" font-family="Georgia,serif">✦</text>'
+      +'<text x="33" y="13" text-anchor="middle" font-size="6" fill="rgba(160,155,210,0.2)" font-family="Georgia,serif">✧</text>'
+      +'</svg>';
+  }
+
+  function svgJour() {
+    return '<svg width="44" height="44" viewBox="0 0 46 46" fill="none">'
+      +'<line x1="23" y1="2" x2="23" y2="8" stroke="rgba(190,130,70,0.3)" stroke-width="1"/>'
+      +'<line x1="23" y1="38" x2="23" y2="44" stroke="rgba(190,130,70,0.3)" stroke-width="1"/>'
+      +'<line x1="2" y1="23" x2="8" y2="23" stroke="rgba(190,130,70,0.3)" stroke-width="1"/>'
+      +'<line x1="38" y1="23" x2="44" y2="23" stroke="rgba(190,130,70,0.3)" stroke-width="1"/>'
+      +'<line x1="8.5" y1="8.5" x2="12.7" y2="12.7" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>'
+      +'<line x1="33.3" y1="33.3" x2="37.5" y2="37.5" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>'
+      +'<line x1="37.5" y1="8.5" x2="33.3" y2="12.7" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>'
+      +'<line x1="12.7" y1="33.3" x2="8.5" y2="37.5" stroke="rgba(190,130,70,0.18)" stroke-width="1"/>'
+      +'<circle cx="23" cy="23" r="11" fill="#1e1810" stroke="rgba(190,130,70,0.35)" stroke-width="0.75"/>'
+      +'<circle cx="23" cy="23" r="7" fill="rgba(190,130,70,0.1)" stroke="rgba(190,130,70,0.22)" stroke-width="0.5"/>'
+      +'<circle cx="23" cy="23" r="3" fill="rgba(190,130,70,0.45)"/>'
+      +'</svg>';
+  }
+
+  function getStepInfo(hp) {
+    var isJour = hp < 0.5;
+    var season = isJour ? 'jour' : 'nuit';
+    var fracInSeason = isJour ? hp / 0.5 : (hp - 0.5) / 0.5;
+    var steps = STEPS[season];
+    var step = steps[steps.length-1];
+    for (var i = 0; i < steps.length; i++) {
+      if (fracInSeason >= steps[i].minF && fracInSeason < steps[i].maxF) { step = steps[i]; break; }
+    }
+    var stepRange    = step.maxF - step.minF;
+    var fracInStep   = Math.min((fracInSeason - step.minF) / stepRange, 0.9999);
+    var descIdx      = Math.min(Math.floor(fracInStep * step.descs.length), step.descs.length-1);
+    var daysRemaining = (1 - fracInStep) * stepRange * (SYNODIC / 2);
+    var stepIdx = steps.indexOf(step);
+    var nextStep = stepIdx < steps.length-1 ? steps[stepIdx+1] : STEPS[season === 'jour' ? 'nuit' : 'jour'][0];
+    return { step: step, descIdx: descIdx, daysRemaining: daysRemaining, nextStep: nextStep, globalPct: Math.round(hp * 100) };
+  }
+
+  function render() {
+    var now  = new Date();
+    var hp   = hiddenPhase(moonPhase(now));
+    var info = getStepInfo(hp);
+    var step = info.step, season = step.season;
+
+    var glowColors = { nuit: 'rgba(110,95,200,0.13)', jour: 'rgba(190,110,50,0.12)' };
+    document.getElementById('lune-glow').style.background =
+      'radial-gradient(circle, ' + glowColors[season] + ' 0%, transparent 68%)';
+
+    var badge = document.getElementById('lune-badge');
+    if (season === 'nuit') {
+      badge.style.cssText = 'display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(100,90,160,0.2);border:1px solid rgba(130,120,200,0.2);color:#a099d0;';
+      badge.innerHTML = '<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#a099d0" stroke-width="1"/><circle cx="5" cy="5" r="1.5" fill="#a099d0"/></svg> La Nuit';
+    } else {
+      badge.style.cssText = 'display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(160,80,40,0.2);border:1px solid rgba(190,110,60,0.2);color:#c49070;';
+      badge.innerHTML = '<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="#c49070"/><line x1="5" y1="0" x2="5" y2="2.5" stroke="#c49070" stroke-width="1"/><line x1="5" y1="7.5" x2="5" y2="10" stroke="#c49070" stroke-width="1"/><line x1="0" y1="5" x2="2.5" y2="5" stroke="#c49070" stroke-width="1"/><line x1="7.5" y1="5" x2="10" y2="5" stroke="#c49070" stroke-width="1"/></svg> Le Grand Jour';
+    }
+
+    document.getElementById('lune-icon').innerHTML = season === 'nuit' ? svgNuit() : svgJour();
+    document.getElementById('lune-step-name').textContent = step.name;
+    document.getElementById('lune-step-desc').textContent = step.descs[info.descIdx];
+
+    var fill = document.getElementById('lune-fill');
+    fill.style.width = info.globalPct + '%';
+    fill.style.background = season === 'nuit'
+      ? 'linear-gradient(90deg,#3a3060,#7a6fd0)'
+      : 'linear-gradient(90deg,#5a2e10,#c47830)';
+    document.getElementById('lune-pct').textContent = info.globalPct + ' %';
+
+    var glyphMap = { aube:'☀', jour_plein:'☀', declin:'☀', nuit_profonde:'☾', nuit_stable:'✦', nuit_finissante:'☾' };
+    var ng = document.getElementById('lune-next-glyph');
+    ng.textContent = glyphMap[info.nextStep.key] || '·';
+    ng.style.color = season === 'nuit' ? 'rgba(160,155,210,0.65)' : 'rgba(190,130,70,0.65)';
+    document.getElementById('lune-next-name').textContent = info.nextStep.name;
+    var d = Math.floor(info.daysRemaining), h = Math.round((info.daysRemaining - d) * 24);
+    document.getElementById('lune-next-days').textContent = d > 0 ? 'dans ' + d + 'j ' + h + 'h' : 'dans ' + h + 'h';
+
+    var shown = new Date(now);
+    shown.setFullYear(shown.getFullYear() - YEAR_OFFSET);
+    var jours = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+    var mois  = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+    document.getElementById('lune-date').textContent =
+      jours[shown.getDay()] + ' ' + shown.getDate() + ' ' + mois[shown.getMonth()] + ' ' + shown.getFullYear();
+  }
+
+  render();
+  setInterval(render, 30 * 60 * 1000);
+})();
+</script>
+</body>
+</html>

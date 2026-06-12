@@ -426,10 +426,7 @@
       width: 100% !important;
       max-width: none !important;
       position: relative !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
-      scrollbar-width: thin !important;
-      scrollbar-color: rgba(160,170,200,0.12) transparent !important;
+      overflow: hidden !important;
       font-family: 'Inter', sans-serif !important;
       box-sizing: border-box !important;
       display: flex !important;
@@ -441,8 +438,8 @@
       pointer-events: none; border-radius: 50%;
     }
     #lune-header {
-      font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(160,170,200,0.4); margin-bottom: 12px;
+      font-size: 9px; letter-spacing: 0.07em;
+      color: rgba(160,170,200,0.35); margin-bottom: 10px;
     }
     #lune-badge {
       display: inline-flex; align-items: center; gap: 6px;
@@ -462,10 +459,8 @@
       letter-spacing: 0.02em; margin-bottom: 6px;
     }
     #lune-step-desc {
-      font-size: 11px; color: rgba(180,185,210,0.5); line-height: 1.55;
-      max-height: 60px; overflow-y: auto;
-      scrollbar-width: thin; scrollbar-color: rgba(160,170,200,0.25) transparent;
-      padding-right: 4px;
+      font-size: 11px; color: rgba(180,185,210,0.5); line-height: 1.5;
+      max-height: 44px; overflow: hidden;
     }
     #lune-sep {
       height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 11px;
@@ -502,12 +497,12 @@
       border-top: 1px solid rgba(255,255,255,0.05); padding-top: 9px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    #lune-date  { font-size: 9px; color: rgba(160,170,200,0.2); letter-spacing: 0.07em; }
     #lune-link  {
       font-size: 9px; color: rgba(160,170,200,0.35); text-decoration: none;
-      letter-spacing: 0.04em; border-bottom: 1px solid rgba(160,170,200,0.15);
-      padding-bottom: 1px;
+      letter-spacing: 0.04em; white-space: nowrap;
     }
+    .lune-fill-nuit { background: linear-gradient(90deg,#3a3060,#7a6fd0) !important; }
+    .lune-fill-jour { background: linear-gradient(90deg,#5a2e10,#c47830) !important; }
   `;
 
   var styleEl = document.createElement('style');
@@ -547,7 +542,6 @@
       </span>
     </div>
     <div id="lune-footer">
-      <span id="lune-date"></span>
       <a id="lune-link" href="LIEN_PAGE_EXPLICATIVE">Comprendre les cycles ↗</a>
     </div>
   `;
@@ -660,9 +654,7 @@
 
     var fill = document.getElementById('lune-fill');
     fill.style.width = info.globalPct + '%';
-    fill.style.background = season === 'nuit'
-      ? 'linear-gradient(90deg,#3a3060,#7a6fd0)'
-      : 'linear-gradient(90deg,#5a2e10,#c47830)';
+    fill.className = 'lune-fill-' + season;
     document.getElementById('lune-pct').textContent = info.globalPct + ' %';
 
     var glyphMap = { aube:'☀', jour_plein:'☀', declin:'☀', nuit_profonde:'☾', nuit_stable:'✦', nuit_finissante:'☾' };
@@ -677,7 +669,7 @@
     shown.setFullYear(shown.getFullYear() - YEAR_OFFSET);
     var jours = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
     var mois  = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-    document.getElementById('lune-date').textContent =
+    document.getElementById('lune-header').textContent =
       jours[shown.getDay()] + ' ' + shown.getDate() + ' ' + mois[shown.getMonth()] + ' ' + shown.getFullYear();
   }
 

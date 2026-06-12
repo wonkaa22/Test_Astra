@@ -261,6 +261,13 @@
   /* ═══════════════════════════════════════
      GESTION
      ═══════════════════════════════════════ */
+  /* Desktop : image sous les boutons, pleine largeur */
+  .gestion-mid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gestion-btns { display: flex; flex-direction: column; gap: 8px; }
   .gestion-img {
     width: 100%;
     aspect-ratio: 4/3;
@@ -274,6 +281,7 @@
     font-size: 11px;
     font-style: italic;
     font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
   }
 
   /* ═══════════════════════════════════════
@@ -283,7 +291,9 @@
     .forum-width { width: 100%; }
     .admin-lower { grid-template-columns: 1fr; }
     .guidebook-blob { width: 50%; right: -16px; }
-    .gestion-img { aspect-ratio: 3/2; }
+    /* Gestion tablette : image à gauche des boutons, petite comme personnages */
+    .gestion-mid { flex-direction: row; align-items: flex-start; }
+    .gestion-img { width: 130px; aspect-ratio: auto; height: auto; align-self: stretch; }
   }
 
   @media (max-width: 599px) {
@@ -296,9 +306,11 @@
     .guidebook-link { font-size: 18px; }
     .guidebook-blob { width: 44%; right: -10px; top: -8px; bottom: -14px; }
     .btn-grid-2 { grid-template-columns: 1fr; }
-    .personnages-top { flex-direction: column; }
-    .personnages-img { display: none; }
-    .gestion-img { aspect-ratio: 2/1; }
+    /* Personnages : image réduite, même hauteur que les boutons */
+    .personnages-img { width: 80px; height: auto; align-self: stretch; }
+    /* Gestion mobile : image redevient pleine largeur, aplatie */
+    .gestion-mid { flex-direction: column; }
+    .gestion-img { width: 100%; aspect-ratio: 2/1; height: auto; }
   }
 </style>
 </head>
@@ -363,11 +375,15 @@
         <!-- Colonne droite — Gestion -->
         <div class="sub-block">
           <div class="sub-title">Gestion</div>
-          <a href="#" class="forum-btn">Partenariats</a>
-          <a href="#" class="forum-btn">Questions</a>
-          <a href="#" class="forum-btn">Actualités</a>
+          <div class="gestion-mid">
+            <div class="gestion-img">image décorative</div>
+            <div class="gestion-btns">
+              <a href="#" class="forum-btn">Partenariats</a>
+              <a href="#" class="forum-btn">Questions</a>
+              <a href="#" class="forum-btn">Actualités</a>
+            </div>
+          </div>
           <div class="last-msg">Dernier message posté dans ce forum</div>
-          <div class="gestion-img">image décorative</div>
         </div>
 
       </div><!-- /admin-lower -->

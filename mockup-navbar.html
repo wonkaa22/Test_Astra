@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mockup Navbar — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f0ece4;
+    font-family: 'Inter', sans-serif;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+  .label { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .forum-width { width: 1050px; max-width: 100%; }
+
+  /* ── THÈME SOMBRE ── */
+  .navbar-dark {
+    background: #11151D;
+    border-radius: 14px 14px 24px 24px;
+  }
+  .navbar-dark .moon-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.85); font-size: 18px; cursor: pointer; flex-shrink: 0;
+  }
+  .navbar-dark .pill {
+    background: #1a2235; border-radius: 999px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 20px 6px 6px; height: 56px;
+  }
+  .navbar-dark .btn-plus {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #7F5056;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: #fff; flex-shrink: 0; cursor: pointer;
+  }
+  .navbar-dark .av-slot {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #2d3a52; border: 2px solid #374158;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: rgba(255,255,255,0.4);
+  }
+  .navbar-dark .nav-link {
+    padding: 7px 13px; border-radius: 20px;
+    border: 0.5px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.85); font-size: 12.5px; cursor: pointer; white-space: nowrap;
+  }
+  .navbar-dark .nav-link:hover { background: rgba(255,255,255,0.12); }
+  .navbar-dark .notif-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: #D76C58; color: #fff; font-size: 9px; font-weight: 500;
+    min-width: 17px; height: 17px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; border: 2px solid #11151D;
+  }
+
+  /* ── THÈME CLAIR ── */
+  .navbar-light {
+    background: #D4A373;
+    border-radius: 14px 14px 24px 24px;
+  }
+  .navbar-light .moon-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid rgba(100,60,20,0.25);
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: #5a3a18; font-size: 18px; cursor: pointer; flex-shrink: 0;
+  }
+  .navbar-light .moon-btn:hover { background: rgba(255,255,255,0.38); }
+  .navbar-light .pill {
+    background: rgba(255,255,255,0.28); border-radius: 999px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 20px 6px 6px; height: 56px;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+  .navbar-light .btn-plus {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #7F5056;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: #fff; flex-shrink: 0; cursor: pointer;
+  }
+  .navbar-light .av-slot {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.4); border: 2px solid rgba(255,255,255,0.6);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #7a5030;
+  }
+  .navbar-light .nav-link {
+    padding: 7px 13px; border-radius: 20px;
+    border: 0.5px solid rgba(100,60,20,0.2);
+    background: rgba(255,255,255,0.28);
+    color: #3d2008; font-size: 12.5px; cursor: pointer; white-space: nowrap;
+  }
+  .navbar-light .nav-link:hover { background: rgba(255,255,255,0.45); }
+  .navbar-light .notif-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: #7F5056; color: #fff; font-size: 9px; font-weight: 500;
+    min-width: 17px; height: 17px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; border: 2px solid #D4A373;
+  }
+
+  /* commun */
+  .navbar-inner { display: flex; align-items: center; gap: 16px; padding: 12px 28px; height: 76px; }
+  .spacer { flex: 1; }
+  .nav-links { display: flex; align-items: center; gap: 7px; }
+  .notif-wrap { position: relative; display: inline-flex; }
+</style>
+</head>
+<body>
+
+<!-- SOMBRE visiteur -->
+<div class="forum-width">
+  <div class="label">Sombre — visiteur</div>
+  <div class="navbar-dark">
+    <div class="navbar-inner">
+      <div class="moon-btn">☽</div>
+      <div class="pill">
+        <div class="btn-plus">+</div>
+        <div class="av-slot">AV</div>
+        <div class="av-slot" style="opacity:0.55;">AV</div>
+        <div class="av-slot" style="opacity:0.28;">AV</div>
+      </div>
+      <div class="spacer"></div>
+      <nav class="nav-links">
+        <span class="nav-link">Accueil</span>
+        <span class="nav-link">Recherche</span>
+        <span class="nav-link">Membres</span>
+        <span class="nav-link">Inscription</span>
+        <span class="nav-link">Connexion</span>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- SOMBRE connecté -->
+<div class="forum-width">
+  <div class="label">Sombre — connecté (3 notifications)</div>
+  <div class="navbar-dark">
+    <div class="navbar-inner">
+      <div class="moon-btn">☽</div>
+      <div class="pill">
+        <div class="btn-plus">+</div>
+        <div class="av-slot" style="background:#374158; border-color:#4a5570;">AV</div>
+        <div class="av-slot" style="opacity:0.65;">AV</div>
+      </div>
+      <div class="spacer"></div>
+      <nav class="nav-links">
+        <span class="nav-link">Accueil</span>
+        <span class="nav-link">Recherche</span>
+        <span class="nav-link">Membres</span>
+        <div class="notif-wrap">
+          <span class="nav-link">Notifications</span>
+          <span class="notif-badge">3</span>
+        </div>
+        <span class="nav-link">Messagerie</span>
+        <span class="nav-link">Profil</span>
+        <span class="nav-link">Déconnexion</span>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- CLAIR visiteur -->
+<div class="forum-width">
+  <div class="label">Clair — visiteur</div>
+  <div class="navbar-light">
+    <div class="navbar-inner">
+      <div class="moon-btn">☀</div>
+      <div class="pill">
+        <div class="btn-plus">+</div>
+        <div class="av-slot">AV</div>
+        <div class="av-slot" style="opacity:0.55;">AV</div>
+        <div class="av-slot" style="opacity:0.28;">AV</div>
+      </div>
+      <div class="spacer"></div>
+      <nav class="nav-links">
+        <span class="nav-link">Accueil</span>
+        <span class="nav-link">Recherche</span>
+        <span class="nav-link">Membres</span>
+        <span class="nav-link">Inscription</span>
+        <span class="nav-link">Connexion</span>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- CLAIR connecté -->
+<div class="forum-width">
+  <div class="label">Clair — connecté (3 notifications)</div>
+  <div class="navbar-light">
+    <div class="navbar-inner">
+      <div class="moon-btn">☀</div>
+      <div class="pill">
+        <div class="btn-plus">+</div>
+        <div class="av-slot" style="background:rgba(255,255,255,0.5);">AV</div>
+        <div class="av-slot" style="opacity:0.65;">AV</div>
+      </div>
+      <div class="spacer"></div>
+      <nav class="nav-links">
+        <span class="nav-link">Accueil</span>
+        <span class="nav-link">Recherche</span>
+        <span class="nav-link">Membres</span>
+        <div class="notif-wrap">
+          <span class="nav-link">Notifications</span>
+          <span class="notif-badge">3</span>
+        </div>
+        <span class="nav-link">Messagerie</span>
+        <span class="nav-link">Profil</span>
+        <span class="nav-link">Déconnexion</span>
+      </nav>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

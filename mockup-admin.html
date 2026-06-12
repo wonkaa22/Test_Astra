@@ -225,7 +225,7 @@
   .personnages-top {
     display: flex;
     gap: 14px;
-    align-items: flex-start;
+    align-items: stretch;
   }
   .personnages-btns {
     flex: 1;
@@ -235,7 +235,7 @@
   }
   .personnages-img {
     width: 155px;
-    height: 128px;
+    height: auto;
     flex-shrink: 0;
     border-radius: 10px;
     background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
@@ -294,6 +294,7 @@
     /* Gestion tablette : image à gauche des boutons, petite comme personnages */
     .gestion-mid { flex-direction: row; align-items: flex-start; }
     .gestion-img { width: 130px; aspect-ratio: auto; height: auto; align-self: stretch; }
+    .gestion-btns { flex: 1; }
   }
 
   @media (max-width: 599px) {
@@ -311,6 +312,7 @@
     /* Gestion mobile : image redevient pleine largeur, aplatie */
     .gestion-mid { flex-direction: column; }
     .gestion-img { width: 100%; aspect-ratio: 2/1; height: auto; }
+    .gestion-btns { width: 100%; }
   }
 </style>
 </head>

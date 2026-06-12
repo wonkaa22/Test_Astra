@@ -31,6 +31,9 @@
   .welcome-text em { font-size: 22px; font-style: italic; color: #D4A373; display: block; }
   .welcome-text strong { font-size: 18px; font-weight: 500; color: rgba(255,255,255,0.7); display: block; margin-top: 2px; }
 
+  /* Groupe texte + image : flex-column, remplit l'espace restant */
+  .text-image-group { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
   /* Texte : remplit l'espace restant, scroll interne, angles doux normaux */
   .text-block {
     background: #0f1220;
@@ -41,7 +44,6 @@
     overflow: hidden;
     flex: 1;
     min-height: 0;
-    max-height: 350px;
   }
   .text-block-inner { height: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(212,163,115,0.2) transparent; padding-right: 6px; }
   .text-block-inner::-webkit-scrollbar { width: 3px; }
@@ -161,18 +163,19 @@
     <div class="col-left">
       <div class="welcome-text"><em>Bienvenue,</em><strong>Invité</strong></div>
 
-      <div class="text-block">
-        <div class="text-block-inner">
-          <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
-          <br>
-          <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
-          <br>
-          <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
+      <div class="text-image-group">
+        <div class="text-block">
+          <div class="text-block-inner">
+            <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
+            <br>
+            <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
+            <br>
+            <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
+          </div>
         </div>
+        <!-- Image petite, arrondie en BAS, collée directement sous le texte -->
+        <div class="left-image"><span class="left-image-label">image décorative</span></div>
       </div>
-
-      <!-- Image petite, arrondie en BAS, courbe concave en haut (U) -->
-      <div class="left-image"><span class="left-image-label">image décorative</span></div>
     </div>
 
     <div class="col-right">

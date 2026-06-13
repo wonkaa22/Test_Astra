@@ -133,18 +133,22 @@ img { display: block; max-width: 100%; }
   padding: 6px 10px;
 }
 
-/* Navbar — fond et séparateur */
+/* Navbar — flottante, arrondie, pas pleine largeur */
 #sel-navbar {
-  background: var(--surface-1);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
+  border-bottom: none;
+  padding: 12px 24px;
 }
 
-/* Navbar inner — pilule à gauche, liens à droite */
 .sel-navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 8px 16px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
 }
 
 /* Nav FA (GENERATED_NAV_BAR) re-stylée en pills */

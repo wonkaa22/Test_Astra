@@ -45,7 +45,6 @@
               <div class="lm-author lm-author-raw">{catrow.forumrow.USER_LAST_POST}</div>
             </div>
             <div class="lm-right">
-              <div class="lm-avatar-clip">{catrow.forumrow.AVATAR_LAST_POST}</div>
               <a class="lm-moon" href="{catrow.forumrow.U_LATEST_TOPIC}">&#9789;</a>
             </div>
           </div>
@@ -93,22 +92,36 @@
     });
   });
 
-  /* USER_LAST_POST = "date<br>lien_auteur+icone" — séparer date et auteur */
-  document.querySelectorAll('.lm-author-raw').forEach(function(el) {
-    var raw = el.innerHTML;
+  /* Traitement de chaque bloc last-msg */
+  document.querySelectorAll('.last-msg').forEach(function(lm) {
+    var authorRaw = lm.querySelector('.lm-author-raw');
+    if (!authorRaw) return;
+    var raw = authorRaw.innerHTML;
     var brIdx = raw.toLowerCase().indexOf('<br');
     var dateHtml = brIdx !== -1 ? raw.substring(0, brIdx) : '';
     var authorHtml = brIdx !== -1 ? raw.substring(raw.indexOf('>', brIdx) + 1) : raw;
-    /* supprimer images et spans (icone fleche FA) dans la partie auteur */
+
+    /* extraire le lien du dernier post depuis last-post-icon avant nettoyage */
     var tmp = document.createElement('div');
     tmp.innerHTML = authorHtml;
-    var junk = tmp.querySelectorAll('img, span');
+    var postIcon = tmp.querySelector('a.last-post-icon, a[class*="post-icon"]');
+    var postUrl = postIcon ? postIcon.href : '';
+
+    /* supprimer icones et spans */
+    var junk = tmp.querySelectorAll('img, span, a.last-post-icon, a[class*="post-icon"]');
     for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
-    el.innerHTML = tmp.innerHTML;
-    el.className = 'lm-author';
-    /* injecter la date dans le span lm-time du même bloc */
-    var timeEl = el.closest('.lm-body') ? el.closest('.lm-body').querySelector('.lm-time') : null;
+    authorRaw.innerHTML = tmp.innerHTML.trim();
+    authorRaw.className = 'lm-author';
+
+    /* injecter la date */
+    var timeEl = lm.querySelector('.lm-time');
     if (timeEl && dateHtml) { timeEl.textContent = dateHtml.replace(/<[^>]+>/g, '').trim(); }
+
+    /* injecter l'url du dernier post sur la lune */
+    if (postUrl) {
+      var moon = lm.querySelector('.lm-moon');
+      if (moon) { moon.href = postUrl; }
+    }
   });
 })();
 //]]>

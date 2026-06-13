@@ -1553,7 +1553,7 @@ button.switcheroo__form-button {
 /* ───────────────────────────────────────────────────────────────
    11. ENCADRÉ D'ACCUEIL
    ─────────────────────────────────────────────────────────────── */
-.sel-accueil-wrap { display: flex; flex-direction: column; gap: 16px; padding-bottom: 28px; }
+.sel-accueil-wrap { display: flex; flex-direction: column; gap: 16px; padding-bottom: 6px; }
 
 /* Bannière */
 .sel-banner {
@@ -1762,7 +1762,7 @@ button.switcheroo__form-button {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 10px 0;
+  padding: 4px 0 24px;
 }
 
 /* Groupe votes */

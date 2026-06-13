@@ -321,9 +321,9 @@ function selAdminTransform() {
     for (var si = 0; si < subAs.length; si++) {
       subs.push([subAs[si].textContent.trim(), subAs[si].href]);
     }
-    var lmEl = rows[ri].querySelector('.last-msg a');
-    var lm = lmEl ? [lmEl.textContent.trim(), lmEl.href] : null;
-    rowArr.push([nm, nEl.href, subs, lm]);
+    var lmDiv = rows[ri].querySelector('.last-msg');
+    var lm = (lmDiv && lmDiv.textContent.trim()) ? lmDiv.innerHTML : null;
+    rowArr.push([nm, nEl.href, subs, lm]); // [name, url, sublinks[], lastMsgHTML]
   }
   function findSec(nm) {
     for (var fi = 0; fi < rowArr.length; fi++) {
@@ -341,7 +341,7 @@ function selAdminTransform() {
   }
   function mklm(sec) {
     if (!sec || !sec[3]) return '';
-    return '<div class="adm-last-msg"><a href="' + sec[3][1] + '">' + sec[3][0] + '</a></div>';
+    return '<div class="adm-last-msg">' + sec[3] + '</div>';
   }
   var p = findSec('Personnages');
   var v = findSec('Vie sur la Lune');

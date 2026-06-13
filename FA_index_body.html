@@ -272,11 +272,10 @@ function selIsUI(t) {
 }
 function selWelcomeRender() {
   if (selDone) return;
-  selDone = true;
   var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
   var nameEl = document.getElementById('sel-welcome-name');
   var guestEl = document.getElementById('sel-guest-name');
-  if (!isLoggedIn) return;
+  if (!isLoggedIn) { selDone = true; return; }
 
   if (guestEl) guestEl.style.display = 'none';
 
@@ -301,7 +300,7 @@ function selWelcomeRender() {
       }
     } catch(ex) { uname = ''; }
   }
-  if (uname && nameEl) nameEl.textContent = uname;
+  if (uname && nameEl) { nameEl.textContent = uname; selDone = true; }
 }
 function selFormatDates() {
   var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];

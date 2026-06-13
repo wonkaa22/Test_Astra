@@ -267,8 +267,15 @@
 
 <script type="text/javascript">
 //<![CDATA[
-var SEL_GUEST_NAMES = {'anonymous':1,'visiteur':1,'visitor':1,'guest':1,'invité':1,'invite':1};
-function selIsGuest(u) { return !u || SEL_GUEST_NAMES[u.toLowerCase().trim()]; }
+var SEL_GUEST_LIST = ['anonymous','visiteur','visitor','guest','invite'];
+function selIsGuest(u) {
+  if (!u) return true;
+  var l = u.toLowerCase().trim();
+  for (var i = 0; i < SEL_GUEST_LIST.length; i++) {
+    if (l.indexOf(SEL_GUEST_LIST[i]) === 0) return true;
+  }
+  return false;
+}
 function selGetUname() {
   var nameEl = document.getElementById('sel-welcome-name');
   var u = nameEl ? nameEl.textContent.trim() : '';

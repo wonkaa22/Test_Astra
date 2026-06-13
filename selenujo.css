@@ -1588,7 +1588,7 @@ button.switcheroo__form-button {
 }
 
 /* ── Colonne gauche ── */
-.sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; }
+.sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; align-self: stretch; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
 .sel-welcome-text em     { font-size: 22px; font-style: italic; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
@@ -1619,7 +1619,7 @@ button.switcheroo__form-button {
 .sel-text-block-inner p { font-size: 13.5px; color: var(--text-mid); line-height: 1.8; font-family: var(--font-serif); font-style: italic; }
 
 .sel-left-image {
-  height: 80px;
+  height: 90px;
   border-radius: 0 0 16px 16px;
   background: linear-gradient(160deg, #2d1a28 0%, var(--surface-4) 100%);
   border: 1px solid var(--border);
@@ -1633,6 +1633,18 @@ button.switcheroo__form-button {
   font-family: var(--font-serif);
   flex-shrink: 0;
 }
+
+.sel-avatar-wrap { display: flex; align-items: center; justify-content: center; }
+.sel-avatar-wrap img {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold-faint);
+  box-shadow: 0 0 12px rgba(212,163,115,0.18);
+  display: block;
+}
+.sel-guest-label { font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--text-ghost); }
 
 /* ── Colonne droite ── */
 .sel-col-right {

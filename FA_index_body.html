@@ -302,9 +302,6 @@ function selWelcomeRender() {
     } catch(ex) { uname = ''; }
   }
   if (uname && nameEl) nameEl.textContent = uname;
-
-  // Formate les dates des derniers messages
-  selFormatDates();
 }
 function selFormatDates() {
   var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
@@ -338,8 +335,13 @@ function selFormatDates() {
     if (out) els[i].textContent = out;
   }
 }
-window.onload = selWelcomeRender;
-setTimeout(selWelcomeRender, 1500);
+function selRunAll() {
+  selWelcomeRender();
+  selFormatDates();
+}
+window.onload = selRunAll;
+setTimeout(selRunAll, 800);
+setTimeout(selFormatDates, 2000);
 //]]>
 </script>
 

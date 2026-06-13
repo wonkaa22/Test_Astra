@@ -267,13 +267,15 @@
 
 <script type="text/javascript">
 //<![CDATA[
+var SEL_GUEST_NAMES = {'anonymous':1,'visiteur':1,'visitor':1,'guest':1,'invité':1,'invite':1};
+function selIsGuest(u) { return !u || SEL_GUEST_NAMES[u.toLowerCase().trim()]; }
 function selGetUname() {
   var nameEl = document.getElementById('sel-welcome-name');
   var u = nameEl ? nameEl.textContent.trim() : '';
-  if (u) return u;
+  if (u && !selIsGuest(u)) return u;
   var sp = document.getElementById('sel-session-username');
-  if (sp) { u = sp.textContent.trim(); if (u) return u; }
-  try { if (typeof _userdata !== 'undefined' && _userdata['username']) return String(_userdata['username']); } catch(ex) { return ''; }
+  if (sp) { u = sp.textContent.trim(); if (u && !selIsGuest(u)) return u; }
+  try { if (typeof _userdata !== 'undefined' && _userdata['username']) { u = String(_userdata['username']); if (!selIsGuest(u)) return u; } } catch(ex) { return ''; }
   return '';
 }
 function selGetAvatar() {
@@ -306,26 +308,23 @@ function selWelcomeRender() {
       }
     }
   }
-  if (uname && nameEl) nameEl.textContent = uname;
+  if (uname && nameEl && isLoggedIn) nameEl.textContent = uname;
 
   if (!isLoggedIn) return;
   if (guestLb) guestLb.style.display = 'none';
   if (!zone) return;
 
   var avatarSrc = selGetAvatar();
-  var initial = (uname || '?').charAt(0).toUpperCase();
-  var wrap = document.createElement('div');
-  wrap.className = 'sel-avatar-wrap';
   if (avatarSrc) {
+    var wrap = document.createElement('div');
+    wrap.className = 'sel-avatar-wrap';
     var img = document.createElement('img');
     img.src = avatarSrc;
     img.alt = '';
-    img.onerror = function() { wrap.innerHTML = '<div class="sel-avatar-initial">' + initial + '</div>'; };
     wrap.appendChild(img);
-  } else {
-    wrap.innerHTML = '<div class="sel-avatar-initial">' + initial + '</div>';
+    zone.appendChild(wrap);
   }
-  zone.appendChild(wrap);
+  // Pas d'avatar : le fond gradient de .sel-left-image s'affiche naturellement
 }
 
 /* Lance au chargement complet (Switcheroo est initialisé à ce stade) */

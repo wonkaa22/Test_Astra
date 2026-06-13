@@ -173,8 +173,13 @@ img { display: block; max-width: 100%; }
 #sel-fa-nav > a[href="/"] { display: inline-block; }
 
 /* Notifications — visible seulement si connecté (= logout présent dans la nav) */
-#sel-notif-li { display: none; }
+#sel-notif-li { display: none; order: 9; }
 #sel-fa-nav:has(a[href*="logout"]) #sel-notif-li { display: inline; }
+
+/* Ordre : Notifications avant Profil et Déconnexion */
+#sel-fa-nav li:has(a[href*="profile"]) { order: 10; }
+#sel-fa-nav li:has(a[href*="logout"])  { order: 11; }
+#sel-fa-nav li:has(a[href*="admin"])   { order: 12; }
 
 /* Liens utiles — révélés par href */
 #sel-fa-nav li:has(a[href*="search"]),

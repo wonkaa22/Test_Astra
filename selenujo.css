@@ -957,8 +957,6 @@ img { display: block; max-width: 100%; }
   border: 1px solid rgba(255,255,255,0.045);
   min-height: 40px;
   overflow: hidden;
-  max-width: 75%;
-  margin-left: auto;
 }
 .lm-body {
   flex: 1;

@@ -41,12 +41,12 @@
           <div class="last-msg">
             <div class="lm-body">
               <a class="lm-title" href="{catrow.forumrow.U_LATEST_TOPIC}">{catrow.forumrow.LATEST_TOPIC_NAME}</a>
-              <span class="lm-time">{catrow.forumrow.LAST_POST_TIME}</span>
-              <div class="lm-author">{catrow.forumrow.USER_LAST_POST}</div>
+              <span class="lm-time"></span>
+              <div class="lm-author lm-author-raw">{catrow.forumrow.USER_LAST_POST}</div>
             </div>
             <div class="lm-right">
               <div class="lm-avatar-clip">{catrow.forumrow.AVATAR_LAST_POST}</div>
-              <a class="lm-moon" href="{catrow.forumrow.U_LATEST_POST}">&#9789;</a>
+              <a class="lm-moon" href="{catrow.forumrow.U_LATEST_TOPIC}">&#9789;</a>
             </div>
           </div>
           <!-- END switch_topic_title -->
@@ -93,16 +93,22 @@
     });
   });
 
-  /* USER_LAST_POST = "date<br>lien_auteur_icone" — on garde seulement la partie auteur */
-  document.querySelectorAll('.lm-author').forEach(function(el) {
-    var parts = el.innerHTML.split('<br>');
-    var authorHtml = parts.length >= 2 ? parts[parts.length - 1] : parts[0];
-    /* supprimer images et spans (icone fleche FA) */
+  /* USER_LAST_POST = "date<br>lien_auteur+icone" — séparer date et auteur */
+  document.querySelectorAll('.lm-author-raw').forEach(function(el) {
+    var raw = el.innerHTML;
+    var brIdx = raw.toLowerCase().indexOf('<br');
+    var dateHtml = brIdx !== -1 ? raw.substring(0, brIdx) : '';
+    var authorHtml = brIdx !== -1 ? raw.substring(raw.indexOf('>', brIdx) + 1) : raw;
+    /* supprimer images et spans (icone fleche FA) dans la partie auteur */
     var tmp = document.createElement('div');
     tmp.innerHTML = authorHtml;
-    var imgs = tmp.querySelectorAll('img, span.icon, span.gen');
-    for (var i = 0; i < imgs.length; i++) { imgs[i].parentNode.removeChild(imgs[i]); }
+    var junk = tmp.querySelectorAll('img, span');
+    for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
     el.innerHTML = tmp.innerHTML;
+    el.className = 'lm-author';
+    /* injecter la date dans le span lm-time du même bloc */
+    var timeEl = el.closest('.lm-body') ? el.closest('.lm-body').querySelector('.lm-time') : null;
+    if (timeEl && dateHtml) { timeEl.textContent = dateHtml.replace(/<[^>]+>/g, '').trim(); }
   });
 })();
 //]]>

@@ -106,7 +106,15 @@
 
     <!-- Gauche : pilule thème + Switcheroo -->
     <div class="sel-nav-pill">
-      <button class="sel-theme-btn" id="selThemeBtn" type="button" aria-label="Changer de thème" onclick="var r=document.documentElement,k='sel-theme',isLight=r.classList.contains('light');r.classList[isLight?'remove':'add']('light');this.innerHTML=isLight?'&#127769;':'&#9728;&#65039;';localStorage.setItem(k,isLight?'dark':'light');">&#127769;</button>
+      <button class="sel-theme-btn" id="selThemeBtn" type="button" aria-label="Changer de thème" onclick="selToggle(this)">&#127769;</button>
+      <script type="text/javascript">
+      function selToggle(btn) {
+        var r = document.documentElement;
+        var light = r.classList.contains('light');
+        if (light) { r.classList.remove('light'); btn.innerHTML = '&#127769;'; localStorage.setItem('sel-theme','dark'); }
+        else        { r.classList.add('light');    btn.innerHTML = '&#9728;';   localStorage.setItem('sel-theme','light'); }
+      }
+      </script>
       <div class="sel-nav-sep" id="selNavSep" style="display:none;"></div>
       <nav id="switcheroo" class="switcheroo" direction="horizontal" position="static" style="display:none;"></nav>
     </div>

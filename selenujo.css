@@ -173,8 +173,8 @@ img { display: block; max-width: 100%; }
 #sel-fa-nav > a[href="/"] { display: inline-block; }
 
 /* Notifications — visible seulement si connecté (= logout présent dans la nav) */
-#sel-notif-link { display: none; }
-#sel-fa-nav:has(li a[href*="logout"]) > #sel-notif-link { display: inline-block; }
+#sel-notif-li { display: none; }
+#sel-fa-nav:has(a[href*="logout"]) #sel-notif-li { display: inline; }
 
 /* Liens utiles — révélés par href */
 #sel-fa-nav li:has(a[href*="search"]),

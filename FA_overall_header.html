@@ -65,7 +65,7 @@
     //<![CDATA[
     (function() {
       if (localStorage.getItem('sel-theme') === 'light') {
-        document.documentElement.className += ' light';
+        document.documentElement.classList.add('light');
       }
     })();
     //]]>
@@ -130,10 +130,10 @@
 
   function applyTheme(theme) {
     if (theme === 'light') {
-      root.className = (root.className + ' light').replace(/\s+/g, ' ').trim();
+      root.classList.add('light');
       btn.innerHTML = '&#9728;&#65039;';
     } else {
-      root.className = root.className.replace(/\blight\b/g, '').trim();
+      root.classList.remove('light');
       btn.innerHTML = '&#127769;';
     }
   }
@@ -141,7 +141,7 @@
   applyTheme(localStorage.getItem(KEY) || 'dark');
 
   btn.onclick = function() {
-    var next = root.className.indexOf('light') !== -1 ? 'dark' : 'light';
+    var next = root.classList.contains('light') ? 'dark' : 'light';
     localStorage.setItem(KEY, next);
     applyTheme(next);
   };

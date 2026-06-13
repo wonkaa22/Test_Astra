@@ -684,6 +684,132 @@ img { display: block; max-width: 100%; }
   .adm-gestion-img { width: 100%; aspect-ratio: 2/1; }
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   CATÉGORIE HORS RP — design custom
+   ─────────────────────────────────────────────────────────────── */
+.cat-block.is-horsrp .cat-content { padding: 20px; gap: 16px; }
+
+.hrp-top {
+  background: var(--surface-2);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+.hrp-top-img {
+  flex-shrink: 0;
+  width: 38%;
+  background: linear-gradient(135deg, #1e2745 0%, #2a3a58 45%, #1a2235 100%);
+  border-right: 1px solid var(--border);
+  min-height: 180px;
+}
+.hrp-mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 16px;
+}
+.hrp-mid-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+.hrp-buttons { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; width: 260px; }
+.hrp-cat-name {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--text-hi);
+  text-align: center;
+}
+.hrp-cat-name a { color: inherit; text-decoration: none; }
+.hrp-cat-name a:hover { color: var(--gold); }
+
+.hrp-lower { display: grid; grid-template-columns: 1fr 290px; gap: 16px; }
+
+.hrp-sub-block {
+  background: var(--surface-2);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hrp-sub-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--text-hi);
+  line-height: 1.1;
+}
+.hrp-sub-title a { color: inherit; text-decoration: none; }
+.hrp-sub-title a:hover { color: var(--gold); }
+
+.hrp-btn {
+  display: block;
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mid);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.hrp-btn:hover { background: var(--surface-4); border-color: var(--gold-faint); color: var(--gold); }
+
+.hrp-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.hrp-entraide-inner { display: flex; gap: 14px; align-items: stretch; flex: 1; }
+.hrp-entraide-left { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.hrp-entraide-img {
+  flex-shrink: 0;
+  width: 160px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
+  border: 1px solid var(--border);
+  min-height: 80px;
+}
+
+.hrp-last-msg {
+  margin-top: auto;
+  padding: 9px 14px;
+  background: rgba(255,255,255,0.025);
+  border-radius: 8px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-lo);
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.045);
+}
+.hrp-last-msg a { color: inherit; text-decoration: none; }
+.hrp-last-msg a:hover { color: var(--text-mid); }
+
+@media (max-width: 1049px) {
+  .hrp-lower { grid-template-columns: 1fr; }
+  .hrp-cat-name { font-size: 26px; }
+  .hrp-top-img { width: 35%; }
+}
+@media (max-width: 599px) {
+  .hrp-top { flex-direction: column; }
+  .hrp-top-img { width: 100%; min-height: 100px; border-right: none; border-bottom: 1px solid var(--border); }
+  .hrp-mid-top { flex-direction: column; align-items: flex-start; }
+  .hrp-buttons { width: 100%; }
+  .hrp-cat-name { font-size: 26px; text-align: left; }
+  .hrp-btn-grid2 { grid-template-columns: 1fr; }
+  .hrp-entraide-img { display: none; }
+}
+
 /* Ligne de forum */
 .forum-row {
   position: relative;

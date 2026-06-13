@@ -302,6 +302,81 @@ function selWelcomeRender() {
   }
   if (uname && nameEl) { nameEl.textContent = uname; selDone = true; }
 }
+function selHorsRpTransform() {
+  var blocks = document.querySelectorAll('.cat-block');
+  var hb = null;
+  for (var bi = 0; bi < blocks.length; bi++) {
+    var tt = blocks[bi].querySelector('.cat-title');
+    if (tt && tt.textContent.indexOf('Hors RP') !== -1) { hb = blocks[bi]; break; }
+  }
+  if (!hb || hb.classList.contains('is-horsrp')) return;
+  var rows = hb.querySelectorAll('.forum-row');
+  var rowArr = [];
+  for (var ri = 0; ri < rows.length; ri++) {
+    var nEl = rows[ri].querySelector('.forum-name');
+    if (!nEl) continue;
+    var nm = nEl.textContent.trim();
+    var subAs = rows[ri].querySelectorAll('.subforums a');
+    var subs = [];
+    for (var si = 0; si < subAs.length; si++) {
+      subs.push([subAs[si].textContent.trim(), subAs[si].href]);
+    }
+    var lmDiv = rows[ri].querySelector('.last-msg');
+    var lm = (lmDiv && lmDiv.textContent.trim()) ? lmDiv.innerHTML : null;
+    rowArr.push([nm, nEl.href, subs, lm]);
+  }
+  function findSec(nm) {
+    for (var fi = 0; fi < rowArr.length; fi++) {
+      if (rowArr[fi][0].indexOf(nm) !== -1) return rowArr[fi];
+    }
+    return null;
+  }
+  function btn(txt, href) { return '<a href="' + href + '" class="hrp-btn">' + txt + '</a>'; }
+  function mkbtns(sec) {
+    if (!sec) return '';
+    var bh = '';
+    var ls = sec[2];
+    for (var ki = 0; ki < ls.length; ki++) { bh += btn(ls[ki][0], ls[ki][1]); }
+    return bh;
+  }
+  function mklm(sec) {
+    if (!sec || !sec[3]) return '';
+    return '<div class="hrp-last-msg">' + sec[3] + '</div>';
+  }
+  var det = findSec('tente');
+  var ent = findSec('Entraide');
+  var arc = findSec('Archives');
+  var html =
+    '<div class="hrp-top">' +
+      '<div class="hrp-top-img"></div>' +
+      '<div class="hrp-mid">' +
+        '<div class="hrp-mid-top">' +
+          '<div class="hrp-buttons">' + mkbtns(det) + '</div>' +
+          '<div class="hrp-cat-name"><a href="' + (det ? det[1] : '#') + '">Détente</a></div>' +
+        '</div>' +
+        mklm(det) +
+      '</div>' +
+    '</div>' +
+    '<div class="hrp-lower">' +
+      '<div class="hrp-sub-block">' +
+        '<div class="hrp-sub-title"><a href="' + (ent ? ent[1] : '#') + '">Entraide et partage</a></div>' +
+        '<div class="hrp-entraide-inner">' +
+          '<div class="hrp-entraide-left">' +
+            '<div class="hrp-btn-grid2">' + mkbtns(ent) + '</div>' +
+            mklm(ent) +
+          '</div>' +
+          '<div class="hrp-entraide-img"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="hrp-sub-block">' +
+        '<div class="hrp-sub-title"><a href="' + (arc ? arc[1] : '#') + '">Archives</a></div>' +
+        mkbtns(arc) +
+        mklm(arc) +
+      '</div>' +
+    '</div>';
+  var content = hb.querySelector('.cat-content');
+  if (content) { content.innerHTML = html; hb.classList.add('is-horsrp'); }
+}
 function selAdminTransform() {
   var blocks = document.querySelectorAll('.cat-block');
   var ab = null;
@@ -423,6 +498,7 @@ function selRunAll() {
   selWelcomeRender();
   selFormatDates();
   selAdminTransform();
+  selHorsRpTransform();
 }
 window.onload = selRunAll;
 setTimeout(selRunAll, 800);
@@ -482,6 +558,12 @@ setTimeout(selFormatDates, 2000);
 <div class="forum-width" style="display:flex; flex-direction:column; gap:28px; padding:0 0 28px;">
   {BOARD_INDEX}
 </div>
+<script type="text/javascript">
+//<![CDATA[
+selAdminTransform();
+selHorsRpTransform();
+//]]>
+</script>
 
 <!-- Bloc "qui est en ligne" FA — masqué, remplacé par notre footer -->
 <!-- BEGIN disable_viewonline -->

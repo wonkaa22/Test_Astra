@@ -267,59 +267,81 @@
 
 <script type="text/javascript">
 //<![CDATA[
-(function() {
-  var zone = document.getElementById('sel-left-image-zone');
-  var nameEl = document.getElementById('sel-welcome-name');
-  var guestLabel = document.getElementById('sel-guest-label');
-
+function selWelcomeRender() {
+  var zone    = document.getElementById('sel-left-image-zone');
+  var nameEl  = document.getElementById('sel-welcome-name');
+  var guestLb = document.getElementById('sel-guest-label');
   var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
 
-  /* ── Username ── */
+  /* ── Username ──
+     Essaie dans l'ordre :
+     1) {USERNAME} remplacé par FA (textContent non vide et pas littéral)
+     2) _userdata.username (global FA PhpBB2)
+     3) Premier nœud texte non-vide dans #switcheroo (nom du compte actif) */
   var uname = nameEl ? nameEl.textContent.trim() : '';
-  if (!uname || uname === 'Visiteur' || uname === '{USERNAME}') {
-    // {USERNAME} n'a pas été remplacé par FA — on cherche dans les globals JS
-    if (typeof _userdata !== 'undefined') {
-      uname = _userdata['username'] || _userdata['user_name'] || uname;
-    }
-    if ((!uname || uname === 'Visiteur') && isLoggedIn) {
-      // Dernier recours : texte visible dans le Switcheroo (nom du compte actif)
-      var swName = document.querySelector('#switcheroo [class*="username"], #switcheroo [class*="name"]');
-      if (swName) uname = swName.textContent.trim();
+  if (!uname || uname === '{USERNAME}') {
+    uname = '';
+    // Source 2 : _userdata global
+    try {
+      if (typeof _userdata !== 'undefined') {
+        uname = String(_userdata['username'] || _userdata['user_name'] || '').trim();
+      }
+    } catch(e) {}
+    // Source 3 : texte dans Switcheroo (disponible après window.onload)
+    if (!uname && isLoggedIn) {
+      var sw = document.getElementById('switcheroo');
+      if (sw) {
+        var walker = document.createTreeWalker(sw, 4, null, false);
+        var node;
+        while ((node = walker.nextNode())) {
+          var t = node.nodeValue.trim();
+          if (t.length > 1) { uname = t; break; }
+        }
+      }
     }
     if (uname && nameEl) nameEl.textContent = uname;
   }
 
-  if (!isLoggedIn) return; // invité : garde le label CSS
+  if (!isLoggedIn) return; // invité : garde le label "Terrien·ne de passage"
 
   /* ── Avatar ── */
   var avatarSrc = '';
-  if (typeof _userdata !== 'undefined') {
-    avatarSrc = _userdata['user_avatar'] || _userdata['avatar'] || '';
-  }
-  // Fallback : première image dans le Switcheroo (avatar du compte actif)
+  try {
+    if (typeof _userdata !== 'undefined') {
+      avatarSrc = String(_userdata['user_avatar'] || _userdata['avatar'] || '').trim();
+    }
+  } catch(e) {}
   if (!avatarSrc) {
     var swImg = document.querySelector('#switcheroo img');
-    if (swImg && swImg.src) avatarSrc = swImg.src;
+    if (swImg) avatarSrc = swImg.src || swImg.getAttribute('src') || '';
   }
 
-  if (guestLabel) guestLabel.style.display = 'none';
+  if (guestLb) guestLb.style.display = 'none';
+  if (!zone) return;
 
   var wrap = document.createElement('div');
   wrap.className = 'sel-avatar-wrap';
+  var initial = (uname || '?').charAt(0).toUpperCase();
   if (avatarSrc) {
     var img = document.createElement('img');
     img.src = avatarSrc;
     img.alt = '';
     img.onerror = function() {
-      // si l'URL est invalide → monogramme
-      wrap.innerHTML = '<div class="sel-avatar-initial">' + (uname.charAt(0).toUpperCase() || '?') + '</div>';
+      wrap.innerHTML = '<div class="sel-avatar-initial">' + initial + '</div>';
     };
     wrap.appendChild(img);
   } else {
-    wrap.innerHTML = '<div class="sel-avatar-initial">' + (uname.charAt(0).toUpperCase() || '?') + '</div>';
+    wrap.innerHTML = '<div class="sel-avatar-initial">' + initial + '</div>';
   }
-  if (zone) zone.appendChild(wrap);
-})();
+  zone.appendChild(wrap);
+}
+
+/* Lance au chargement complet (Switcheroo est initialisé à ce stade) */
+if (window.addEventListener) {
+  window.addEventListener('load', selWelcomeRender, false);
+} else if (window.attachEvent) {
+  window.attachEvent('onload', selWelcomeRender);
+}
 //]]>
 </script>
 

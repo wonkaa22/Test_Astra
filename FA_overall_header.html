@@ -112,7 +112,10 @@
     </div>
 
     <!-- Droite : nav FA stylée directement en pills -->
-    <div id="sel-fa-nav">{GENERATED_NAV_BAR}</div>
+    <div id="sel-fa-nav">
+      {GENERATED_NAV_BAR}
+      <a id="sel-notif-link" href="/profile?mode=editprofile&amp;page_profil=notifications" style="display:none;">Notifications</a>
+    </div>
 
   </div>
 </div>
@@ -149,6 +152,7 @@
   if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
     document.getElementById('selNavSep').style.display = '';
     document.getElementById('switcheroo').style.display = '';
+    document.getElementById('sel-notif-link').style.display = '';
   }
 })();
 //]]>

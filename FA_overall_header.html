@@ -99,7 +99,7 @@
 {JAVASCRIPT}
 
 <!-- Barre de navigation FA — cachée, requise par Switcheroo -->
-<div style="display:none;">{GENERATED_NAV_BAR}</div>
+<div id="sel-hidden-nav" style="display:none;">{GENERATED_NAV_BAR}</div>
 
 <!-- ═══════════════════════════════════════
      NAVBAR SELENUJO
@@ -159,7 +159,15 @@
   };
 })();
 
-// Afficher Switcheroo uniquement si connecté
+// Récupérer le vrai lien logout (avec sid) depuis le nav FA caché
+(function() {
+  var hiddenNav = document.getElementById('sel-hidden-nav');
+  if (!hiddenNav) return;
+  var logoutLink = hiddenNav.querySelector('a[href*="logout"]');
+  if (!logoutLink) return;
+  var ourLogout = document.querySelector('a.sel-nav-link--accent[href*="logout"]');
+  if (ourLogout) ourLogout.href = logoutLink.href;
+})();
 (function() {
   if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
     document.getElementById('selNavSep').style.display = '';

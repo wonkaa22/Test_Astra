@@ -165,10 +165,14 @@ img { display: block; max-width: 100%; }
   padding: 0;
   margin: 0;
 }
-#sel-fa-nav li { display: contents; }
+/* Tout masquer par défaut — le JS révèle les liens souhaités */
+#sel-fa-nav li { display: none; }
+#sel-fa-nav li.sel-show { display: contents; }
 
-/* Masquer les icônes et séparateurs FA */
+/* Masquer icônes et séparateurs même dans les li visibles */
 #sel-fa-nav i,
+#sel-fa-nav ion-icon,
+#sel-fa-nav img.nav-icon,
 #sel-fa-nav .sep,
 #sel-fa-nav span.sep { display: none !important; }
 

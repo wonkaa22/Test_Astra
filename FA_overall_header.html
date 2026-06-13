@@ -153,13 +153,14 @@
 
   nav.querySelectorAll('a').forEach(function(a) {
     var text = a.textContent.trim().toLowerCase();
+    var li = a.closest('li');
+    console.log('[sel-nav]', text, li ? 'in-li' : 'direct');
     var ok = keep.some(function(k) { return text.indexOf(k) !== -1; });
     if (ok) {
-      var li = a.closest('li');
       if (li) {
-        li.classList.add('sel-show');   // lien dans un <li>
+        li.classList.add('sel-show');
       } else {
-        a.classList.add('sel-show');    // lien direct dans la nav (ex: Accueil)
+        a.classList.add('sel-show');
       }
     }
   });

@@ -167,7 +167,7 @@ img { display: block; max-width: 100%; }
 }
 /* Tout masquer par défaut — le JS révèle les liens souhaités */
 #sel-fa-nav li { display: none; }
-#sel-fa-nav li.sel-show { display: contents; }
+#sel-fa-nav li.sel-show { display: inline; }
 /* Accueil est un <a> direct (pas dans <li>) — masqué aussi */
 #sel-fa-nav > a { display: none; }
 #sel-fa-nav > a.sel-show { display: inline-block; }

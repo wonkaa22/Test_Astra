@@ -1762,7 +1762,7 @@ button.switcheroo__form-button {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 4px 0 24px;
+  padding: 10px 0 30px;
 }
 
 /* Groupe votes */

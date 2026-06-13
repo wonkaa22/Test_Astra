@@ -149,7 +149,8 @@
 
 
 (function() {
-  if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
+  var loggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+  if (loggedIn) {
     document.getElementById('selNavSep').style.display = '';
     document.getElementById('switcheroo').style.display = '';
     document.getElementById('sel-notif-link').style.display = '';

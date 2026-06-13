@@ -1581,7 +1581,7 @@ button.switcheroo__form-button {
   display: grid;
   grid-template-columns: 210px 1fr;
   gap: 16px;
-  min-height: 620px;
+  height: 620px;
 }
 
 /* ── Colonne gauche ── */

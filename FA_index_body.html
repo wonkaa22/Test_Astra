@@ -214,14 +214,14 @@
   function hiddenPhase(p) { return (p+0.5)%1; }
   var STEPS = {
     jour:[
-      {key:'aube',minF:0,maxF:0.2,season:'jour',name:"L'Aube",descs:["La premi&#232;re lueur rase l'horizon.","La lumi&#232;re arrive en oblique, froide.","Le sol commence &#224; se r&#233;chauffer."]},
-      {key:'jour_plein',minF:0.2,maxF:0.8,season:'jour',name:'Le Jour Plein',descs:["Le Soleil est haut. La chaleur est sans merci.","Lumi&#232;re directe, aveuglante.","Le r&#233;golite br&#251;le.","Midi lunaire.","La chaleur atteint son pic."]},
-      {key:'declin',minF:0.8,maxF:1.0,season:'jour',name:'Le D&#233;clin',descs:["La lumi&#232;re rougit, les ombres s'allongent.","Le Soleil s'approche de l'horizon.","Derni&#232;res heures de chaleur."]}
+      {key:'aube',minF:0,maxF:0.2,season:'jour',name:"L'Aube",descs:["La première lueur rase l'horizon.","La lumière arrive en oblique, froide.","Le sol commence à se réchauffer."]},
+      {key:'jour_plein',minF:0.2,maxF:0.8,season:'jour',name:'Le Jour Plein',descs:["Le Soleil est haut. La chaleur est sans merci.","Lumière directe, aveuglante.","Le régolite brûle.","Midi lunaire.","La chaleur atteint son pic."]},
+      {key:'declin',minF:0.8,maxF:1.0,season:'jour',name:'Le Déclin',descs:["La lumière rougit, les ombres s'allongent.","Le Soleil s'approche de l'horizon.","Dernières heures de chaleur."]}
     ],
     nuit:[
-      {key:'nuit_profonde',minF:0,maxF:0.2,season:'nuit',name:'La Nuit Profonde',descs:["Obscurit&#233; absolue. Les &#233;toiles seules &#233;clairent.","Pas un photon du Soleil.","Le froid s'installe rapidement."]},
-      {key:'nuit_stable',minF:0.2,maxF:0.8,season:'nuit',name:'La Nuit Stable',descs:["Un tapis d'&#233;toiles sans limites.","Le silence et le froid r&#232;gnent.","Nuit profonde et stable.","Des milliers d'&#233;toiles, immobiles.","La nuit est &#224; son apog&#233;e."]},
-      {key:'nuit_finissante',minF:0.8,maxF:1.0,season:'nuit',name:'La Nuit Finissante',descs:["Une lueur rasante pointe &#224; l'horizon.","Les &#233;toiles p&#226;lissent &#224; l'est.","La nuit touche &#224; sa fin."]}
+      {key:'nuit_profonde',minF:0,maxF:0.2,season:'nuit',name:'La Nuit Profonde',descs:["Obscurité absolue. Les étoiles seules éclairent.","Pas un photon du Soleil.","Le froid s'installe rapidement."]},
+      {key:'nuit_stable',minF:0.2,maxF:0.8,season:'nuit',name:'La Nuit Stable',descs:["Un tapis d'étoiles sans limites.","Le silence et le froid règnent.","Nuit profonde et stable.","Des milliers d'étoiles, immobiles.","La nuit est à son apogée."]},
+      {key:'nuit_finissante',minF:0.8,maxF:1.0,season:'nuit',name:'La Nuit Finissante',descs:["Une lueur rasante pointe à l'horizon.","Les étoiles pâlissent à l'est.","La nuit touche à sa fin."]}
     ]
   };
   function svgNuit(){return '<svg width="44" height="44" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="18" fill="#1a1d2e" stroke="rgba(120,110,190,0.25)" stroke-width="0.75"/><circle cx="23" cy="23" r="13" fill="none" stroke="rgba(120,110,190,0.12)" stroke-width="0.5"/><text x="23" y="28" text-anchor="middle" font-size="17" fill="rgba(160,155,210,0.85)" font-family="Georgia,serif">&#10022;</text><text x="11" y="16" text-anchor="middle" font-size="7" fill="rgba(160,155,210,0.35)" font-family="Georgia,serif">&#10023;</text><text x="36" y="32" text-anchor="middle" font-size="5" fill="rgba(160,155,210,0.25)" font-family="Georgia,serif">&#10022;</text></svg>';}
@@ -242,7 +242,7 @@
     if(season==='nuit'){badge.style.cssText='display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(100,90,160,0.2);border:1px solid rgba(130,120,200,0.2);color:#a099d0;';badge.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#a099d0" stroke-width="1"/><circle cx="5" cy="5" r="1.5" fill="#a099d0"/></svg> La Nuit';}
     else{badge.style.cssText='display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(160,80,40,0.2);border:1px solid rgba(190,110,60,0.2);color:#c49070;';badge.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="#c49070"/><line x1="5" y1="0" x2="5" y2="2.5" stroke="#c49070" stroke-width="1"/><line x1="5" y1="7.5" x2="5" y2="10" stroke="#c49070" stroke-width="1"/><line x1="0" y1="5" x2="2.5" y2="5" stroke="#c49070" stroke-width="1"/><line x1="7.5" y1="5" x2="10" y2="5" stroke="#c49070" stroke-width="1"/></svg> Le Grand Jour';}
     document.getElementById('lune-icon').innerHTML=season==='nuit'?svgNuit():svgJour();
-    document.getElementById('lune-step-name').textContent=step.name;
+    document.getElementById('lune-step-name').innerHTML=step.name;
     document.getElementById('lune-step-desc').innerHTML=step.descs[info.descIdx];
     var fill=document.getElementById('lune-fill');
     fill.style.width=info.globalPct+'%';fill.className='lune-fill-'+season;
@@ -251,11 +251,11 @@
     var ng=document.getElementById('lune-next-glyph');
     ng.innerHTML=glyphMap[info.nextStep.key]||'&#183;';
     ng.style.color=season==='nuit'?'rgba(160,155,210,0.65)':'rgba(190,130,70,0.65)';
-    document.getElementById('lune-next-name').textContent=info.nextStep.name;
+    document.getElementById('lune-next-name').innerHTML=info.nextStep.name;
     var d=Math.floor(info.daysRemaining),h=Math.round((info.daysRemaining-d)*24);
     document.getElementById('lune-next-days').textContent=d>0?'dans '+d+'j '+h+'h':'dans '+h+'h';
     var shown=new Date(now);shown.setFullYear(shown.getFullYear()-YEAR_OFFSET);
-    var jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],mois=['janvier','f&#233;vrier','mars','avril','mai','juin','juillet','ao&#251;t','septembre','octobre','novembre','d&#233;cembre'];
+    var jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
     document.getElementById('lune-header').innerHTML='&#x2B21; '+jours[shown.getDay()]+' '+shown.getDate()+' '+mois[shown.getMonth()]+' '+shown.getFullYear();
   }
   render();

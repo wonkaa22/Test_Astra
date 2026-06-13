@@ -37,21 +37,19 @@
         <div class="forum-right">
           <div class="forum-desc">{catrow.forumrow.FORUM_DESC}</div>
           <div class="subforums">{catrow.forumrow.LINKS}</div>
+          <!-- BEGIN switch_topic_title -->
           <div class="last-msg">
-            <!-- BEGIN switch_topic_title -->
             <div class="lm-body">
               <a class="lm-title" href="{catrow.forumrow.U_LATEST_TOPIC}">{catrow.forumrow.LATEST_TOPIC_NAME}</a>
               <span class="lm-time">{catrow.forumrow.LAST_POST_TIME}</span>
               <div class="lm-author">{catrow.forumrow.USER_LAST_POST}</div>
             </div>
             <div class="lm-right">
-              <!-- BEGIN switch_avatar_last_post -->
-              <div class="lm-avatar-clip">{catrow.forumrow.switch_avatar_last_post.AVATAR_LAST_POST}</div>
-              <!-- END switch_avatar_last_post -->
+              <div class="lm-avatar-clip">{catrow.forumrow.AVATAR_LAST_POST}</div>
               <a class="lm-moon" href="{catrow.forumrow.U_LATEST_POST}">&#9789;</a>
             </div>
-            <!-- END switch_topic_title -->
           </div>
+          <!-- END switch_topic_title -->
         </div>
       </div>
     </div>

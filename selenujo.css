@@ -999,6 +999,7 @@ img { display: block; max-width: 100%; }
   background: var(--surface-3);
 }
 .lm-avatar-clip:empty { display: none; }
+.lm-avatar-clip:not(:has(img)) { display: none; }
 .lm-avatar-clip img {
   width: 100%;
   height: 100%;

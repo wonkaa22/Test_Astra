@@ -1582,16 +1582,18 @@ button.switcheroo__form-button {
   grid-template-columns: 210px 1fr;
   gap: 16px;
   height: 620px;
-  overflow: hidden;
+  max-height: 620px;
+  overflow: hidden !important;
+  box-sizing: border-box;
 }
 
 /* ── Colonne gauche ── */
-.sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; overflow: hidden; }
+.sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
 .sel-welcome-text em     { font-size: 22px; font-style: italic; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
 
-.sel-text-image-group { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.sel-text-image-group { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
 
 .sel-text-block {
   background: var(--surface-2);
@@ -1602,9 +1604,11 @@ button.switcheroo__form-button {
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .sel-text-block-inner {
   height: 100%;
+  max-height: 390px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-faint) transparent;
@@ -1637,7 +1641,9 @@ button.switcheroo__form-button {
   grid-template-rows: auto 1fr;
   gap: 10px;
   min-height: 0;
+  max-height: 580px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Widget base */
@@ -1736,7 +1742,10 @@ button.switcheroo__form-button {
 
 /* ── Responsive ── */
 @media (max-width: 1049px) {
-  .sel-main-block { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  .sel-main-block { grid-template-columns: 1fr; height: auto; max-height: none; overflow: visible; }
+  .sel-col-left { max-height: none; }
+  .sel-col-right { max-height: none; }
+  .sel-text-block-inner { max-height: 300px; }
   .sel-text-image-group { max-height: 220px; }
   .sel-col-right { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
   .sel-w-predefinis { grid-column: 1; grid-row: 1; }

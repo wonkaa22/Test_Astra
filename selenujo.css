@@ -52,8 +52,8 @@
   --switcheroo-img-height:32px;
 }
 
-/* Thème clair — activé par JS via body.light */
-body.light {
+/* Thème clair — activé par JS via :root.light */
+:root.light {
   --bg:        #FEFAE0;
   --surface-1: #FAEDCD;
   --surface-2: #F5E6C0;
@@ -533,7 +533,8 @@ img { display: block; max-width: 100%; }
 }
 .sf-pill:hover { border-color: rgba(212,163,115,0.4); color: var(--gold); }
 
-/* Sous-forums générés par FA via {catrow.forumrow.LINKS} */
+/* Sous-forums générés par FA via {catrow.forumrow.LINKS} — virgules masquées */
+.subforums { font-size: 0; }
 .subforums a {
   font-size: 11px;
   color: var(--text-mid);

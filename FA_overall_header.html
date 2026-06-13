@@ -131,11 +131,9 @@
   function applyTheme(theme) {
     if (theme === 'light') {
       root.className = (root.className + ' light').replace(/\s+/g, ' ').trim();
-      document.body.className = (document.body.className + ' light').replace(/\s+/g, ' ').trim();
       btn.innerHTML = '&#9728;&#65039;';
     } else {
       root.className = root.className.replace(/\blight\b/g, '').trim();
-      document.body.className = document.body.className.replace(/\blight\b/g, '').trim();
       btn.innerHTML = '&#127769;';
     }
   }

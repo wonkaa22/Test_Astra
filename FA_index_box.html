@@ -79,7 +79,7 @@
 </div>
 <!-- END switch_on_index -->
 
-<!-- Toggle collapse des catégories -->
+<!-- Toggle collapse des catégories + nettoyage lm-author -->
 <script type="text/javascript">
 //<![CDATA[
 (function() {
@@ -91,6 +91,18 @@
       toggle.classList.toggle('is-collapsed', collapsed);
       toggle.setAttribute('aria-label', collapsed ? 'Déplier' : 'Replier');
     });
+  });
+
+  /* USER_LAST_POST = "date<br>lien_auteur_icone" — on garde seulement la partie auteur */
+  document.querySelectorAll('.lm-author').forEach(function(el) {
+    var parts = el.innerHTML.split('<br>');
+    var authorHtml = parts.length >= 2 ? parts[parts.length - 1] : parts[0];
+    /* supprimer images et spans (icone fleche FA) */
+    var tmp = document.createElement('div');
+    tmp.innerHTML = authorHtml;
+    var imgs = tmp.querySelectorAll('img, span.icon, span.gen');
+    for (var i = 0; i < imgs.length; i++) { imgs[i].parentNode.removeChild(imgs[i]); }
+    el.innerHTML = tmp.innerHTML;
   });
 })();
 //]]>

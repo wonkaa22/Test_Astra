@@ -141,7 +141,7 @@
   applyTheme(localStorage.getItem(KEY) || 'dark');
 
   btn.onclick = function() {
-    var next = document.body.className.indexOf('light') !== -1 ? 'dark' : 'light';
+    var next = root.className.indexOf('light') !== -1 ? 'dark' : 'light';
     localStorage.setItem(KEY, next);
     applyTheme(next);
   };

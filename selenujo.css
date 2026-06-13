@@ -255,6 +255,10 @@ img { display: block; max-width: 100%; }
   border-color: var(--gold-faint);
 }
 
+/* Révéler Switcheroo + séparateur si connecté (logout présent dans la nav) */
+.sel-navbar-inner:has(#sel-fa-nav a[href*="logout"]) #selNavSep   { display: block !important; }
+.sel-navbar-inner:has(#sel-fa-nav a[href*="logout"]) #switcheroo  { display: block !important; }
+
 /* Séparateur vertical dans la pilule */
 .sel-nav-sep {
   width: 1px;

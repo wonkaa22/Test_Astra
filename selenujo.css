@@ -1645,6 +1645,12 @@ button.switcheroo__form-button {
   display: block;
 }
 .sel-guest-label { font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--text-ghost); }
+.sel-avatar-initial {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: var(--surface-4); border: 2px solid var(--gold-faint);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif); font-size: 26px; color: var(--gold);
+}
 
 /* ── Colonne droite ── */
 .sel-col-right {

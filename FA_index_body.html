@@ -50,7 +50,7 @@
     <div class="sel-col-left">
       <div class="sel-welcome-text">
         <em>Bienvenue,</em>
-        <strong>{USERNAME}</strong>
+        <strong id="sel-welcome-name">{USERNAME}</strong>
       </div>
       <div class="sel-text-image-group">
         <div class="sel-text-block">
@@ -62,13 +62,8 @@
             <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
           </div>
         </div>
-        <div class="sel-left-image">
-          <!-- BEGIN switch_user_logged_in -->
-          <div class="sel-avatar-wrap">{AVATAR}</div>
-          <!-- END switch_user_logged_in -->
-          <!-- BEGIN switch_user_anonymous_logged_in -->
-          <span class="sel-guest-label">Terrien·ne de passage</span>
-          <!-- END switch_user_anonymous_logged_in -->
+        <div class="sel-left-image" id="sel-left-image-zone">
+          <span class="sel-guest-label" id="sel-guest-label">Terrien·ne de passage</span>
         </div>
       </div>
     </div>
@@ -268,6 +263,48 @@
   render();
   setInterval(render, 30*60*1000);
 })();
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+  var zone = document.getElementById('sel-left-image-zone');
+  var guestLabel = document.getElementById('sel-guest-label');
+  if (!zone) return;
+
+  var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+  if (!isLoggedIn) return; // garde le label "Terrien·ne de passage"
+
+  // Connecté : tente de récupérer l'avatar depuis _userdata FA
+  var avatarSrc = '';
+  if (typeof _userdata !== 'undefined') {
+    if (_userdata['user_avatar']) avatarSrc = _userdata['user_avatar'];
+    else if (_userdata['user_avatar_real_width']) avatarSrc = _userdata['user_avatar'];
+  }
+  // Fallback : cherche un img d'avatar déjà dans le DOM (ex: profil switcher)
+  if (!avatarSrc) {
+    var swImg = document.querySelector('#switcheroo img, .sel-switch-avatar img');
+    if (swImg) avatarSrc = swImg.src;
+  }
+
+  if (guestLabel) guestLabel.style.display = 'none';
+
+  var wrap = document.createElement('div');
+  wrap.className = 'sel-avatar-wrap';
+  if (avatarSrc) {
+    var img = document.createElement('img');
+    img.src = avatarSrc;
+    img.alt = '';
+    wrap.appendChild(img);
+  } else {
+    // Pas d'avatar : monogramme
+    var name = (document.getElementById('sel-welcome-name') || {}).textContent || '';
+    var initial = name.trim().charAt(0).toUpperCase();
+    wrap.innerHTML = '<div class="sel-avatar-initial">' + (initial || '?') + '</div>';
+  }
+  zone.appendChild(wrap);
+})();
+//]]>
 </script>
 
 <!-- ═══════════════════════════════════════

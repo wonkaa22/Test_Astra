@@ -165,12 +165,21 @@ img { display: block; max-width: 100%; }
   padding: 0;
   margin: 0;
 }
-/* Tout masquer par défaut — le JS révèle les liens souhaités */
+/* Masquer tous les éléments nav par défaut */
 #sel-fa-nav li { display: none; }
-#sel-fa-nav li.sel-show { display: inline; }
-/* Accueil est un <a> direct (pas dans <li>) — masqué aussi */
 #sel-fa-nav > a { display: none; }
-#sel-fa-nav > a.sel-show { display: inline-block; }
+
+/* Accueil — lien direct (href="/") */
+#sel-fa-nav > a[href="/"] { display: inline-block; }
+
+/* Liens utiles — révélés par href */
+#sel-fa-nav li:has(a[href*="search"]),
+#sel-fa-nav li:has(a[href*="memberlist"]),
+#sel-fa-nav li:has(a[href*="profile"]),
+#sel-fa-nav li:has(a[href*="login"]),
+#sel-fa-nav li:has(a[href*="logout"]),
+#sel-fa-nav li:has(a[href*="register"]),
+#sel-fa-nav li:has(a[href*="admin"]) { display: inline; }
 
 /* Masquer icônes et séparateurs même dans les li visibles */
 #sel-fa-nav i,

@@ -144,27 +144,7 @@
   };
 })();
 
-// Filtrer la nav FA : révèle seulement les liens utiles
-(function() {
-  var nav = document.getElementById('sel-fa-nav');
-  if (!nav) return;
 
-  var keep = ['accueil', 'rechercher', 'membres', 'enregistrer', 'connexion', 'profil', 'admin'];
-
-  nav.querySelectorAll('a').forEach(function(a) {
-    var text = a.textContent.trim().toLowerCase();
-    var li = a.closest('li');
-    console.log('[sel-nav]', text, li ? 'in-li' : 'direct');
-    var ok = keep.some(function(k) { return text.indexOf(k) !== -1; });
-    if (ok) {
-      if (li) {
-        li.classList.add('sel-show');
-      } else {
-        a.classList.add('sel-show');
-      }
-    }
-  });
-})();
 (function() {
   if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
     document.getElementById('selNavSep').style.display = '';

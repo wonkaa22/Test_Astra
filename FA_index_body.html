@@ -302,6 +302,41 @@ function selWelcomeRender() {
     } catch(ex) { uname = ''; }
   }
   if (uname && nameEl) nameEl.textContent = uname;
+
+  // Formate les dates des derniers messages
+  selFormatDates();
+}
+function selFormatDates() {
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var els = document.querySelectorAll('.sel-lp-date');
+  for (var i = 0; i < els.length; i++) {
+    var raw = els[i].textContent.trim();
+    var lo = raw.toLowerCase();
+    var out = '';
+    if (lo.indexOf('aujourd') !== -1) {
+      var mt = raw.match(/(\d{1,2})[h:H](\d{2})/);
+      if (mt) out = mt[1] + 'h' + mt[2];
+    } else if (lo.indexOf('hier') !== -1) {
+      out = 'hier';
+    } else {
+      var md = raw.match(/(\d{1,2})\s+([A-Za-zà-ÿ]+)/);
+      if (md) {
+        var jour = md[1];
+        var nomMois = md[2].toLowerCase();
+        var numMois = 0;
+        for (var j = 0; j < MOIS.length; j++) {
+          if (MOIS[j].indexOf(nomMois.substring(0, 3)) !== -1) {
+            numMois = j + 1;
+            break;
+          }
+        }
+        if (numMois > 0) {
+          out = (jour.length < 2 ? '0' + jour : jour) + '/' + (numMois < 10 ? '0' + numMois : numMois);
+        }
+      }
+    }
+    if (out) els[i].textContent = out;
+  }
 }
 window.onload = selWelcomeRender;
 setTimeout(selWelcomeRender, 1500);

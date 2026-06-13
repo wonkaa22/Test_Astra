@@ -122,6 +122,39 @@
       var moon = lm.querySelector('.lm-moon');
       if (moon) { moon.href = postUrl; }
     }
+
+    /* fetch avatar depuis la page profil de l'auteur */
+    var authorA = lm.querySelector('.lm-author a[href]');
+    if (authorA) {
+      var right = lm.querySelector('.lm-right');
+      (function(profileUrl, rightEl) {
+        fetch(profileUrl)
+          .then(function(r) { return r.text(); })
+          .then(function(html) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            /* FA profile: avatar dans img.img ou img dans .profile-avatar ou premier img avec src avatar */
+            var img = doc.querySelector('img.img, .avatar img, .profile-avatar img');
+            if (!img) {
+              var allImgs = doc.querySelectorAll('img[src]');
+              for (var k = 0; k < allImgs.length; k++) {
+                var s = allImgs[k].getAttribute('src') || '';
+                if (s.indexOf('avatar') !== -1 || s.indexOf('profil') !== -1) { img = allImgs[k]; break; }
+              }
+            }
+            if (img && img.src && rightEl) {
+              var clip = document.createElement('div');
+              clip.className = 'lm-avatar-clip';
+              var newImg = document.createElement('img');
+              newImg.src = img.src;
+              newImg.alt = '';
+              clip.appendChild(newImg);
+              rightEl.insertBefore(clip, rightEl.firstChild);
+            }
+          })
+          .catch(function() {});
+      })(authorA.href, right);
+    }
   });
 })();
 //]]>

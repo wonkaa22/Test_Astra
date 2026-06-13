@@ -1,0 +1,25 @@
+<div class="sel-widget-label">Derniers messages</div>
+<div class="sel-lastpost-list">
+
+  <!-- BEGIN classical_row -->
+  <!-- BEGIN recent_topic_row -->
+  <div class="sel-lastpost-row">
+    <div class="sel-lp-info">
+      <div class="sel-lp-title">
+        <a href="{classical_row.recent_topic_row.U_TITLE}">{classical_row.recent_topic_row.L_TITLE}</a>
+      </div>
+      <div class="sel-lp-author">
+        <!-- BEGIN switch_poster -->
+        <a href="{classical_row.recent_topic_row.switch_poster.U_POSTER}">{classical_row.recent_topic_row.switch_poster.S_POSTER}</a>
+        <!-- END switch_poster -->
+        <!-- BEGIN switch_poster_guest -->
+        {classical_row.recent_topic_row.switch_poster_guest.S_POSTER}
+        <!-- END switch_poster_guest -->
+      </div>
+    </div>
+    <div class="sel-lp-date">{classical_row.recent_topic_row.S_POSTTIME}</div>
+  </div>
+  <!-- END recent_topic_row -->
+  <!-- END classical_row -->
+
+</div>

@@ -533,6 +533,21 @@ img { display: block; max-width: 100%; }
 }
 .sf-pill:hover { border-color: rgba(212,163,115,0.4); color: var(--gold); }
 
+/* Sous-forums générés par FA via {catrow.forumrow.LINKS} */
+.subforums a {
+  font-size: 11px;
+  color: var(--text-mid);
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  border-radius: 99px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 2px 3px 2px 0;
+  transition: border-color 0.2s, color 0.2s;
+}
+.subforums a:hover { border-color: rgba(212,163,115,0.4); color: var(--gold); }
+
 
 /* ───────────────────────────────────────────────────────────────
    7. BLOC HORS RP (0X.)

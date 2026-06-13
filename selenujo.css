@@ -176,8 +176,6 @@ img { display: block; max-width: 100%; }
 #sel-fa-nav li:has(a[href*="search"]),
 #sel-fa-nav li:has(a[href*="memberlist"]),
 #sel-fa-nav li:has(a[href*="privmsg"]),
-#sel-fa-nav li:has(a[href*="/pm"]),
-#sel-fa-nav li:has(a[href*="notification"]),
 #sel-fa-nav li:has(a[href*="profile"]),
 #sel-fa-nav li:has(a[href*="login"]),
 #sel-fa-nav li:has(a[href*="logout"]),

@@ -1582,10 +1582,11 @@ button.switcheroo__form-button {
   grid-template-columns: 210px 1fr;
   gap: 16px;
   height: 620px;
+  overflow: hidden;
 }
 
 /* ── Colonne gauche ── */
-.sel-col-left { display: flex; flex-direction: column; gap: 0; }
+.sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; overflow: hidden; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
 .sel-welcome-text em     { font-size: 22px; font-style: italic; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
@@ -1635,6 +1636,8 @@ button.switcheroo__form-button {
   grid-template-columns: 175px 1fr 195px;
   grid-template-rows: auto 1fr;
   gap: 10px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Widget base */
@@ -1733,7 +1736,7 @@ button.switcheroo__form-button {
 
 /* ── Responsive ── */
 @media (max-width: 1049px) {
-  .sel-main-block { grid-template-columns: 1fr; min-height: auto; }
+  .sel-main-block { grid-template-columns: 1fr; height: auto; overflow: visible; }
   .sel-text-image-group { max-height: 220px; }
   .sel-col-right { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
   .sel-w-predefinis { grid-column: 1; grid-row: 1; }

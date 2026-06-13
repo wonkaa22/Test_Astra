@@ -172,6 +172,10 @@ img { display: block; max-width: 100%; }
 /* Accueil — lien direct (href="/") */
 #sel-fa-nav > a[href="/"] { display: inline-block; }
 
+/* Notifications — visible seulement si connecté (= logout présent dans la nav) */
+#sel-notif-link { display: none; }
+#sel-fa-nav:has(li a[href*="logout"]) > #sel-notif-link { display: inline-block; }
+
 /* Liens utiles — révélés par href */
 #sel-fa-nav li:has(a[href*="search"]),
 #sel-fa-nav li:has(a[href*="memberlist"]),

@@ -1727,13 +1727,9 @@ button.switcheroo__form-button {
 .sel-lp-author { font-size: 10px; color: var(--coral); }
 .sel-lp-date { font-size: 9.5px; color: var(--text-lo); flex-shrink: 0; }
 
-/* Phase lunaire */
-.sel-w-moon { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px; text-align: center; min-height: 0; }
-.sel-moon-icon { font-size: 38px; line-height: 1; }
-.sel-moon-name { font-family: var(--font-serif); font-size: 15px; color: var(--gold); font-style: italic; }
-.sel-moon-info { font-size: 10.5px; color: var(--text-lo); line-height: 1.5; }
-.sel-moon-link { font-size: 10px; color: var(--gold-dim); cursor: pointer; margin-top: 2px; }
-.sel-moon-link:hover { color: var(--gold); }
+/* Phase lunaire — widget face cachée */
+.sel-w-moon { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; min-height: 0; overflow: hidden; align-self: stretch; padding: 0; }
+#sel-moon-phase { flex: 1; min-height: 0; width: 100% !important; max-width: none !important; margin: 0 !important; box-sizing: border-box !important; }
 
 /* ── Responsive ── */
 @media (max-width: 1049px) {

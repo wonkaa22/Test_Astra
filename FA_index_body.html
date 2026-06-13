@@ -149,12 +149,9 @@
         </div>
       </div>
 
-      <!-- Phase lunaire -->
+      <!-- Phase lunaire — widget complet face cachée -->
       <div class="sel-widget sel-w-moon">
-        <div class="sel-moon-icon" id="sel-moon-icon">&#127765;</div>
-        <div class="sel-moon-name" id="sel-moon-name">Calcul…</div>
-        <div class="sel-moon-info" id="sel-moon-info"></div>
-        <div class="sel-moon-link">Voir le calendrier &#8594;</div>
+        <div id="sel-moon-phase"></div>
       </div>
 
     </div>
@@ -179,28 +176,90 @@
   setInterval(function() { goTo(current + 1); }, 5000);
 })();
 (function() {
-  var date = new Date();
-  var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
-  if (m < 3) { y--; m += 12; }
-  var a = Math.floor(y / 100), b = Math.floor(a / 4);
-  var jd = (2 - a + b) + d + Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) - 1524.5;
-  var phase = (jd - 2451549.5) % 29.53058867;
-  if (phase < 0) phase += 29.53058867;
-  var phases = [
-    {max:1.85,  icon:'&#127761;', name:'Nouvelle lune',         info:'Obscurité totale'},
-    {max:5.55,  icon:'&#127762;', name:'Premier croissant',      info:'Lumière naissante'},
-    {max:9.22,  icon:'&#127763;', name:'Premier quartier',       info:'Demi-lune'},
-    {max:12.91, icon:'&#127764;', name:'Gibbeuse croissante',    info:'Clarté croissante'},
-    {max:16.61, icon:'&#127765;', name:'Pleine lune',            info:'Visibilité maximale'},
-    {max:20.30, icon:'&#127766;', name:'Gibbeuse décroissante',  info:'Clarté décroissante'},
-    {max:23.99, icon:'&#127767;', name:'Dernier quartier',       info:'Demi-lune'},
-    {max:27.68, icon:'&#127768;', name:'Dernier croissant',      info:'Lumière mourante'},
-    {max:29.53, icon:'&#127761;', name:'Nouvelle lune',          info:'Obscurité totale'}
-  ];
-  var p = phases.filter(function(ph){ return phase < ph.max; })[0] || phases[phases.length-1];
-  document.getElementById('sel-moon-icon').innerHTML = p.icon;
-  document.getElementById('sel-moon-name').textContent = p.name;
-  document.getElementById('sel-moon-info').textContent = p.info;
+  var css = '#sel-moon-phase{background:#252a3a !important;border:1px solid rgba(255,255,255,0.07) !important;border-radius:10px !important;padding:16px 18px 14px !important;color:#c8cfe0 !important;width:100% !important;max-width:none !important;position:relative !important;overflow:hidden !important;font-family:Inter,sans-serif !important;box-sizing:border-box !important;display:flex !important;flex-direction:column !important;}'
+    +'#lune-glow{position:absolute;top:-50px;right:-50px;width:140px;height:140px;pointer-events:none;border-radius:50%;}'
+    +'#lune-header{font-size:9px;letter-spacing:0.07em;color:rgba(160,170,200,0.35);margin-bottom:10px;}'
+    +'#lune-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;}'
+    +'#lune-main{display:flex;align-items:flex-start;gap:13px;margin-bottom:13px;}'
+    +'#lune-icon{flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;}'
+    +'#lune-step-name{font-family:"Cormorant Garamond",serif !important;font-size:15px;font-weight:400;font-style:italic;color:#c8cfe0;letter-spacing:0.02em;margin-bottom:6px;}'
+    +'#lune-step-desc{font-size:11px;color:rgba(180,185,210,0.5);line-height:1.5;max-height:44px;overflow:hidden;}'
+    +'#lune-sep{height:1px;background:rgba(255,255,255,0.06);margin-bottom:11px;}'
+    +'#lune-progress-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(160,170,200,0.35);margin-bottom:5px;letter-spacing:0.03em;}'
+    +'#lune-track{background:rgba(255,255,255,0.06);border-radius:99px;height:4px;overflow:hidden;margin-bottom:4px;position:relative;}'
+    +'#lune-fill{height:100%;border-radius:99px;position:relative;transition:width 0.4s ease;}'
+    +'#lune-fill::after{content:"";position:absolute;right:0;top:0;bottom:0;width:4px;background:rgba(255,255,255,0.55);border-radius:99px;}'
+    +'#lune-markers{display:flex;justify-content:space-between;padding:0 1px;margin-bottom:11px;}'
+    +'.lune-dot{width:1px;height:4px;background:rgba(255,255,255,0.1);}'
+    +'#lune-next{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}'
+    +'#lune-next-label{font-size:10px;color:rgba(160,170,200,0.3);letter-spacing:0.05em;}'
+    +'#lune-next-info{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(190,190,220,0.6);}'
+    +'#lune-next-days{font-size:10px;color:rgba(160,170,200,0.3);}'
+    +'#lune-footer{border-top:1px solid rgba(255,255,255,0.05);padding-top:9px;display:flex;justify-content:space-between;align-items:center;}'
+    +'#lune-link{font-size:9px;color:rgba(160,170,200,0.35);text-decoration:none;letter-spacing:0.04em;white-space:nowrap;}'
+    +'.lune-fill-nuit{background:linear-gradient(90deg,#3a3060,#7a6fd0) !important;}'
+    +'.lune-fill-jour{background:linear-gradient(90deg,#5a2e10,#c47830) !important;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var container = document.getElementById('sel-moon-phase');
+  if (!container) return;
+  container.innerHTML = '<div id="lune-glow"></div><div id="lune-header">&#x2B21; Face cach&#233;e de la Lune</div><div id="lune-badge"></div><div id="lune-main"><div id="lune-icon"></div><div style="flex:1"><div id="lune-step-name">&#8230;</div><div id="lune-step-desc">&#8230;</div></div></div><div id="lune-sep"></div><div id="lune-progress-label"><span>Progression du cycle</span><span id="lune-pct">0 %</span></div><div id="lune-track"><div id="lune-fill" style="width:0%"></div></div><div id="lune-markers"><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div></div><div id="lune-next"><span id="lune-next-label">PROCHAINE &#201;TAPE &#8594;</span><span id="lune-next-info"><span id="lune-next-glyph" style="font-size:13px"></span> <span id="lune-next-name"></span> <span id="lune-next-days"></span></span></div><div id="lune-footer"><a id="lune-link" href="#">Comprendre les cycles &#8599;</a></div>';
+
+  var YEAR_OFFSET = 46, SYNODIC = 29.53058867;
+  function julianDay(date) {
+    var y=date.getFullYear(),mo=date.getMonth()+1,d=date.getDate(),a=Math.floor((14-mo)/12),yr=y+4800-a,m=mo+12*a-3;
+    return d+Math.floor((153*m+2)/5)+365*yr+Math.floor(yr/4)-Math.floor(yr/100)+Math.floor(yr/400)-32045-0.5;
+  }
+  function moonPhase(date) { var p=((julianDay(date)-2451550.1)%SYNODIC)/SYNODIC; return p<0?p+1:p; }
+  function hiddenPhase(p) { return (p+0.5)%1; }
+  var STEPS = {
+    jour:[
+      {key:'aube',minF:0,maxF:0.2,season:'jour',name:"L'Aube",descs:["La premi&#232;re lueur rase l'horizon.","La lumi&#232;re arrive en oblique, froide.","Le sol commence &#224; se r&#233;chauffer."]},
+      {key:'jour_plein',minF:0.2,maxF:0.8,season:'jour',name:'Le Jour Plein',descs:["Le Soleil est haut. La chaleur est sans merci.","Lumi&#232;re directe, aveuglante.","Le r&#233;golite br&#251;le.","Midi lunaire.","La chaleur atteint son pic."]},
+      {key:'declin',minF:0.8,maxF:1.0,season:'jour',name:'Le D&#233;clin',descs:["La lumi&#232;re rougit, les ombres s'allongent.","Le Soleil s'approche de l'horizon.","Derni&#232;res heures de chaleur."]}
+    ],
+    nuit:[
+      {key:'nuit_profonde',minF:0,maxF:0.2,season:'nuit',name:'La Nuit Profonde',descs:["Obscurit&#233; absolue. Les &#233;toiles seules &#233;clairent.","Pas un photon du Soleil.","Le froid s'installe rapidement."]},
+      {key:'nuit_stable',minF:0.2,maxF:0.8,season:'nuit',name:'La Nuit Stable',descs:["Un tapis d'&#233;toiles sans limites.","Le silence et le froid r&#232;gnent.","Nuit profonde et stable.","Des milliers d'&#233;toiles, immobiles.","La nuit est &#224; son apog&#233;e."]},
+      {key:'nuit_finissante',minF:0.8,maxF:1.0,season:'nuit',name:'La Nuit Finissante',descs:["Une lueur rasante pointe &#224; l'horizon.","Les &#233;toiles p&#226;lissent &#224; l'est.","La nuit touche &#224; sa fin."]}
+    ]
+  };
+  function svgNuit(){return '<svg width="44" height="44" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="18" fill="#1a1d2e" stroke="rgba(120,110,190,0.25)" stroke-width="0.75"/><circle cx="23" cy="23" r="13" fill="none" stroke="rgba(120,110,190,0.12)" stroke-width="0.5"/><text x="23" y="28" text-anchor="middle" font-size="17" fill="rgba(160,155,210,0.85)" font-family="Georgia,serif">&#10022;</text><text x="11" y="16" text-anchor="middle" font-size="7" fill="rgba(160,155,210,0.35)" font-family="Georgia,serif">&#10023;</text><text x="36" y="32" text-anchor="middle" font-size="5" fill="rgba(160,155,210,0.25)" font-family="Georgia,serif">&#10022;</text></svg>';}
+  function svgJour(){return '<svg width="44" height="44" viewBox="0 0 46 46" fill="none"><line x1="23" y1="2" x2="23" y2="8" stroke="rgba(190,130,70,0.3)" stroke-width="1"/><line x1="23" y1="38" x2="23" y2="44" stroke="rgba(190,130,70,0.3)" stroke-width="1"/><line x1="2" y1="23" x2="8" y2="23" stroke="rgba(190,130,70,0.3)" stroke-width="1"/><line x1="38" y1="23" x2="44" y2="23" stroke="rgba(190,130,70,0.3)" stroke-width="1"/><circle cx="23" cy="23" r="11" fill="#1e1810" stroke="rgba(190,130,70,0.35)" stroke-width="0.75"/><circle cx="23" cy="23" r="7" fill="rgba(190,130,70,0.1)" stroke="rgba(190,130,70,0.22)" stroke-width="0.5"/><circle cx="23" cy="23" r="3" fill="rgba(190,130,70,0.45)"/></svg>';}
+  function getStepInfo(hp) {
+    var isJour=hp<0.5,season=isJour?'jour':'nuit',fracInSeason=isJour?hp/0.5:(hp-0.5)/0.5,steps=STEPS[season],step=steps[steps.length-1];
+    for(var i=0;i<steps.length;i++){if(fracInSeason>=steps[i].minF&&fracInSeason<steps[i].maxF){step=steps[i];break;}}
+    var stepRange=step.maxF-step.minF,fracInStep=Math.min((fracInSeason-step.minF)/stepRange,0.9999);
+    var descIdx=Math.min(Math.floor(fracInStep*step.descs.length),step.descs.length-1);
+    var daysRemaining=(1-fracInStep)*stepRange*(SYNODIC/2);
+    var stepIdx=steps.indexOf(step),nextStep=stepIdx<steps.length-1?steps[stepIdx+1]:STEPS[season==='jour'?'nuit':'jour'][0];
+    return {step:step,descIdx:descIdx,daysRemaining:daysRemaining,nextStep:nextStep,globalPct:Math.round(hp*100)};
+  }
+  function render() {
+    var now=new Date(),hp=hiddenPhase(moonPhase(now)),info=getStepInfo(hp),step=info.step,season=step.season;
+    document.getElementById('lune-glow').style.background='radial-gradient(circle,'+(season==='nuit'?'rgba(110,95,200,0.13)':'rgba(190,110,50,0.12)')+' 0%,transparent 68%)';
+    var badge=document.getElementById('lune-badge');
+    if(season==='nuit'){badge.style.cssText='display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(100,90,160,0.2);border:1px solid rgba(130,120,200,0.2);color:#a099d0;';badge.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#a099d0" stroke-width="1"/><circle cx="5" cy="5" r="1.5" fill="#a099d0"/></svg> La Nuit';}
+    else{badge.style.cssText='display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;background:rgba(160,80,40,0.2);border:1px solid rgba(190,110,60,0.2);color:#c49070;';badge.innerHTML='<svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="2" fill="#c49070"/><line x1="5" y1="0" x2="5" y2="2.5" stroke="#c49070" stroke-width="1"/><line x1="5" y1="7.5" x2="5" y2="10" stroke="#c49070" stroke-width="1"/><line x1="0" y1="5" x2="2.5" y2="5" stroke="#c49070" stroke-width="1"/><line x1="7.5" y1="5" x2="10" y2="5" stroke="#c49070" stroke-width="1"/></svg> Le Grand Jour';}
+    document.getElementById('lune-icon').innerHTML=season==='nuit'?svgNuit():svgJour();
+    document.getElementById('lune-step-name').textContent=step.name;
+    document.getElementById('lune-step-desc').innerHTML=step.descs[info.descIdx];
+    var fill=document.getElementById('lune-fill');
+    fill.style.width=info.globalPct+'%';fill.className='lune-fill-'+season;
+    document.getElementById('lune-pct').textContent=info.globalPct+' %';
+    var glyphMap={aube:'&#9728;',jour_plein:'&#9728;',declin:'&#9728;',nuit_profonde:'&#9790;',nuit_stable:'&#10022;',nuit_finissante:'&#9790;'};
+    var ng=document.getElementById('lune-next-glyph');
+    ng.innerHTML=glyphMap[info.nextStep.key]||'&#183;';
+    ng.style.color=season==='nuit'?'rgba(160,155,210,0.65)':'rgba(190,130,70,0.65)';
+    document.getElementById('lune-next-name').textContent=info.nextStep.name;
+    var d=Math.floor(info.daysRemaining),h=Math.round((info.daysRemaining-d)*24);
+    document.getElementById('lune-next-days').textContent=d>0?'dans '+d+'j '+h+'h':'dans '+h+'h';
+    var shown=new Date(now);shown.setFullYear(shown.getFullYear()-YEAR_OFFSET);
+    var jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],mois=['janvier','f&#233;vrier','mars','avril','mai','juin','juillet','ao&#251;t','septembre','octobre','novembre','d&#233;cembre'];
+    document.getElementById('lune-header').innerHTML='&#x2B21; '+jours[shown.getDay()]+' '+shown.getDate()+' '+mois[shown.getMonth()]+' '+shown.getFullYear();
+  }
+  render();
+  setInterval(render, 30*60*1000);
 })();
 </script>
 

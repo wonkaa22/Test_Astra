@@ -529,9 +529,7 @@ img { display: block; max-width: 100%; }
 .cat-block.is-admin .cat-content {
   padding: 20px;
   gap: 16px;
-  overflow: visible;
 }
-.cat-block.is-admin .cat-content.is-collapsed { overflow: hidden; }
 
 .adm-guidebook {
   background: var(--surface-2);
@@ -540,7 +538,7 @@ img { display: block; max-width: 100%; }
   padding: 26px 28px;
   position: relative;
   min-height: 190px;
-  overflow: visible;
+  overflow: hidden;
   display: flex;
   align-items: flex-start;
 }

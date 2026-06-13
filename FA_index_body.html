@@ -303,7 +303,12 @@ function selWelcomeRender() {
   if (uname && nameEl) { nameEl.textContent = uname; selDone = true; }
 }
 function selAdminTransform() {
-  var ab = document.querySelector('.cat-block[data-cat="Administration"]');
+  var blocks = document.querySelectorAll('.cat-block');
+  var ab = null;
+  for (var bi = 0; bi < blocks.length; bi++) {
+    var tt = blocks[bi].querySelector('.cat-title');
+    if (tt && tt.textContent.trim() === 'Administration') { ab = blocks[bi]; break; }
+  }
   if (!ab || ab.classList.contains('is-admin')) return;
   var rows = ab.querySelectorAll('.forum-row');
   var rowArr = [];
@@ -316,9 +321,9 @@ function selAdminTransform() {
     for (var si = 0; si < subAs.length; si++) {
       subs.push([subAs[si].textContent.trim(), subAs[si].href]);
     }
-    var lmDiv = rows[ri].querySelector('.last-msg');
-    var lm = (lmDiv && lmDiv.textContent.trim()) ? lmDiv.innerHTML : null;
-    rowArr.push([nm, nEl.href, subs, lm]); // [name, url, sublinks[], lastMsgHTML]
+    var lmEl = rows[ri].querySelector('.last-msg a');
+    var lm = lmEl ? [lmEl.textContent.trim(), lmEl.href] : null;
+    rowArr.push([nm, nEl.href, subs, lm]);
   }
   function findSec(nm) {
     for (var fi = 0; fi < rowArr.length; fi++) {
@@ -336,7 +341,7 @@ function selAdminTransform() {
   }
   function mklm(sec) {
     if (!sec || !sec[3]) return '';
-    return '<div class="adm-last-msg">' + sec[3] + '</div>';
+    return '<div class="adm-last-msg"><a href="' + sec[3][1] + '">' + sec[3][0] + '</a></div>';
   }
   var p = findSec('Personnages');
   var v = findSec('Vie sur la Lune');
@@ -477,11 +482,6 @@ setTimeout(selFormatDates, 2000);
 <div class="forum-width" style="display:flex; flex-direction:column; gap:28px; padding:0 0 28px;">
   {BOARD_INDEX}
 </div>
-<script type="text/javascript">
-//<![CDATA[
-selAdminTransform();
-//]]>
-</script>
 
 <!-- Bloc "qui est en ligne" FA — masqué, remplacé par notre footer -->
 <!-- BEGIN disable_viewonline -->

@@ -155,10 +155,12 @@
     var text = a.textContent.trim().toLowerCase();
     var ok = keep.some(function(k) { return text.indexOf(k) !== -1; });
     if (ok) {
-      var li = a.parentElement;
-      while (li && li !== nav && li.tagName !== 'LI') li = li.parentElement;
-      if (li && li.tagName === 'LI') li.classList.add('sel-show');
-      else a.style.display = 'inline-block';
+      var li = a.closest('li');
+      if (li) {
+        li.classList.add('sel-show');   // lien dans un <li>
+      } else {
+        a.classList.add('sel-show');    // lien direct dans la nav (ex: Accueil)
+      }
     }
   });
 })();

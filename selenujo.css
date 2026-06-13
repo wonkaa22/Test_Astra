@@ -155,6 +155,23 @@ img { display: block; max-width: 100%; }
   flex-wrap: wrap;
 }
 
+/* Réinitialiser la structure ul/li que FA génère */
+#sel-fa-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#sel-fa-nav li { display: contents; }
+
+/* Masquer les icônes et séparateurs FA */
+#sel-fa-nav i,
+#sel-fa-nav .sep,
+#sel-fa-nav span.sep { display: none !important; }
+
 #sel-fa-nav a {
   display: inline-block;
   padding: 6px 14px;
@@ -183,16 +200,6 @@ img { display: block; max-width: 100%; }
 #sel-fa-nav a[href*="login"]:hover {
   border-color: var(--gold);
   color: var(--gold);
-}
-
-/* Liens à masquer (non pertinents pour la navbar) */
-#sel-fa-nav a[href*="calendar"],
-#sel-fa-nav a[href*="images_list"],
-#sel-fa-nav a[href*="discover"],
-#sel-fa-nav a[href*="faq"],
-#sel-fa-nav a[href*="groupcp"],
-#sel-fa-nav a[href*="privmsg"] {
-  display: none;
 }
 
 /* Bouton toggle thème lune/soleil */

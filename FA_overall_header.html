@@ -144,14 +144,16 @@
   };
 })();
 
-// Récupérer le vrai lien logout (avec sid) depuis le nav FA caché
+// Filtrer la nav FA : garder seulement les liens utiles
 (function() {
-  var hiddenNav = document.getElementById('sel-hidden-nav');
-  if (!hiddenNav) return;
-  var logoutLink = hiddenNav.querySelector('a[href*="logout"]');
-  if (!logoutLink) return;
-  var ourLogout = document.querySelector('a.sel-nav-link--accent[href*="logout"]');
-  if (ourLogout) ourLogout.href = logoutLink.href;
+  var nav = document.getElementById('sel-fa-nav');
+  if (!nav) return;
+  var keep = ['accueil', 'rechercher', 'membres', 's\'enregistrer', 'connexion', 'déconnexion', 'profil', 'admin'];
+  nav.querySelectorAll('a').forEach(function(a) {
+    var text = a.textContent.trim().toLowerCase();
+    var ok = keep.some(function(k) { return text.indexOf(k) !== -1; });
+    if (!ok) a.style.display = 'none';
+  });
 })();
 (function() {
   if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {

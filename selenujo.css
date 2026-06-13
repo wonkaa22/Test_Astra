@@ -48,8 +48,8 @@
   --switcheroo-gap-size:8px;
   --switcheroo-ease:    cubic-bezier(0.4, 0.0, 0.2, 1);
   --switcheroo-ease-bounce: cubic-bezier(0.43, 0.09, 0.38, 2.56);
-  --switcheroo-img-width: 26px;
-  --switcheroo-img-height:26px;
+  --switcheroo-img-width: 36px;
+  --switcheroo-img-height:36px;
 }
 
 /* Thème clair — activé par JS via :root.light */

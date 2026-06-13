@@ -106,7 +106,7 @@
 
     <!-- Gauche : pilule thème + Switcheroo -->
     <div class="sel-nav-pill">
-      <button class="sel-theme-btn" id="selThemeBtn" type="button" aria-label="Changer de thème">&#127769;</button>
+      <button class="sel-theme-btn" id="selThemeBtn" type="button" aria-label="Changer de thème" onclick="var r=document.documentElement,k='sel-theme',isLight=r.classList.contains('light');r.classList[isLight?'remove':'add']('light');this.innerHTML=isLight?'&#127769;':'&#9728;&#65039;';localStorage.setItem(k,isLight?'dark':'light');">&#127769;</button>
       <div class="sel-nav-sep" id="selNavSep" style="display:none;"></div>
       <nav id="switcheroo" class="switcheroo" direction="horizontal" position="static" style="display:none;"></nav>
     </div>
@@ -122,30 +122,6 @@
 
 <script type="text/javascript">
 //<![CDATA[
-// Toggle thème sombre / clair
-(function() {
-  var btn  = document.getElementById('selThemeBtn');
-  var root = document.documentElement;
-  var KEY  = 'sel-theme';
-
-  function applyTheme(theme) {
-    if (theme === 'light') {
-      root.classList.add('light');
-      btn.innerHTML = '&#9728;&#65039;';
-    } else {
-      root.classList.remove('light');
-      btn.innerHTML = '&#127769;';
-    }
-  }
-
-  applyTheme(localStorage.getItem(KEY) || 'dark');
-
-  btn.onclick = function() {
-    var next = root.classList.contains('light') ? 'dark' : 'light';
-    localStorage.setItem(KEY, next);
-    applyTheme(next);
-  };
-})();
 
 
 (function() {

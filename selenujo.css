@@ -769,6 +769,7 @@ img { display: block; max-width: 100%; }
 .hrp-btn:hover { background: var(--surface-4); border-color: var(--gold-faint); color: var(--gold); }
 
 .hrp-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.hrp-btn-grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 .hrp-entraide-inner { display: flex; gap: 14px; align-items: stretch; flex: 1; }
 .hrp-entraide-left { flex: 1; display: flex; flex-direction: column; gap: 10px; }
@@ -807,7 +808,8 @@ img { display: block; max-width: 100%; }
   .hrp-buttons { width: 100%; }
   .hrp-cat-name { font-size: 26px; text-align: left; }
   .hrp-btn-grid2 { grid-template-columns: 1fr; }
-  .hrp-entraide-img { display: none; }
+  .hrp-entraide-img { width: 90px; min-height: unset; }
+  .hrp-btn-grid2x2 { grid-template-columns: 1fr 1fr; }
 }
 
 /* Ligne de forum */

@@ -48,8 +48,8 @@
   --switcheroo-gap-size:8px;
   --switcheroo-ease:    cubic-bezier(0.4, 0.0, 0.2, 1);
   --switcheroo-ease-bounce: cubic-bezier(0.43, 0.09, 0.38, 2.56);
-  --switcheroo-img-width: 32px;
-  --switcheroo-img-height:32px;
+  --switcheroo-img-width: 26px;
+  --switcheroo-img-height:26px;
 }
 
 /* Thème clair — activé par JS via :root.light */
@@ -1342,9 +1342,9 @@ img { display: block; max-width: 100%; }
 
 /* Bouton ajouter compte */
 .switcheroo__squircle--button {
-  color: var(--text-mid);
+  color: var(--gold-dim);
   background: var(--switcheroo-grey);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   transition: border-radius 128ms var(--switcheroo-ease), color 128ms;
 }

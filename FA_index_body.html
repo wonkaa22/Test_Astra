@@ -303,12 +303,7 @@ function selWelcomeRender() {
   if (uname && nameEl) { nameEl.textContent = uname; selDone = true; }
 }
 function selAdminTransform() {
-  var blocks = document.querySelectorAll('.cat-block');
-  var ab = null;
-  for (var bi = 0; bi < blocks.length; bi++) {
-    var tt = blocks[bi].querySelector('.cat-title');
-    if (tt && tt.textContent.trim() === 'Administration') { ab = blocks[bi]; break; }
-  }
+  var ab = document.querySelector('.cat-block[data-cat="Administration"]');
   if (!ab || ab.classList.contains('is-admin')) return;
   var rows = ab.querySelectorAll('.forum-row');
   var rowArr = [];

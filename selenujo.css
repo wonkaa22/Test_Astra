@@ -1645,6 +1645,9 @@ button.switcheroo__form-button {
   display: block;
 }
 .sel-guest-label { font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--text-ghost); }
+/* Cache le label invité dès qu'un lien logout est présent dans la nav */
+#sel-navbar:has(a[href*="logout"]) ~ * .sel-guest-label,
+.sel-navbar-inner:has(a[href*="logout"]) ~ * .sel-guest-label { display: none !important; }
 .sel-avatar-initial {
   width: 66px; height: 66px; border-radius: 50%;
   background: var(--surface-4); border: 2px solid var(--gold-faint);

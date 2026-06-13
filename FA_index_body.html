@@ -269,22 +269,37 @@
 //<![CDATA[
 (function() {
   var zone = document.getElementById('sel-left-image-zone');
+  var nameEl = document.getElementById('sel-welcome-name');
   var guestLabel = document.getElementById('sel-guest-label');
-  if (!zone) return;
 
   var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
-  if (!isLoggedIn) return; // garde le label "Terrien·ne de passage"
 
-  // Connecté : tente de récupérer l'avatar depuis _userdata FA
+  /* ── Username ── */
+  var uname = nameEl ? nameEl.textContent.trim() : '';
+  if (!uname || uname === 'Visiteur' || uname === '{USERNAME}') {
+    // {USERNAME} n'a pas été remplacé par FA — on cherche dans les globals JS
+    if (typeof _userdata !== 'undefined') {
+      uname = _userdata['username'] || _userdata['user_name'] || uname;
+    }
+    if ((!uname || uname === 'Visiteur') && isLoggedIn) {
+      // Dernier recours : texte visible dans le Switcheroo (nom du compte actif)
+      var swName = document.querySelector('#switcheroo [class*="username"], #switcheroo [class*="name"]');
+      if (swName) uname = swName.textContent.trim();
+    }
+    if (uname && nameEl) nameEl.textContent = uname;
+  }
+
+  if (!isLoggedIn) return; // invité : garde le label CSS
+
+  /* ── Avatar ── */
   var avatarSrc = '';
   if (typeof _userdata !== 'undefined') {
-    if (_userdata['user_avatar']) avatarSrc = _userdata['user_avatar'];
-    else if (_userdata['user_avatar_real_width']) avatarSrc = _userdata['user_avatar'];
+    avatarSrc = _userdata['user_avatar'] || _userdata['avatar'] || '';
   }
-  // Fallback : cherche un img d'avatar déjà dans le DOM (ex: profil switcher)
+  // Fallback : première image dans le Switcheroo (avatar du compte actif)
   if (!avatarSrc) {
-    var swImg = document.querySelector('#switcheroo img, .sel-switch-avatar img');
-    if (swImg) avatarSrc = swImg.src;
+    var swImg = document.querySelector('#switcheroo img');
+    if (swImg && swImg.src) avatarSrc = swImg.src;
   }
 
   if (guestLabel) guestLabel.style.display = 'none';
@@ -295,14 +310,15 @@
     var img = document.createElement('img');
     img.src = avatarSrc;
     img.alt = '';
+    img.onerror = function() {
+      // si l'URL est invalide → monogramme
+      wrap.innerHTML = '<div class="sel-avatar-initial">' + (uname.charAt(0).toUpperCase() || '?') + '</div>';
+    };
     wrap.appendChild(img);
   } else {
-    // Pas d'avatar : monogramme
-    var name = (document.getElementById('sel-welcome-name') || {}).textContent || '';
-    var initial = name.trim().charAt(0).toUpperCase();
-    wrap.innerHTML = '<div class="sel-avatar-initial">' + (initial || '?') + '</div>';
+    wrap.innerHTML = '<div class="sel-avatar-initial">' + (uname.charAt(0).toUpperCase() || '?') + '</div>';
   }
-  zone.appendChild(wrap);
+  if (zone) zone.appendChild(wrap);
 })();
 //]]>
 </script>

@@ -137,14 +137,14 @@ img { display: block; max-width: 100%; }
 #sel-navbar {
   background: transparent;
   border-bottom: none;
-  padding: 12px 24px;
+  padding: 8px 24px;
 }
 
 .sel-navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 5px 12px;
   background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 14px;

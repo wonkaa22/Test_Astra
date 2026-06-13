@@ -149,23 +149,19 @@
   var nav = document.getElementById('sel-fa-nav');
   if (!nav) return;
 
-  // Liens à révéler (texte en minuscules)
-  var keep = ['accueil', 'rechercher', 'membres', "s'enregistrer", 'connexion', 'déconnexion', 'profil', 'admin'];
+  var keep = ['accueil', 'rechercher', 'membres', 'enregistrer', 'connexion', 'profil', 'admin'];
 
   nav.querySelectorAll('a').forEach(function(a) {
-    // Lire uniquement les nœuds texte directs (ignore <i>, <ion-icon>…)
-    var text = '';
-    a.childNodes.forEach(function(node) {
-      if (node.nodeType === 3) text += node.textContent;
-    });
-    text = text.trim().toLowerCase();
+    // Cloner le lien, supprimer tous les éléments non-texte, lire ce qui reste
+    var clone = a.cloneNode(true);
+    clone.querySelectorAll('i, ion-icon, img, svg, span.icon').forEach(function(el) { el.parentNode.removeChild(el); });
+    var text = clone.textContent.trim().toLowerCase();
 
     var ok = keep.some(function(k) { return text.indexOf(k) !== -1; });
     if (ok) {
-      // Révéler le <li> parent (class sel-show active le display:contents)
       var li = a.parentElement;
-      while (li && li.tagName !== 'LI') li = li.parentElement;
-      if (li) li.classList.add('sel-show');
+      while (li && li !== nav && li.tagName !== 'LI') li = li.parentElement;
+      if (li && li.tagName === 'LI') li.classList.add('sel-show');
       else a.style.display = 'inline-block';
     }
   });

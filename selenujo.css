@@ -172,7 +172,8 @@ img { display: block; max-width: 100%; }
 /* Masquer icônes et séparateurs même dans les li visibles */
 #sel-fa-nav i,
 #sel-fa-nav ion-icon,
-#sel-fa-nav img.nav-icon,
+#sel-fa-nav img,
+#sel-fa-nav svg,
 #sel-fa-nav .sep,
 #sel-fa-nav span.sep { display: none !important; }
 

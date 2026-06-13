@@ -148,7 +148,8 @@ img { display: block; max-width: 100%; }
   background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 14px;
-  width: 100%;
+  width: 1050px;
+  max-width: calc(100% - 48px);
 }
 
 /* Nav FA (GENERATED_NAV_BAR) re-stylée en pills */

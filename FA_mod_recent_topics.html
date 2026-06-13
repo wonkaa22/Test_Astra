@@ -33,7 +33,7 @@ function selFmtDates() {
     var lo = raw.toLowerCase();
     var out = '';
     if (lo.indexOf('aujourd') !== -1) {
-      var mt = raw.match(/(\d{1,2}):(\d{2})/);
+      var mt = raw.match(/(\d{1,2}):(\d\d)/);
       if (mt) out = mt[1] + 'h' + mt[2];
     } else if (lo.indexOf('hier') !== -1) {
       out = 'hier';

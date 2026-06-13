@@ -1,0 +1,31 @@
+  <!-- Switcheroo — scripts et initialisation -->
+  <script src="https://cdn.jsdelivr.net/gh/caezd/switcheroo@master/monomer.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/caezd/switcheroo@master/switcheroo.js"></script>
+  <script>
+    (function() {
+      if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
+        new Switcheroo('#switcheroo', {
+          logo: '',
+          enableReorder: true,
+          updateAvatar: true,
+          confirm: true,
+          deleteIcon: '×',
+          addIcon: '+',
+        }, {
+          button: { add: "Associer un personnage" },
+          msg: {
+            error:   "Une erreur est survenue lors du Switcheroo.",
+            confirm: "Confirmer le changement de personnage ?",
+          },
+          modal: {
+            password_label: "Mot de passe",
+            username_label: "Nom d'utilisateur",
+            login_button:   "Connexion",
+          }
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>

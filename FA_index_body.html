@@ -267,79 +267,47 @@
 
 <script type="text/javascript">
 //<![CDATA[
-var SEL_GUEST_LIST = ['anonymous','visiteur','visitor','guest','invite'];
-function selIsGuest(u) {
-  if (!u) return true;
-  var l = u.toLowerCase().trim();
-  for (var i = 0; i < SEL_GUEST_LIST.length; i++) {
-    if (l.indexOf(SEL_GUEST_LIST[i]) === 0) return true;
-  }
-  return false;
-}
-function selGetUname() {
-  var nameEl = document.getElementById('sel-welcome-name');
-  var u = nameEl ? nameEl.textContent.trim() : '';
-  if (u && !selIsGuest(u)) return u;
-  var sp = document.getElementById('sel-session-username');
-  if (sp) { u = sp.textContent.trim(); if (u && !selIsGuest(u)) return u; }
-  try { if (typeof _userdata !== 'undefined' && _userdata['username']) { u = String(_userdata['username']); if (!selIsGuest(u)) return u; } } catch(ex) { return ''; }
-  return '';
-}
-function selGetAvatar() {
-  var sp = document.getElementById('sel-session-avatar');
-  if (sp) {
-    var im = sp.querySelector('img');
-    if (im) return im.src || im.getAttribute('src') || '';
-    var tx = sp.textContent.trim();
-    if (tx && tx.charAt(0) !== '{') return tx;
-  }
-  try { if (typeof _userdata !== 'undefined' && _userdata['user_avatar']) return String(_userdata['user_avatar']); } catch(ex) { return ''; }
-  var si = document.querySelector('#switcheroo img');
-  return (si && si.src) ? si.src : '';
-}
+var selDone = false;
 function selWelcomeRender() {
-  var zone    = document.getElementById('sel-left-image-zone');
-  var nameEl  = document.getElementById('sel-welcome-name');
-  var guestLb = document.getElementById('sel-guest-label');
+  if (selDone) return;
+  selDone = true;
   var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+  if (!isLoggedIn) return;
 
-  var uname = selGetUname();
-  if (!uname && isLoggedIn) {
-    var sw = document.getElementById('switcheroo');
-    if (sw) {
-      var walker = document.createTreeWalker(sw, 4, null, false);
-      var nd;
-      while ((nd = walker.nextNode())) {
-        var tv = nd.nodeValue.trim();
-        if (tv.length > 1) { uname = tv; break; }
+  var nameEl = document.getElementById('sel-welcome-name');
+  var guestLb = document.getElementById('sel-guest-label');
+  var zone = document.getElementById('sel-left-image-zone');
+
+  var uname = '';
+  var sw = document.getElementById('switcheroo');
+  if (sw) {
+    var walker = document.createTreeWalker(sw, 4, null, false);
+    var nd;
+    while ((nd = walker.nextNode())) {
+      var tv = nd.nodeValue.trim();
+      if (tv.length > 1 && tv.toLowerCase().indexOf('anonymous') !== 0) {
+        uname = tv;
+        break;
       }
     }
   }
-  if (uname && nameEl && isLoggedIn) nameEl.textContent = uname;
-
-  if (!isLoggedIn) return;
+  if (uname && nameEl) nameEl.textContent = uname;
   if (guestLb) guestLb.style.display = 'none';
-  if (!zone) return;
 
-  var avatarSrc = selGetAvatar();
-  if (avatarSrc) {
+  if (!zone) return;
+  var swImg = document.querySelector('#switcheroo img');
+  if (swImg && swImg.src) {
     var wrap = document.createElement('div');
     wrap.className = 'sel-avatar-wrap';
     var img = document.createElement('img');
-    img.src = avatarSrc;
+    img.src = swImg.src;
     img.alt = '';
     wrap.appendChild(img);
     zone.appendChild(wrap);
   }
-  // Pas d'avatar : le fond gradient de .sel-left-image s'affiche naturellement
 }
-
-/* Lance au chargement complet (Switcheroo est initialisé à ce stade) */
-if (window.addEventListener) {
-  window.addEventListener('load', selWelcomeRender, false);
-} else if (window.attachEvent) {
-  window.attachEvent('onload', selWelcomeRender);
-}
+window.onload = selWelcomeRender;
+setTimeout(selWelcomeRender, 1500);
 //]]>
 </script>
 

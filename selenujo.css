@@ -147,18 +147,18 @@ img { display: block; max-width: 100%; }
   padding: 10px 0;
 }
 
-/* Liens de navigation droite */
-.sel-nav-links {
+/* Nav FA (GENERATED_NAV_BAR) re-stylée en pills */
+#sel-fa-nav {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
 }
 
-.sel-nav-link {
+#sel-fa-nav a {
   display: inline-block;
   padding: 6px 14px;
-  background: var(--surface-1);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 99px;
   font-family: var(--font-ui);
@@ -167,18 +167,32 @@ img { display: block; max-width: 100%; }
   transition: color 0.2s, border-color 0.2s, background 0.2s;
   white-space: nowrap;
 }
-.sel-nav-link:hover {
+#sel-fa-nav a:hover {
   color: var(--gold);
   border-color: var(--gold-faint);
-  background: var(--surface-2);
+  background: var(--surface-4);
 }
-.sel-nav-link--accent {
+
+/* Déconnexion / Connexion — accent doré */
+#sel-fa-nav a[href*="logout"],
+#sel-fa-nav a[href*="login"] {
   border-color: var(--gold-faint);
   color: var(--gold-dim);
 }
-.sel-nav-link--accent:hover {
+#sel-fa-nav a[href*="logout"]:hover,
+#sel-fa-nav a[href*="login"]:hover {
   border-color: var(--gold);
   color: var(--gold);
+}
+
+/* Liens à masquer (non pertinents pour la navbar) */
+#sel-fa-nav a[href*="calendar"],
+#sel-fa-nav a[href*="images_list"],
+#sel-fa-nav a[href*="discover"],
+#sel-fa-nav a[href*="faq"],
+#sel-fa-nav a[href*="groupcp"],
+#sel-fa-nav a[href*="privmsg"] {
+  display: none;
 }
 
 /* Bouton toggle thème lune/soleil */

@@ -133,12 +133,18 @@ img { display: block; max-width: 100%; }
   padding: 6px 10px;
 }
 
+/* Navbar — fond et séparateur */
+#sel-navbar {
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+}
+
 /* Navbar inner — pilule à gauche, liens à droite */
 .sel-navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 10px 0;
 }
 
 /* Liens de navigation droite */

@@ -107,9 +107,19 @@
     var postIcon = tmp.querySelector('a.last-post-icon, a[class*="post-icon"]');
     var postUrl = postIcon ? postIcon.href : '';
 
-    /* supprimer icones et spans */
+    /* supprimer icones, spans, et noeuds texte parasites (fleche FA) */
     var junk = tmp.querySelectorAll('img, span, a.last-post-icon, a[class*="post-icon"]');
     for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
+    /* nettoyer noeuds texte contenant fleches ou espaces seuls */
+    (function cleanText(node) {
+      var children = Array.prototype.slice.call(node.childNodes);
+      for (var c = 0; c < children.length; c++) {
+        if (children[c].nodeType === 3) {
+          children[c].textContent = children[c].textContent.replace(/[→»›➜>]+/g, '').trim();
+          if (!children[c].textContent) { children[c].parentNode.removeChild(children[c]); }
+        } else { cleanText(children[c]); }
+      }
+    })(tmp);
     authorRaw.innerHTML = tmp.innerHTML.trim();
     authorRaw.className = 'lm-author';
 
@@ -134,7 +144,7 @@
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, 'text/html');
             /* FA profile: avatar dans img.img ou img dans .profile-avatar ou premier img avec src avatar */
-            var img = doc.querySelector('img.img, .avatar img, .profile-avatar img');
+            var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
             if (!img) {
               var allImgs = doc.querySelectorAll('img[src]');
               for (var k = 0; k < allImgs.length; k++) {

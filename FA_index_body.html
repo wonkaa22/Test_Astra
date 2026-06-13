@@ -50,7 +50,8 @@
     <div class="sel-col-left">
       <div class="sel-welcome-text">
         <em>Bienvenue,</em>
-        <strong id="sel-welcome-name">{USERNAME}</strong>
+        <strong id="sel-welcome-name"></strong>
+        <strong class="sel-guest-name" id="sel-guest-name">Terrien&#xB7;ne de passage</strong>
       </div>
       <div class="sel-text-image-group">
         <div class="sel-text-block">
@@ -62,9 +63,7 @@
             <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
           </div>
         </div>
-        <div class="sel-left-image" id="sel-left-image-zone">
-          <span class="sel-guest-label" id="sel-guest-label">Terrien·ne de passage</span>
-        </div>
+        <div class="sel-left-image"></div>
       </div>
     </div>
 
@@ -268,15 +267,23 @@
 <script type="text/javascript">
 //<![CDATA[
 var selDone = false;
+var SEL_UI_WORDS = ['anonymous','associer','ajouter','personnage','compte','connect'];
+function selIsUI(t) {
+  var l = t.toLowerCase();
+  for (var i = 0; i < SEL_UI_WORDS.length; i++) {
+    if (l.indexOf(SEL_UI_WORDS[i]) !== -1) return true;
+  }
+  return false;
+}
 function selWelcomeRender() {
   if (selDone) return;
   selDone = true;
   var isLoggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+  var nameEl = document.getElementById('sel-welcome-name');
+  var guestEl = document.getElementById('sel-guest-name');
   if (!isLoggedIn) return;
 
-  var nameEl = document.getElementById('sel-welcome-name');
-  var guestLb = document.getElementById('sel-guest-label');
-  var zone = document.getElementById('sel-left-image-zone');
+  if (guestEl) guestEl.style.display = 'none';
 
   var uname = '';
   var sw = document.getElementById('switcheroo');
@@ -285,26 +292,21 @@ function selWelcomeRender() {
     var nd;
     while ((nd = walker.nextNode())) {
       var tv = nd.nodeValue.trim();
-      if (tv.length > 1 && tv.toLowerCase().indexOf('anonymous') !== 0) {
+      if (tv.length > 2 && !selIsUI(tv)) {
         uname = tv;
         break;
       }
     }
   }
-  if (uname && nameEl) nameEl.textContent = uname;
-  if (guestLb) guestLb.style.display = 'none';
-
-  if (!zone) return;
-  var swImg = document.querySelector('#switcheroo img');
-  if (swImg && swImg.src) {
-    var wrap = document.createElement('div');
-    wrap.className = 'sel-avatar-wrap';
-    var img = document.createElement('img');
-    img.src = swImg.src;
-    img.alt = '';
-    wrap.appendChild(img);
-    zone.appendChild(wrap);
+  if (!uname) {
+    try {
+      var ud = (typeof _userdata !== 'undefined') ? _userdata : null;
+      if (ud && ud['username'] && !selIsUI(String(ud['username']))) {
+        uname = String(ud['username']);
+      }
+    } catch(ex) { uname = ''; }
   }
+  if (uname && nameEl) nameEl.textContent = uname;
 }
 window.onload = selWelcomeRender;
 setTimeout(selWelcomeRender, 1500);

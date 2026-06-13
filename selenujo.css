@@ -1742,10 +1742,12 @@ button.switcheroo__form-button {
   .sel-w-staff-col  { grid-column: 2; grid-row: 2; }
   .sel-w-lastposts  { grid-column: 1; grid-row: 3; }
   .sel-w-moon       { grid-column: 2; grid-row: 3; min-height: 140px; }
+  .sel-predef-item  { aspect-ratio: 3/2; }
 }
 @media (max-width: 599px) {
   .sel-banner { height: 100px; }
   .sel-main-block { padding: 12px; gap: 10px; }
+  .sel-predef-item  { aspect-ratio: 2/1; }
   .sel-col-right { grid-template-columns: 1fr; }
   .sel-w-predefinis, .sel-w-preliens, .sel-w-carousel,
   .sel-w-staff-col, .sel-w-lastposts, .sel-w-moon { grid-column: 1; grid-row: auto; }

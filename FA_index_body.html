@@ -1,0 +1,95 @@
+{JAVASCRIPT}
+
+<!-- Formulaire de connexion FA (requis pour la fonctionnalité, masqué visuellement) -->
+<!-- BEGIN switch_user_login_form_header -->
+<div style="display:none;">
+  <form action="{S_LOGIN_ACTION}" method="post" name="form_login">
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <input type="checkbox" name="autologin" {AUTOLOGIN_CHECKED} />
+    {S_HIDDEN_FIELDS}
+    <input type="submit" name="login" value="{L_LOGIN}" />
+    <!-- BEGIN switch_social_login -->
+    <!-- BEGIN fb_connect --><div class="fb-login-button"></div><!-- END fb_connect -->
+    <!-- BEGIN topicit_connect --><div class="ti-connect"></div><!-- END topicit_connect -->
+    <!-- END switch_social_login -->
+  </form>
+</div>
+<!-- END switch_user_login_form_header -->
+
+<!-- Message admin index (conservé, peut être utile) -->
+<!-- BEGIN message_admin_index -->
+<div class="forum-width" style="margin-bottom:12px;">
+  <!-- BEGIN message_admin_titre -->
+  <div style="padding:10px 16px; background:rgba(212,163,115,0.08); border:1px solid rgba(212,163,115,0.2); border-radius:10px; font-family:'Cormorant Garamond',serif; font-size:18px; color:rgba(212,163,115,0.9);">
+    {message_admin_index.message_admin_titre.MES_TITRE}
+  </div>
+  <!-- END message_admin_titre -->
+  <!-- BEGIN message_admin_txt -->
+  <div style="padding:8px 16px; font-size:12px; color:rgba(200,207,224,0.6);">
+    {message_admin_index.message_admin_txt.MES_TXT}
+  </div>
+  <!-- END message_admin_txt -->
+</div>
+<!-- END message_admin_index -->
+
+{CHATBOX_TOP}
+
+<!-- ═══════════════════════════════════════
+     CONTENU PRINCIPAL — catégories du forum
+     Rendu par index_box pour chaque catégorie
+     ═══════════════════════════════════════ -->
+<div class="forum-width" style="display:flex; flex-direction:column; gap:28px; padding:0 0 28px;">
+  {BOARD_INDEX}
+</div>
+
+<!-- Bloc "qui est en ligne" FA — masqué, remplacé par notre footer -->
+<!-- BEGIN disable_viewonline -->
+<div style="display:none;">
+  {TOTAL_USERS_ONLINE}
+  {RECORD_USERS}
+  {LOGGED_IN_USER_LIST}
+  {L_ONLINE_USERS}
+  {L_CONNECTED_MEMBERS}
+  {L_WHOSBIRTHDAY_TODAY}{L_WHOSBIRTHDAY_WEEK}
+  <!-- BEGIN switch_chatbox_activate -->
+  {TOTAL_CHATTERS_ONLINE} {CHATTERS_LIST}
+  <!-- BEGIN switch_chatbox_popup -->
+  <div id="chatbox_popup"></div>
+  <script type="text/javascript">
+    insertChatBoxPopup('{disable_viewonline.switch_chatbox_activate.switch_chatbox_popup.U_FRAME_CHATBOX}', '{L_CLICK_TO_JOIN_CHAT}');
+  </script>
+  <!-- END switch_chatbox_popup -->
+  <!-- END switch_chatbox_activate -->
+</div>
+<!-- END disable_viewonline -->
+
+{CHATBOX_BOTTOM}
+
+<!-- Formulaire de connexion footer FA (masqué) -->
+<!-- BEGIN switch_user_login_form_footer -->
+<div style="display:none;">
+  <form action="{S_LOGIN_ACTION}" method="post" name="form_login">
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <input type="checkbox" name="autologin" {AUTOLOGIN_CHECKED} />
+    {S_HIDDEN_FIELDS}
+    <input type="submit" name="login" value="{L_LOGIN}" />
+    <!-- BEGIN switch_social_login -->
+    <!-- BEGIN fb_connect --><div class="fb-login-button"></div><!-- END fb_connect -->
+    <!-- BEGIN topicit_connect --><div class="ti-connect"></div><!-- END topicit_connect -->
+    <!-- END switch_social_login -->
+  </form>
+</div>
+<!-- END switch_user_login_form_footer -->
+
+<!-- Légende FA (masquée) -->
+<!-- BEGIN switch_legend -->
+<div style="display:none;">
+  <img src="{FORUM_NEW_IMG}" alt="{L_NEW_POSTS}" />
+  <img src="{FORUM_IMG}" alt="{L_NO_NEW_POSTS}" />
+  <img src="{FORUM_LOCKED_IMG}" alt="{L_FORUM_LOCKED}" />
+</div>
+<!-- END switch_legend -->
+
+{AUTO_DST}

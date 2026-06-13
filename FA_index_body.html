@@ -302,6 +302,91 @@ function selWelcomeRender() {
   }
   if (uname && nameEl) { nameEl.textContent = uname; selDone = true; }
 }
+function selAdminTransform() {
+  var blocks = document.querySelectorAll('.cat-block');
+  var ab = null;
+  for (var bi = 0; bi < blocks.length; bi++) {
+    var tt = blocks[bi].querySelector('.cat-title');
+    if (tt && tt.textContent.trim() === 'Administration') { ab = blocks[bi]; break; }
+  }
+  if (!ab || ab.classList.contains('is-admin')) return;
+  var rows = ab.querySelectorAll('.forum-row');
+  var rowArr = [];
+  for (var ri = 0; ri < rows.length; ri++) {
+    var nEl = rows[ri].querySelector('.forum-name');
+    if (!nEl) continue;
+    var nm = nEl.textContent.trim();
+    var subAs = rows[ri].querySelectorAll('.subforums a');
+    var subs = [];
+    for (var si = 0; si < subAs.length; si++) {
+      subs.push([subAs[si].textContent.trim(), subAs[si].href]);
+    }
+    var lmEl = rows[ri].querySelector('.last-msg a');
+    var lm = lmEl ? [lmEl.textContent.trim(), lmEl.href] : null;
+    rowArr.push([nm, nEl.href, subs, lm]);
+  }
+  function findSec(nm) {
+    for (var fi = 0; fi < rowArr.length; fi++) {
+      if (rowArr[fi][0] === nm) return rowArr[fi];
+    }
+    return null;
+  }
+  function btn(txt, href) { return '<a href="' + href + '" class="adm-btn">' + txt + '</a>'; }
+  function mkbtns(sec) {
+    if (!sec) return '';
+    var bh = '';
+    var ls = sec[2];
+    for (var ki = 0; ki < ls.length; ki++) { bh += btn(ls[ki][0], ls[ki][1]); }
+    return bh;
+  }
+  function mklm(sec) {
+    if (!sec || !sec[3]) return '';
+    return '<div class="adm-last-msg"><a href="' + sec[3][1] + '">' + sec[3][0] + '</a></div>';
+  }
+  var p = findSec('Personnages');
+  var v = findSec('Vie sur la Lune');
+  var g = findSec('Gestion');
+  var GB = 'https://astraluna.forumactif.com/h7-guidebook-v7';
+  var html =
+    '<div class="adm-guidebook">' +
+      '<div class="adm-gb-left">' +
+        '<h2 class="adm-gb-title">Guidebook</h2>' +
+        '<a class="adm-gb-link" href="' + GB + '#contexte">Contexte</a>' +
+        '<a class="adm-gb-link" href="' + GB + '#reglement">Règlement</a>' +
+        '<a class="adm-gb-link" href="' + GB + '#groupes">Groupes</a>' +
+      '</div>' +
+      '<div class="adm-gb-blob"></div>' +
+    '</div>' +
+    '<div class="adm-lower">' +
+      '<div class="adm-left-col">' +
+        '<div class="adm-sub-block">' +
+          '<div class="adm-sub-inner">' +
+            '<div class="adm-sub-links">' +
+              '<div class="adm-sub-title"><a href="' + (p ? p[1] : '#') + '">Personnages</a></div>' +
+              mkbtns(p) +
+            '</div>' +
+            '<div class="adm-sub-img"></div>' +
+          '</div>' +
+          mklm(p) +
+        '</div>' +
+        '<div class="adm-sub-block">' +
+          '<div class="adm-sub-title"><a href="' + (v ? v[1] : '#') + '">Vie sur la Lune</a></div>' +
+          '<div class="adm-btn-grid2">' + mkbtns(v) + '</div>' +
+          mklm(v) +
+        '</div>' +
+      '</div>' +
+      '<div class="adm-sub-block">' +
+        '<div class="adm-sub-title"><a href="' + (g ? g[1] : '#') + '">Gestion</a></div>' +
+        '<div class="adm-gestion-mid">' +
+          '<div class="adm-gestion-img"></div>' +
+          '<div class="adm-gestion-btns">' + mkbtns(g) + '</div>' +
+        '</div>' +
+        mklm(g) +
+      '</div>' +
+    '</div>';
+  var content = ab.querySelector('.cat-content');
+  if (content) { content.innerHTML = html; ab.classList.add('is-admin'); }
+}
 function selFormatDates() {
   var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
   var els = document.querySelectorAll('.sel-lp-date');
@@ -337,6 +422,7 @@ function selFormatDates() {
 function selRunAll() {
   selWelcomeRender();
   selFormatDates();
+  selAdminTransform();
 }
 window.onload = selRunAll;
 setTimeout(selRunAll, 800);

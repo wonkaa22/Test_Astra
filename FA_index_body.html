@@ -816,15 +816,19 @@ selHorsRpTransform();
     });
   }
 
-  /* ── Statistiques : nombre de membres via span cachée dans overall_footer_begin ── */
+  /* ── Statistiques : nombre de membres via memberlist ── */
   function selFetchMemberCount() {
     var el = document.querySelector('.stat-num[data-stat="members"]');
     if (!el) { return; }
-    var src = document.getElementById('selTotalMembers');
-    if (src) {
-      var val = (src.textContent || '').trim();
-      if (val && val !== '0') { el.textContent = val; }
-    }
+    fetch('/memberlist')
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var m = html.match(/(\d+)\s*r[ée]sultat/i);
+        if (!m) { m = html.match(/sur\s+(\d+)/i); }
+        if (!m) { m = html.match(/(\d+)\s*membre/i); }
+        if (m) { el.textContent = m[1]; }
+      })
+      .catch(function(e) { return e; });
   }
 
   /* ── Zone 1 : extrait le "qui est en ligne" du bloc caché FA ── */
@@ -860,6 +864,12 @@ selHorsRpTransform();
       var membersEl = document.createElement('div');
       membersEl.className = 'sel-online-members';
       membersEl.innerHTML = colonIdx !== -1 ? memberLine.substring(colonIdx + 1).trim() : memberLine;
+      var mLinks = membersEl.querySelectorAll('a');
+      mLinks.forEach(function(a) {
+        a.innerHTML = a.textContent.trim();
+        a.removeAttribute('style');
+      });
+      membersEl.querySelectorAll('span').forEach(function(s) { s.parentNode && s.parentNode.removeChild(s); });
       wrap.appendChild(membersEl);
     }
     zone.appendChild(wrap);

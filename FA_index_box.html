@@ -114,6 +114,8 @@
     var links = tmp.querySelectorAll('a');
     var authorInner = '';
     for (var li = 0; li < links.length; li++) { authorInner += links[li].outerHTML; }
+    /* fallback invité : pas de lien, juste le texte */
+    if (!authorInner) { authorInner = tmp.textContent.trim(); }
     authorRaw.innerHTML = authorInner;
     authorRaw.className = 'lm-author';
 

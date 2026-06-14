@@ -807,13 +807,14 @@ selHorsRpTransform();
 
   /* ── Statistiques : corrige les variables FA qui retournent une phrase ── */
   function selFixStats() {
-    document.querySelectorAll('.stat-num').forEach(function(el) {
-      var txt = el.textContent || '';
+    var els = document.querySelectorAll('.stat-num');
+    for (var i = 0; i < els.length; i++) {
+      var txt = els[i].textContent || '';
       if (txt.length > 6) {
         var m = txt.match(/\d+/);
-        if (m) { el.textContent = m[0]; }
+        if (m) { els[i].textContent = m[0]; }
       }
-    });
+    }
   }
 
   /* ── Statistiques : nombre de membres via memberlist ── */
@@ -823,46 +824,54 @@ selHorsRpTransform();
     fetch('/memberlist')
       .then(function(r) { return r.text(); })
       .then(function(html) {
+        /* essaie d'abord la pagination "sur X" */
         var m = html.match(/sur\s+(\d+)/i);
         if (!m) { m = html.match(/(\d+)\s*r[ée]sultat/i); }
-        if (!m) {
-          var ids = {};
-          (html.match(/href="\/u(\d+)"/g) || []).forEach(function(h) {
-            ids[h.replace(/\D/g,'')] = true;
-          });
-          var c = Object.keys(ids).length;
-          if (c > 0) { el.textContent = c; }
-          return;
+        if (!m) { m = html.match(/membres?\s+enregistr[ée]s?\s*[:\-]?\s*(\d+)/i); }
+        if (m) { el.textContent = m[1]; return; }
+        /* fallback : compter les liens de profil uniques /uN */
+        var matches = html.match(/href="\/u\d+"/g) || [];
+        var ids = {};
+        for (var i = 0; i < matches.length; i++) {
+          var num = matches[i].replace(/\D/g, '');
+          ids[num] = 1;
         }
-        if (m) { el.textContent = m[1]; }
+        var c = Object.keys(ids).length;
+        if (c > 0) { el.textContent = c; }
       })
       .catch(function(e) { return e; });
   }
 
-  /* ── Zone 1 : extrait le "qui est en ligne" du bloc caché FA ── */
+  /* ── Zone 1 : "qui est en ligne" — cherche dans tout le DOM (visible ou caché) ── */
   function selWhoIsOnline() {
     var zone = document.getElementById('selZone1');
     if (!zone) { return; }
+
+    /* Cherche un élément (div ou td) contenant le texte "en ligne" produit par FA */
     var src = null;
-    var hidden = document.querySelectorAll('div[style*="display:none"]');
-    for (var i = 0; i < hidden.length; i++) {
-      if (hidden[i].textContent.indexOf('utilisateur') !== -1 &&
-          hidden[i].textContent.indexOf('en ligne') !== -1) {
-        src = hidden[i]; break;
+    var allDivs = document.querySelectorAll('div, td');
+    for (var i = 0; i < allDivs.length; i++) {
+      var t = allDivs[i].textContent || '';
+      if (t.indexOf('utilisateur') !== -1 && t.indexOf('en ligne') !== -1 &&
+          t.length < 2000) {
+        src = allDivs[i]; break;
       }
     }
     if (!src) { return; }
+
     var html = src.innerHTML;
     var totalMatch = src.textContent.match(/(\d+)\s+utilisateurs? en ligne/i);
     var total = totalMatch ? totalMatch[1] : '0';
+
     var wrap = document.createElement('div');
     wrap.className = 'sel-online-wrap';
     var countEl = document.createElement('div');
     countEl.className = 'sel-online-count';
     countEl.textContent = total + ' lunaire' + (parseInt(total) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
-    /* Extraire les liens de la section "Utilisateurs enregistrés :" jusqu'au prochain <br */
-    var m = html.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
+
+    /* Extraire les liens membres (section "Utilisateurs enregistrés :") */
+    var m = html.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)(?:<br|$)/i);
     if (m) {
       var sDiv = document.createElement('div');
       sDiv.innerHTML = m[1];

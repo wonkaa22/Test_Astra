@@ -811,8 +811,10 @@ selHorsRpTransform();
     var elPosts   = document.querySelector('.stat-num[data-stat="posts"]');
 
     /* Essaie d'abord les spans injectés par mod_statistics */
-    var usersSpan = document.getElementById('selTotalUsers');
-    var postsSpan = document.getElementById('selTotalPosts');
+    var usersSpan = document.getElementById('selTotalUsers') ||
+                    document.querySelector('.mod-stats-users');
+    var postsSpan = document.getElementById('selTotalPosts') ||
+                    document.querySelector('.mod-stats-posts');
     if (usersSpan && elMembers) {
       var uNum = (usersSpan.textContent || '').match(/\d+/);
       if (uNum) { elMembers.textContent = uNum[0]; }
@@ -849,10 +851,12 @@ selHorsRpTransform();
       totalText = totalSpan.textContent || '';
       listHtml  = listSpan ? (listSpan.innerHTML || '') : '';
     } else {
-      /* Fallback : parse le HTML brut — fonctionne si portail chargé en synchrone */
-      var bHtml = document.body.innerHTML;
-      var tM = bHtml.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
+      /* Fallback : textContent pour le chiffre (évite les balises HTML autour du nb) */
+      var bText = document.body.textContent || '';
+      var tM = bText.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
       if (tM) { totalText = tM[1] + ' utilisateurs en ligne'; }
+      /* innerHTML pour la liste (on a besoin des liens <a>) */
+      var bHtml = document.body.innerHTML;
       var lM = bHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
       if (lM) { listHtml = lM[1]; }
     }

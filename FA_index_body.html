@@ -805,6 +805,19 @@ selHorsRpTransform();
     "5": { title: "Groupe 5", text: "Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l'administration.", link: "#" }
   };
 
+  /* ── Construit la ligne "X lunaires et Y terriens" ── */
+  function selBuildCount(txt) {
+    var rM = txt.match(/(\d+)\s+enregistr[ée]s?/i);
+    var gM = txt.match(/(\d+)\s+invit[ée]s?/i);
+    var reg   = rM ? parseInt(rM[1], 10) : 0;
+    var guest = gM ? parseInt(gM[1], 10) : 0;
+    var parts = [];
+    if (reg > 0)   { parts.push(reg   + ' lunaire'  + (reg   > 1 ? 's' : '')); }
+    if (guest > 0) { parts.push(guest + ' terrien'  + (guest > 1 ? 's' : '')); }
+    if (parts.length === 0) { return 'Aucun lunaire en ligne'; }
+    return parts.join(' et ') + ' en ce moment';
+  }
+
   /* ── Statistiques : spans portail OU fallback body.innerHTML ── */
   function selFixStats() {
     var elMembers = document.querySelector('.stat-num[data-stat="members"]');
@@ -861,14 +874,11 @@ selHorsRpTransform();
       if (lM) { listHtml = lM[1]; }
     }
 
-    var totalMatch = totalText.match(/(\d+)/);
-    var total = totalMatch ? totalMatch[1] : '0';
-
     var wrap = document.createElement('div');
     wrap.className = 'sel-online-wrap';
     var countEl = document.createElement('div');
     countEl.className = 'sel-online-count';
-    countEl.textContent = total + ' lunaire' + (parseInt(total, 10) > 1 ? 's' : '') + ' en ligne';
+    countEl.textContent = selBuildCount(document.body.textContent || '');
     wrap.appendChild(countEl);
 
     if (listHtml) {
@@ -968,15 +978,11 @@ selHorsRpTransform();
   window.addEventListener('load', function() {
     selFooterReorder();
 
-    /* ── Met à jour le count Zone 1 si encore à 0 ── */
+    /* ── Met à jour le count Zone 1 (portail chargé maintenant) ── */
     var countEl = document.querySelector('.sel-online-count');
-    if (countEl && countEl.textContent.indexOf('0') === 0) {
-      var bText2 = document.body.textContent || '';
-      var tM2 = bText2.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
-      if (tM2 && tM2[1] !== '0') {
-        var n = parseInt(tM2[1], 10);
-        countEl.textContent = n + ' lunaire' + (n > 1 ? 's' : '') + ' en ligne';
-      }
+    if (countEl) {
+      var newCount = selBuildCount(document.body.textContent || '');
+      countEl.textContent = newCount;
     }
 
     /* ── Met à jour le compte membres via fetch /memberlist ── */

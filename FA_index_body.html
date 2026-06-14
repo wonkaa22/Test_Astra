@@ -845,29 +845,12 @@ selHorsRpTransform();
       .catch(function(e) { return e; });
   }
 
-  function selFooterReorder() {
-    var footer = document.querySelector('.sel-footer-wrap');
-    if (!footer) { return; }
-    var popup = document.getElementById('chatbox_popup');
-    if (!popup) { return; }
-    var footerParent = footer.parentNode;
-    var target = popup;
-    while (target && target.parentNode !== footerParent) {
-      target = target.parentNode;
-    }
-    if (target && target.parentNode === footerParent) {
-      footerParent.insertBefore(footer, target);
-    }
-  }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
-      selFooterReorder();
       selGroupeInit();
       selNouveauAvatar();
     });
   } else {
-    selFooterReorder();
     selGroupeInit();
     selNouveauAvatar();
   }

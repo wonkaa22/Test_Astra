@@ -816,18 +816,15 @@ selHorsRpTransform();
     });
   }
 
-  /* ── Statistiques : nombre de membres via memberlist ── */
+  /* ── Statistiques : nombre de membres via span cachée dans overall_footer_begin ── */
   function selFetchMemberCount() {
     var el = document.querySelector('.stat-num[data-stat="members"]');
     if (!el) { return; }
-    fetch('/memberlist')
-      .then(function(r) { return r.text(); })
-      .then(function(html) {
-        var m = html.match(/(\d+)\s+membres? enregistr/i);
-        if (!m) { m = html.match(/total.*?(\d+)\s+membres?/i); }
-        if (m) { el.textContent = m[1]; }
-      })
-      .catch(function(e) { return e; });
+    var src = document.getElementById('selTotalMembers');
+    if (src) {
+      var val = (src.textContent || '').trim();
+      if (val && val !== '0') { el.textContent = val; }
+    }
   }
 
   /* ── Zone 1 : extrait le "qui est en ligne" du bloc caché FA ── */
@@ -848,7 +845,7 @@ selHorsRpTransform();
     var total = totalMatch ? totalMatch[1] : '0';
     var memberLine = '';
     for (var j = 0; j < lines.length; j++) {
-      if (lines[j].indexOf('gistr') !== -1 && lines[j].indexOf('24') === -1 && lines[j].indexOf('heure') === -1) {
+      if (lines[j].indexOf('href="/u') !== -1 && lines[j].indexOf('24') === -1 && lines[j].indexOf('heure') === -1) {
         memberLine = lines[j]; break;
       }
     }
@@ -856,7 +853,7 @@ selHorsRpTransform();
     wrap.className = 'sel-online-wrap';
     var countEl = document.createElement('div');
     countEl.className = 'sel-online-count';
-    countEl.textContent = total + ' en ligne';
+    countEl.textContent = total + ' lunaire' + (parseInt(total) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
     if (memberLine) {
       var colonIdx = memberLine.indexOf(':');

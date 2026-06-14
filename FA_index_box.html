@@ -93,8 +93,11 @@
   });
 
   /* Traitement de chaque bloc last-msg */
-  document.querySelectorAll('.last-msg').forEach(function(lm) {
+  var lastMsgs = document.querySelectorAll('.last-msg');
+  console.log('[sel] last-msg count:', lastMsgs.length);
+  lastMsgs.forEach(function(lm) {
     var authorRaw = lm.querySelector('.lm-author-raw');
+    console.log('[sel] authorRaw:', authorRaw ? 'OK' : 'NULL');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
     var brIdx = raw.toLowerCase().indexOf('<br');

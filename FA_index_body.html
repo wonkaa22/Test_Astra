@@ -842,39 +842,28 @@ selHorsRpTransform();
       .catch(function(e) { return e; });
   }
 
-  /* ── Zone 1 : "qui est en ligne" — cherche dans tout le DOM (visible ou caché) ── */
+  /* ── Zone 1 : "qui est en ligne" — parse le HTML brut de la page ── */
   function selWhoIsOnline() {
     var zone = document.getElementById('selZone1');
-    if (!zone) { return; }
+    if (!zone || zone.children.length > 0) { return; }
 
-    /* Cherche un élément (div ou td) contenant le texte "en ligne" produit par FA */
-    var src = null;
-    var allDivs = document.querySelectorAll('div, td');
-    for (var i = 0; i < allDivs.length; i++) {
-      var t = allDivs[i].textContent || '';
-      if (t.indexOf('utilisateur') !== -1 && t.indexOf('en ligne') !== -1 &&
-          t.length < 2000) {
-        src = allDivs[i]; break;
-      }
-    }
-    if (!src) { return; }
+    var bodyHtml = document.body.innerHTML;
 
-    var html = src.innerHTML;
-    var totalMatch = src.textContent.match(/(\d+)\s+utilisateurs? en ligne/i);
+    var totalMatch = bodyHtml.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
     var total = totalMatch ? totalMatch[1] : '0';
 
     var wrap = document.createElement('div');
     wrap.className = 'sel-online-wrap';
     var countEl = document.createElement('div');
     countEl.className = 'sel-online-count';
-    countEl.textContent = total + ' lunaire' + (parseInt(total) > 1 ? 's' : '') + ' en ligne';
+    countEl.textContent = total + ' lunaire' + (parseInt(total, 10) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
 
     /* Extraire les liens membres (section "Utilisateurs enregistrés :") */
-    var m = html.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)(?:<br|$)/i);
-    if (m) {
+    var membersMatch = bodyHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
+    if (membersMatch) {
       var sDiv = document.createElement('div');
-      sDiv.innerHTML = m[1];
+      sDiv.innerHTML = membersMatch[1];
       var uLinks = sDiv.querySelectorAll('a[href]');
       if (uLinks.length > 0) {
         var membersEl = document.createElement('div');
@@ -936,22 +925,21 @@ selHorsRpTransform();
 
   function selFooterReorder() {
     var footer = document.querySelector('.sel-footer-wrap');
-    var chatbox = document.querySelector('.panel.row3');
-    if (footer && chatbox && chatbox.parentNode === footer.parentNode) {
-      chatbox.parentNode.insertBefore(footer, chatbox);
+    if (!footer) { return; }
+    var parent = footer.parentNode;
+    if (!parent) { return; }
+    /* Trouve le premier .panel frère qui SUIT le footer */
+    var panels = parent.querySelectorAll('.panel');
+    for (var p = 0; p < panels.length; p++) {
+      if (panels[p].parentNode === parent &&
+          panels[p].compareDocumentPosition(footer) & 4) {
+        parent.insertBefore(footer, panels[p]);
+        return;
+      }
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      selFooterReorder();
-      selFixStats();
-      selFetchMemberCount();
-      selWhoIsOnline();
-      selGroupeInit();
-      selNouveauAvatar();
-    });
-  } else {
+  function selInit() {
     selFooterReorder();
     selFixStats();
     selFetchMemberCount();
@@ -959,6 +947,14 @@ selHorsRpTransform();
     selGroupeInit();
     selNouveauAvatar();
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', selInit);
+  } else {
+    selInit();
+  }
+  /* Retry au cas où FA injecte la chatbox après le DOMContentLoaded */
+  window.addEventListener('load', selFooterReorder);
 })();
 </script>
 

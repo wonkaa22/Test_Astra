@@ -805,39 +805,58 @@ selHorsRpTransform();
     "5": { title: "Groupe 5", text: "Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l'administration.", link: "#" }
   };
 
-  /* ── Statistiques : lit les spans injectés par mod_statistics ── */
+  /* ── Statistiques : spans portail OU fallback body.innerHTML ── */
   function selFixStats() {
-    var usersSpan = document.getElementById('selTotalUsers');
-    var postsSpan = document.getElementById('selTotalPosts');
-
     var elMembers = document.querySelector('.stat-num[data-stat="members"]');
     var elPosts   = document.querySelector('.stat-num[data-stat="posts"]');
 
+    /* Essaie d'abord les spans injectés par mod_statistics */
+    var usersSpan = document.getElementById('selTotalUsers');
+    var postsSpan = document.getElementById('selTotalPosts');
     if (usersSpan && elMembers) {
-      var uTxt = usersSpan.textContent || '';
-      var uNum = uTxt.match(/\d+/);
+      var uNum = (usersSpan.textContent || '').match(/\d+/);
       if (uNum) { elMembers.textContent = uNum[0]; }
     }
     if (postsSpan && elPosts) {
-      var pTxt = postsSpan.textContent || '';
-      var pNum = pTxt.match(/\d+/);
+      var pNum = (postsSpan.textContent || '').match(/\d+/);
       if (pNum) { elPosts.textContent = pNum[0]; }
+    }
+
+    /* Fallback : corrige la phrase FA si elle s'est glissée dans le span */
+    if (elPosts) {
+      var pTxt = elPosts.textContent || '';
+      if (pTxt.length > 6) {
+        var pFix = pTxt.match(/\d+/);
+        if (pFix) { elPosts.textContent = pFix[0]; }
+      }
     }
   }
 
-  function selFetchMemberCount() { /* remplacé par selFixStats via mod_statistics */ }
+  function selFetchMemberCount() { /* no-op */ }
 
-  /* ── Zone 1 : "qui est en ligne" — lit les spans injectés par mod_whoisonline ── */
+  /* ── Zone 1 : spans portail OU fallback body.innerHTML ── */
   function selWhoIsOnline() {
     var zone = document.getElementById('selZone1');
     if (!zone || zone.children.length > 0) { return; }
 
+    var totalText = '';
+    var listHtml  = '';
+
     var totalSpan = document.getElementById('selOnlineTotal');
     var listSpan  = document.getElementById('selOnlineList');
-    if (!totalSpan) { return; }
 
-    /* Compte : extrait le chiffre du texte FA (ex. "2 utilisateurs en ligne") */
-    var totalText  = totalSpan.textContent || '';
+    if (totalSpan) {
+      totalText = totalSpan.textContent || '';
+      listHtml  = listSpan ? (listSpan.innerHTML || '') : '';
+    } else {
+      /* Fallback : parse le HTML brut — fonctionne si portail chargé en synchrone */
+      var bHtml = document.body.innerHTML;
+      var tM = bHtml.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
+      if (tM) { totalText = tM[1] + ' utilisateurs en ligne'; }
+      var lM = bHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
+      if (lM) { listHtml = lM[1]; }
+    }
+
     var totalMatch = totalText.match(/(\d+)/);
     var total = totalMatch ? totalMatch[1] : '0';
 
@@ -848,28 +867,24 @@ selHorsRpTransform();
     countEl.textContent = total + ' lunaire' + (parseInt(total, 10) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
 
-    /* Liste des membres connectés */
-    if (listSpan) {
-      var listHtml = listSpan.innerHTML || '';
-      var membersMatch = listHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
-      if (membersMatch) {
-        var sDiv = document.createElement('div');
-        sDiv.innerHTML = membersMatch[1];
-        var uLinks = sDiv.querySelectorAll('a[href]');
-        if (uLinks.length > 0) {
-          var membersEl = document.createElement('div');
-          membersEl.className = 'sel-online-members';
-          for (var k = 0; k < uLinks.length; k++) {
-            var clean = document.createElement('a');
-            clean.href = uLinks[k].getAttribute('href');
-            clean.textContent = uLinks[k].textContent.trim();
-            membersEl.appendChild(clean);
-            if (k < uLinks.length - 1) {
-              membersEl.appendChild(document.createTextNode(', '));
-            }
+    if (listHtml) {
+      var membersMatch = listHtml.match ? listHtml : null;
+      var sDiv = document.createElement('div');
+      sDiv.innerHTML = listHtml;
+      var uLinks = sDiv.querySelectorAll('a[href]');
+      if (uLinks.length > 0) {
+        var membersEl = document.createElement('div');
+        membersEl.className = 'sel-online-members';
+        for (var k = 0; k < uLinks.length; k++) {
+          var clean = document.createElement('a');
+          clean.href = uLinks[k].getAttribute('href');
+          clean.textContent = uLinks[k].textContent.trim();
+          membersEl.appendChild(clean);
+          if (k < uLinks.length - 1) {
+            membersEl.appendChild(document.createTextNode(', '));
           }
-          wrap.appendChild(membersEl);
         }
+        wrap.appendChild(membersEl);
       }
     }
     zone.appendChild(wrap);
@@ -945,8 +960,15 @@ selHorsRpTransform();
   } else {
     selInit();
   }
-  /* Retry au cas où FA injecte la chatbox après le DOMContentLoaded */
-  window.addEventListener('load', selFooterReorder);
+  /* Retry sur window.load : chatbox + stats/zone1 si portail chargé en AJAX */
+  window.addEventListener('load', function() {
+    selFooterReorder();
+    selFixStats();
+    if (!document.getElementById('selZone1') ||
+        document.getElementById('selZone1').children.length === 0) {
+      selWhoIsOnline();
+    }
+  });
 })();
 </script>
 

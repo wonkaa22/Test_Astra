@@ -989,7 +989,7 @@ selHorsRpTransform();
         if (!count) {
           /* Compte les liens de profil uniques /uN */
           var links = html.match(/href="\/u\d+"/g) || [];
-          var ids = {};
+          var ids = new Object();
           for (var j = 0; j < links.length; j++) {
             ids[links[j].replace(/\D/g, '')] = 1;
           }

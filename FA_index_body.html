@@ -823,9 +823,17 @@ selHorsRpTransform();
     fetch('/memberlist')
       .then(function(r) { return r.text(); })
       .then(function(html) {
-        var m = html.match(/(\d+)\s*r[ée]sultat/i);
-        if (!m) { m = html.match(/sur\s+(\d+)/i); }
-        if (!m) { m = html.match(/(\d+)\s*membre/i); }
+        var m = html.match(/sur\s+(\d+)/i);
+        if (!m) { m = html.match(/(\d+)\s*r[ée]sultat/i); }
+        if (!m) {
+          var ids = {};
+          (html.match(/href="\/u(\d+)"/g) || []).forEach(function(h) {
+            ids[h.replace(/\D/g,'')] = true;
+          });
+          var c = Object.keys(ids).length;
+          if (c > 0) { el.textContent = c; }
+          return;
+        }
         if (m) { el.textContent = m[1]; }
       })
       .catch(function(e) { return e; });
@@ -838,39 +846,39 @@ selHorsRpTransform();
     var src = null;
     var hidden = document.querySelectorAll('div[style*="display:none"]');
     for (var i = 0; i < hidden.length; i++) {
-      if (hidden[i].textContent.indexOf('utilisateurs en ligne') !== -1 ||
-          hidden[i].textContent.indexOf('utilisateur en ligne') !== -1) {
+      if (hidden[i].textContent.indexOf('utilisateur') !== -1 &&
+          hidden[i].textContent.indexOf('en ligne') !== -1) {
         src = hidden[i]; break;
       }
     }
     if (!src) { return; }
-    var lines = src.innerHTML.split(/<br\s*\/?>/i);
+    var html = src.innerHTML;
     var totalMatch = src.textContent.match(/(\d+)\s+utilisateurs? en ligne/i);
     var total = totalMatch ? totalMatch[1] : '0';
-    var memberLine = '';
-    for (var j = 0; j < lines.length; j++) {
-      if (lines[j].indexOf('href="/u') !== -1 && lines[j].indexOf('24') === -1 && lines[j].indexOf('heure') === -1) {
-        memberLine = lines[j]; break;
-      }
-    }
     var wrap = document.createElement('div');
     wrap.className = 'sel-online-wrap';
     var countEl = document.createElement('div');
     countEl.className = 'sel-online-count';
     countEl.textContent = total + ' lunaire' + (parseInt(total) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
-    if (memberLine) {
-      var colonIdx = memberLine.indexOf(':');
+    /* Extraire les liens de la section "Utilisateurs enregistrés :" jusqu'au prochain <br */
+    var m = html.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
+    if (m) {
+      var sDiv = document.createElement('div');
+      sDiv.innerHTML = m[1];
       var membersEl = document.createElement('div');
       membersEl.className = 'sel-online-members';
-      membersEl.innerHTML = colonIdx !== -1 ? memberLine.substring(colonIdx + 1).trim() : memberLine;
-      var mLinks = membersEl.querySelectorAll('a');
-      mLinks.forEach(function(a) {
-        a.innerHTML = a.textContent.trim();
-        a.removeAttribute('style');
+      var uLinks = sDiv.querySelectorAll('a[href]');
+      uLinks.forEach(function(a, idx) {
+        var clean = document.createElement('a');
+        clean.href = a.href;
+        clean.textContent = a.textContent.trim();
+        membersEl.appendChild(clean);
+        if (idx < uLinks.length - 1) {
+          membersEl.appendChild(document.createTextNode(', '));
+        }
       });
-      membersEl.querySelectorAll('span').forEach(function(s) { s.parentNode && s.parentNode.removeChild(s); });
-      wrap.appendChild(membersEl);
+      if (uLinks.length > 0) { wrap.appendChild(membersEl); }
     }
     zone.appendChild(wrap);
   }

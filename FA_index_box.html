@@ -93,8 +93,11 @@
   });
 
   /* Traitement de chaque bloc last-msg */
-  document.querySelectorAll('.last-msg').forEach(function(lm) {
+  var dbg = document.querySelectorAll('.last-msg');
+  console.log('[sel] last-msg count:', dbg.length);
+  dbg.forEach(function(lm) {
     var authorRaw = lm.querySelector('.lm-author-raw');
+    console.log('[sel] authorRaw:', authorRaw ? 'OK' : 'NULL');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
     var brIdx = raw.toLowerCase().indexOf('<br');
@@ -131,6 +134,7 @@
 
     /* fetch avatar depuis la page profil de l'auteur */
     var authorA = lm.querySelector('.lm-author a[href]');
+    console.log('[sel] authorA:', authorA ? authorA.href : 'NULL');
     if (authorA) {
       var right = lm.querySelector('.lm-right');
       (function(profileUrl, rightEl) {

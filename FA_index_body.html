@@ -866,19 +866,21 @@ selHorsRpTransform();
     if (m) {
       var sDiv = document.createElement('div');
       sDiv.innerHTML = m[1];
-      var membersEl = document.createElement('div');
-      membersEl.className = 'sel-online-members';
       var uLinks = sDiv.querySelectorAll('a[href]');
-      uLinks.forEach(function(a, idx) {
-        var clean = document.createElement('a');
-        clean.href = a.href;
-        clean.textContent = a.textContent.trim();
-        membersEl.appendChild(clean);
-        if (idx < uLinks.length - 1) {
-          membersEl.appendChild(document.createTextNode(', '));
+      if (uLinks.length > 0) {
+        var membersEl = document.createElement('div');
+        membersEl.className = 'sel-online-members';
+        for (var k = 0; k < uLinks.length; k++) {
+          var clean = document.createElement('a');
+          clean.href = uLinks[k].getAttribute('href');
+          clean.textContent = uLinks[k].textContent.trim();
+          membersEl.appendChild(clean);
+          if (k < uLinks.length - 1) {
+            membersEl.appendChild(document.createTextNode(', '));
+          }
         }
-      });
-      if (uLinks.length > 0) { wrap.appendChild(membersEl); }
+        wrap.appendChild(membersEl);
+      }
     }
     zone.appendChild(wrap);
   }

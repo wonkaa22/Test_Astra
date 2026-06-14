@@ -848,7 +848,8 @@ selHorsRpTransform();
   function selFooterReorder() {
     var footer = document.querySelector('.sel-footer-wrap');
     if (!footer) { return; }
-    var chatbox = document.querySelector('.mini-chatbox, .panel.row3.mini-chatbox, div[id^="chatbox"]');
+    var chatbox = document.getElementById('chatbox_popup');
+    if (!chatbox) { chatbox = document.querySelector('.panel.row3'); }
     if (chatbox && chatbox.parentNode) {
       chatbox.parentNode.insertBefore(footer, chatbox);
     }

@@ -140,6 +140,7 @@
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, 'text/html');
             var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
+            console.log('[sel] profil:', profileUrl, '| img:', img ? img.src : 'NON');
             if (!img) {
               var allImgs = doc.querySelectorAll('img[src]');
               for (var k = 0; k < allImgs.length; k++) {

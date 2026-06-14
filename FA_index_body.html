@@ -521,7 +521,7 @@ function selProcessLastMsg() {
     tmp.innerHTML = authorHtml;
     var postIcon = tmp.querySelector('a.last-post-icon, a[class*="post-icon"]');
     var postUrl = postIcon ? postIcon.href : '';
-    var junk = tmp.querySelectorAll('img, span, a.last-post-icon, a[class*="post-icon"]');
+    var junk = tmp.querySelectorAll('img, span.icon, span.gen, span[class*="icon"], a.last-post-icon, a[class*="post-icon"]');
     for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
     var links = tmp.querySelectorAll('a');
     var authorInner = '';

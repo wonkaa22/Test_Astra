@@ -81,7 +81,6 @@
 <!-- Toggle collapse des catégories + nettoyage lm-author -->
 <script type="text/javascript">
 //<![CDATA[
-console.log('[sel] SCRIPT INDEX_BOX CHARGE');
 (function() {
   document.querySelectorAll('.cat-header').forEach(function(header) {
     header.addEventListener('click', function() {
@@ -94,11 +93,8 @@ console.log('[sel] SCRIPT INDEX_BOX CHARGE');
   });
 
   /* Traitement de chaque bloc last-msg */
-  var dbg = document.querySelectorAll('.last-msg');
-  console.log('[sel] last-msg count:', dbg.length);
-  dbg.forEach(function(lm) {
+  document.querySelectorAll('.last-msg').forEach(function(lm) {
     var authorRaw = lm.querySelector('.lm-author-raw');
-    console.log('[sel] authorRaw:', authorRaw ? 'OK' : 'NULL');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
     var brIdx = raw.toLowerCase().indexOf('<br');
@@ -135,7 +131,6 @@ console.log('[sel] SCRIPT INDEX_BOX CHARGE');
 
     /* fetch avatar depuis la page profil de l'auteur */
     var authorA = lm.querySelector('.lm-author a[href]');
-    console.log('[sel] authorA:', authorA ? authorA.href : 'NULL');
     if (authorA) {
       var right = lm.querySelector('.lm-right');
       (function(profileUrl, rightEl) {
@@ -145,7 +140,6 @@ console.log('[sel] SCRIPT INDEX_BOX CHARGE');
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, 'text/html');
             var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
-            console.log('[sel] profil:', profileUrl, '| img:', img ? img.src : 'NON');
             if (!img) {
               var allImgs = doc.querySelectorAll('img[src]');
               for (var k = 0; k < allImgs.length; k++) {
@@ -163,7 +157,7 @@ console.log('[sel] SCRIPT INDEX_BOX CHARGE');
               rightEl.insertBefore(clip, rightEl.firstChild);
             }
           })
-          .catch(function() {});
+          .catch(function(e) { return e; });
       })(authorA.href, right);
     }
   });

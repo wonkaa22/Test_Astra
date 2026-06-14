@@ -2325,6 +2325,22 @@ a.nouveau-name:hover { color: var(--gold); }
   display: block;
 }
 
+/* ── Ligne Groupes + Courrier terrien ── */
+.groupes-courrier-row {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.groupes-courrier-row .groupes-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.groupes-courrier-row .shoutbox-block {
+  flex: 0 0 260px;
+}
+
 /* ── Zone Groupes ── */
 .groupes-block {
   flex-direction: row;
@@ -2609,6 +2625,11 @@ a.nouveau-name:hover { color: var(--gold); }
 @media (max-width: 699px) {
   .footer-right { flex-direction: column; }
   .footer-right > * { flex: none; width: 100%; }
+}
+
+@media (max-width: 799px) {
+  .groupes-courrier-row { flex-direction: column; }
+  .groupes-courrier-row .shoutbox-block { flex: none; }
 }
 
 @media (max-width: 599px) {

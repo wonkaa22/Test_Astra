@@ -690,3 +690,171 @@ selHorsRpTransform();
 <!-- END switch_legend -->
 
 {AUTO_DST}
+
+<!-- ═══════════════════════════════════════
+     FOOTER SELENUJO — inséré avant la chatbox FA
+     ═══════════════════════════════════════ -->
+<div class="sel-footer-wrap">
+  <div class="footer-grid">
+
+    <!-- ═══ COLONNE GAUCHE ═══ -->
+    <div class="footer-left">
+
+      <!-- Nouveau lunaire + image déco -->
+      <div class="top-row">
+        <div class="nouveau-block">
+          <div class="nouveau-img" id="selNouveauImg"></div>
+          <div class="nouveau-info">
+            <span class="nouveau-label">Nouveau lunaire</span>
+            <a class="nouveau-name" href="{U_NEWEST_USERNAME}">{NEWEST_USERNAME}</a>
+          </div>
+        </div>
+        <div class="deco-block"></div>
+      </div>
+
+      <!-- Zone 1 : Actuellement connecté·e·s -->
+      <!-- Coller ici le code du plugin FA "Qui est en ligne" (Portail > mod_whoisonline) -->
+      <div class="connectes-block">
+        <div class="sub-title">Actuellement connecté·e·s</div>
+        <div class="sel-zone-plugin" id="selZone1"></div>
+      </div>
+
+      <!-- Groupes + Courrier terrien côte à côte -->
+      <div class="groupes-courrier-row">
+
+        <!-- Zone 3 : Groupes -->
+        <div class="groupes-block">
+          <div class="groupes-btns" id="selGroupeBtns">
+            <button class="groupe-btn active" data-group="1">Groupe 1</button>
+            <button class="groupe-btn" data-group="2">Groupe 2</button>
+            <button class="groupe-btn" data-group="3">Groupe 3</button>
+            <button class="groupe-btn" data-group="4">Groupe 4</button>
+            <button class="groupe-btn" data-group="5">Groupe 5</button>
+          </div>
+          <div class="groupe-desc">
+            <div class="groupe-desc-title" id="selGroupeTitle">Groupe 1</div>
+            <div class="groupe-desc-text" id="selGroupeText">Description du groupe — à remplir pour chaque groupe.</div>
+            <a class="groupe-desc-link" href="#" id="selGroupeLink">Voir la page du groupe ↗</a>
+          </div>
+        </div>
+
+        <!-- Courrier terrien (shoutbox) -->
+        <div class="shoutbox-block">
+          <div class="sub-title">Courrier terrien</div>
+          <div class="shoutbox-wrap">
+            <iframe src="https://www5.cbox.ws/box/?boxid=963922&boxtag=XzX5Pt" width="100%" height="220" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+          </div>
+        </div>
+
+      </div><!-- /groupes-courrier-row -->
+
+    </div><!-- /footer-left -->
+
+    <!-- ═══ COLONNE DROITE ═══ -->
+    <div class="footer-right">
+
+      <!-- Statistiques -->
+      <div class="stats-block">
+        <div class="stats-content">
+          <div class="stats-title">Statistiques</div>
+          <div class="stat-line"><span class="stat-num">{TOTAL_MEMBERS}</span> lunaires enregistré·e·s</div>
+          <div class="stat-line"><span class="stat-num">{TOTAL_POSTS}</span> messages postés</div>
+        </div>
+        <div class="stats-blob"></div>
+      </div>
+
+      <!-- Lunaire du mois -->
+      <div class="lunaire-block">
+        <div class="lunaire-left">
+          <span class="lunaire-label">Lunaire du mois</span>
+          <span class="lunaire-title">Lunaire<br>du mois</span>
+          <span class="lunaire-name" id="selLunaireName">[Nom du personnage]</span>
+        </div>
+        <div class="lunaire-img" id="selLunaireImg"></div>
+      </div>
+
+      <!-- Zone 4 : liens rapides -->
+      <div class="zone4-block">
+        <a class="icon-btn" href="{U_SEARCH}" data-tip="Rechercher">&#128269;</a>
+        <a class="icon-btn" href="{U_MEMBERLIST}" data-tip="Membres">&#9672;</a>
+        <a class="icon-btn" href="{U_GROUPCP}" data-tip="Groupes">&#11041;</a>
+        <a class="icon-btn" href="{U_FAQ}" data-tip="FAQ">?</a>
+        <a class="icon-btn" href="#reglement" data-tip="Règlement" id="selLienReglement">§</a>
+        <!-- BEGIN switch_user_logged_in -->
+        <a class="icon-btn" href="{U_MARK_READ}" data-tip="Tout marquer comme lu">&#10003;</a>
+        <!-- END switch_user_logged_in -->
+      </div>
+
+      <!-- Zone 2 : Dernières 48h -->
+      <!-- Coller ici le code du plugin FA "Sujets actifs" (Portail > mod_recent_topics) -->
+      <div class="dernieres-block">
+        <div class="sub-title">Dernières 48h</div>
+        <div class="sel-zone-plugin" id="selZone2"></div>
+      </div>
+
+    </div><!-- /footer-right -->
+
+  </div><!-- /footer-grid -->
+</div><!-- /sel-footer-wrap -->
+
+<script>
+(function() {
+  var SEL_GROUPES = {
+    "1": { title: "Groupe 1", text: "Description du groupe — à personnaliser. Quelques lignes présentant ses membres, ses valeurs ou son rôle dans la nation de Selenujo.", link: "#" },
+    "2": { title: "Groupe 2", text: "Description du deuxième groupe — à personnaliser selon la faction ou l'organisation représentée dans le forum.", link: "#" },
+    "3": { title: "Groupe 3", text: "Description du troisième groupe — présentation de ses attributions, de son histoire et de ses membres au sein de Selenujo.", link: "#" },
+    "4": { title: "Groupe 4", text: "Description du quatrième groupe — contexte narratif, rôle politique ou social dans l'écosystème de la lune.", link: "#" },
+    "5": { title: "Groupe 5", text: "Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l'administration.", link: "#" }
+  };
+
+  function selGroupeInit() {
+    var btns = document.querySelectorAll('#selGroupeBtns .groupe-btn');
+    var titleEl = document.getElementById('selGroupeTitle');
+    var textEl  = document.getElementById('selGroupeText');
+    var linkEl  = document.getElementById('selGroupeLink');
+    if (!btns.length || !titleEl) { return; }
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var key = btn.getAttribute('data-group');
+        var g = SEL_GROUPES[key];
+        if (!g) { return; }
+        titleEl.textContent = g.title;
+        textEl.textContent  = g.text;
+        linkEl.href         = g.link;
+      });
+    });
+  }
+
+  function selNouveauAvatar() {
+    var link = document.querySelector('a.nouveau-name[href]');
+    var imgSlot = document.getElementById('selNouveauImg');
+    if (!link || !imgSlot) { return; }
+    fetch(link.href)
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
+        if (img && img.src) {
+          var el = document.createElement('img');
+          el.src = img.src;
+          el.alt = '';
+          imgSlot.appendChild(el);
+        }
+      })
+      .catch(function(e) { return e; });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      selGroupeInit();
+      selNouveauAvatar();
+    });
+  } else {
+    selGroupeInit();
+    selNouveauAvatar();
+  }
+})();
+</script>

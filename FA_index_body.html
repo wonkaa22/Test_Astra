@@ -842,14 +842,18 @@ selHorsRpTransform();
       .catch(function(e) { return e; });
   }
 
-  /* ── Zone 1 : "qui est en ligne" — parse le HTML brut de la page ── */
+  /* ── Zone 1 : "qui est en ligne" — lit les spans injectés par mod_whoisonline ── */
   function selWhoIsOnline() {
     var zone = document.getElementById('selZone1');
     if (!zone || zone.children.length > 0) { return; }
 
-    var bodyHtml = document.body.innerHTML;
+    var totalSpan = document.getElementById('selOnlineTotal');
+    var listSpan  = document.getElementById('selOnlineList');
+    if (!totalSpan) { return; }
 
-    var totalMatch = bodyHtml.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
+    /* Compte : extrait le chiffre du texte FA (ex. "2 utilisateurs en ligne") */
+    var totalText  = totalSpan.textContent || '';
+    var totalMatch = totalText.match(/(\d+)/);
     var total = totalMatch ? totalMatch[1] : '0';
 
     var wrap = document.createElement('div');
@@ -859,25 +863,28 @@ selHorsRpTransform();
     countEl.textContent = total + ' lunaire' + (parseInt(total, 10) > 1 ? 's' : '') + ' en ligne';
     wrap.appendChild(countEl);
 
-    /* Extraire les liens membres (section "Utilisateurs enregistrés :") */
-    var membersMatch = bodyHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
-    if (membersMatch) {
-      var sDiv = document.createElement('div');
-      sDiv.innerHTML = membersMatch[1];
-      var uLinks = sDiv.querySelectorAll('a[href]');
-      if (uLinks.length > 0) {
-        var membersEl = document.createElement('div');
-        membersEl.className = 'sel-online-members';
-        for (var k = 0; k < uLinks.length; k++) {
-          var clean = document.createElement('a');
-          clean.href = uLinks[k].getAttribute('href');
-          clean.textContent = uLinks[k].textContent.trim();
-          membersEl.appendChild(clean);
-          if (k < uLinks.length - 1) {
-            membersEl.appendChild(document.createTextNode(', '));
+    /* Liste des membres connectés */
+    if (listSpan) {
+      var listHtml = listSpan.innerHTML || '';
+      var membersMatch = listHtml.match(/Utilisateurs?\s+enregistr[ée]s?\s*:([\s\S]*?)<br/i);
+      if (membersMatch) {
+        var sDiv = document.createElement('div');
+        sDiv.innerHTML = membersMatch[1];
+        var uLinks = sDiv.querySelectorAll('a[href]');
+        if (uLinks.length > 0) {
+          var membersEl = document.createElement('div');
+          membersEl.className = 'sel-online-members';
+          for (var k = 0; k < uLinks.length; k++) {
+            var clean = document.createElement('a');
+            clean.href = uLinks[k].getAttribute('href');
+            clean.textContent = uLinks[k].textContent.trim();
+            membersEl.appendChild(clean);
+            if (k < uLinks.length - 1) {
+              membersEl.appendChild(document.createTextNode(', '));
+            }
           }
+          wrap.appendChild(membersEl);
         }
-        wrap.appendChild(membersEl);
       }
     }
     zone.appendChild(wrap);

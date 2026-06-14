@@ -93,11 +93,8 @@
   });
 
   /* Traitement de chaque bloc last-msg */
-  var lastMsgs = document.querySelectorAll('.last-msg');
-  console.log('[sel] last-msg count:', lastMsgs.length);
-  lastMsgs.forEach(function(lm) {
+  document.querySelectorAll('.last-msg').forEach(function(lm) {
     var authorRaw = lm.querySelector('.lm-author-raw');
-    console.log('[sel] authorRaw:', authorRaw ? 'OK' : 'NULL');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
     var brIdx = raw.toLowerCase().indexOf('<br');
@@ -142,16 +139,16 @@
             var doc = parser.parseFromString(html, 'text/html');
             /* FA profile: avatar dans img.img ou img dans .profile-avatar ou premier img avec src avatar */
             var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
-            console.log('[sel] profil:', profileUrl, '| img:', img ? img.src : 'NON');
             if (!img) {
               var allImgs = doc.querySelectorAll('img[src]');
               for (var k = 0; k < allImgs.length; k++) {
                 var s = allImgs[k].getAttribute('src') || '';
                 if (s.indexOf('avatar') !== -1 || s.indexOf('profil') !== -1) { img = allImgs[k]; break; }
               }
-              console.log('[sel] fallback:', img ? img.src : 'NON');
             }
-            if (img && img.src && rightEl) {
+            /* ignorer l'avatar vide par defaut FA */
+            var src = img ? (img.getAttribute('src') || '') : '';
+            if (img && src && src.indexOf('blank-thumb') === -1 && src.indexOf('no_avatar') === -1 && rightEl) {
               var clip = document.createElement('div');
               clip.className = 'lm-avatar-clip';
               var newImg = document.createElement('img');
@@ -161,7 +158,7 @@
               rightEl.insertBefore(clip, rightEl.firstChild);
             }
           })
-          .catch(function(e) { console.log('[sel] fetch err:', e); });
+          .catch(function() {});
       })(authorA.href, right);
     }
   });

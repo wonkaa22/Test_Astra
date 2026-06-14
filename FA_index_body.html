@@ -493,11 +493,87 @@ function selFormatDates() {
     if (out) els[i].textContent = out;
   }
 }
+function selCatToggle() {
+  document.querySelectorAll('.cat-header:not([data-sel-tog])').forEach(function(header) {
+    header.setAttribute('data-sel-tog', '1');
+    header.addEventListener('click', function() {
+      var content = header.nextElementSibling;
+      var toggle = header.querySelector('.cat-toggle');
+      if (!content) { return; }
+      var collapsed = content.classList.toggle('is-collapsed');
+      if (toggle) {
+        toggle.classList.toggle('is-collapsed', collapsed);
+        toggle.setAttribute('aria-label', collapsed ? 'Déplier' : 'Replier');
+      }
+    });
+  });
+}
+function selProcessLastMsg() {
+  document.querySelectorAll('.last-msg:not([data-sel])').forEach(function(lm) {
+    lm.setAttribute('data-sel', '1');
+    var authorRaw = lm.querySelector('.lm-author-raw');
+    if (!authorRaw) { return; }
+    var raw = authorRaw.innerHTML;
+    var brIdx = raw.toLowerCase().indexOf('<br');
+    var dateHtml = brIdx !== -1 ? raw.substring(0, brIdx) : '';
+    var authorHtml = brIdx !== -1 ? raw.substring(raw.indexOf('>', brIdx) + 1) : raw;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = authorHtml;
+    var postIcon = tmp.querySelector('a.last-post-icon, a[class*="post-icon"]');
+    var postUrl = postIcon ? postIcon.href : '';
+    var junk = tmp.querySelectorAll('img, span, a.last-post-icon, a[class*="post-icon"]');
+    for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
+    var links = tmp.querySelectorAll('a');
+    var authorInner = '';
+    for (var li = 0; li < links.length; li++) { authorInner += links[li].outerHTML; }
+    if (!authorInner) { authorInner = tmp.textContent.trim(); }
+    authorRaw.innerHTML = authorInner;
+    authorRaw.className = 'lm-author';
+    var timeEl = lm.querySelector('.lm-time');
+    if (timeEl && dateHtml) { timeEl.textContent = dateHtml.replace(/<[^>]+>/g, '').trim(); }
+    if (postUrl) {
+      var moon = lm.querySelector('.lm-moon');
+      if (moon) { moon.href = postUrl; }
+    }
+    var authorA = lm.querySelector('.lm-author a[href]');
+    if (authorA) {
+      var right = lm.querySelector('.lm-right');
+      (function(profileUrl, rightEl) {
+        fetch(profileUrl)
+          .then(function(r) { return r.text(); })
+          .then(function(html) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
+            if (!img) {
+              var allImgs = doc.querySelectorAll('img[src]');
+              for (var k = 0; k < allImgs.length; k++) {
+                var s = allImgs[k].getAttribute('src') || '';
+                if (s.indexOf('avatar') !== -1 || s.indexOf('profil') !== -1) { img = allImgs[k]; break; }
+              }
+            }
+            if (img && img.src && rightEl) {
+              var clip = document.createElement('div');
+              clip.className = 'lm-avatar-clip';
+              var newImg = document.createElement('img');
+              newImg.src = img.src;
+              newImg.alt = '';
+              clip.appendChild(newImg);
+              rightEl.insertBefore(clip, rightEl.firstChild);
+            }
+          })
+          .catch(function(e) { return e; });
+      })(authorA.href, right);
+    }
+  });
+}
 function selRunAll() {
   selWelcomeRender();
   selFormatDates();
   selAdminTransform();
   selHorsRpTransform();
+  selCatToggle();
+  selProcessLastMsg();
 }
 window.onload = selRunAll;
 setTimeout(selRunAll, 800);

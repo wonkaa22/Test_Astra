@@ -92,10 +92,8 @@
     });
   });
 
-  /* Traitement de chaque bloc last-msg — différé pour passer après les scripts FA */
-  function selProcessLastMsg() {
-  document.querySelectorAll('.last-msg:not([data-sel])').forEach(function(lm) {
-    lm.setAttribute('data-sel', '1');
+  /* Traitement de chaque bloc last-msg */
+  document.querySelectorAll('.last-msg').forEach(function(lm) {
     var authorRaw = lm.querySelector('.lm-author-raw');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
@@ -141,7 +139,6 @@
           .then(function(html) {
             var parser = new DOMParser();
             var doc = parser.parseFromString(html, 'text/html');
-            /* FA profile: avatar dans img.img ou img dans .profile-avatar ou premier img avec src avatar */
             var img = doc.querySelector('.mod-login-avatar img, img.img, .avatar img, .profile-avatar img');
             if (!img) {
               var allImgs = doc.querySelectorAll('img[src]');
@@ -150,9 +147,7 @@
                 if (s.indexOf('avatar') !== -1 || s.indexOf('profil') !== -1) { img = allImgs[k]; break; }
               }
             }
-            /* ignorer l'avatar vide par defaut FA */
-            var src = img ? (img.getAttribute('src') || '') : '';
-            if (img && src && src.indexOf('blank-thumb') === -1 && src.indexOf('no_avatar') === -1 && rightEl) {
+            if (img && img.src && rightEl) {
               var clip = document.createElement('div');
               clip.className = 'lm-avatar-clip';
               var newImg = document.createElement('img');
@@ -166,8 +161,6 @@
       })(authorA.href, right);
     }
   });
-  }
-  setTimeout(selProcessLastMsg, 900);
 })();
 //]]>
 </script>

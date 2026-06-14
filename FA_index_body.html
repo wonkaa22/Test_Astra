@@ -964,13 +964,45 @@ selHorsRpTransform();
   } else {
     selInit();
   }
-  /* Retry sur window.load : chatbox + stats/zone1 si portail chargé en AJAX */
+  /* Retry sur window.load : portail maintenant chargé */
   window.addEventListener('load', function() {
     selFooterReorder();
-    selFixStats();
-    if (!document.getElementById('selZone1') ||
-        document.getElementById('selZone1').children.length === 0) {
-      selWhoIsOnline();
+
+    /* ── Met à jour le count Zone 1 si encore à 0 ── */
+    var countEl = document.querySelector('.sel-online-count');
+    if (countEl && countEl.textContent.indexOf('0') === 0) {
+      var bText2 = document.body.textContent || '';
+      var tM2 = bText2.match(/(\d+)\s+utilisateurs?\s+en ligne/i);
+      if (tM2 && tM2[1] !== '0') {
+        var n = parseInt(tM2[1], 10);
+        countEl.textContent = n + ' lunaire' + (n > 1 ? 's' : '') + ' en ligne';
+      }
+    }
+
+    /* ── Met à jour le compte membres si encore vide ── */
+    var elMembers2 = document.querySelector('.stat-num[data-stat="members"]');
+    if (elMembers2 && !elMembers2.textContent.match(/\d/)) {
+      /* Essaie le widget visible .mod-stats-users */
+      var msu = document.querySelector('.mod-stats-users');
+      if (msu) {
+        var mn = (msu.textContent || '').match(/\d+/);
+        if (mn) { elMembers2.textContent = mn[0]; }
+      }
+      /* Fallback : cherche dans body.textContent */
+      if (!elMembers2.textContent.match(/\d/)) {
+        var bText3 = document.body.textContent || '';
+        var mm = bText3.match(/(\d+)\s+membres?\s+enregistr/i) ||
+                 bText3.match(/membres?\s+:\s*(\d+)/i) ||
+                 bText3.match(/(\d+)\s+utilisateurs?\s+enregistr/i);
+        if (mm) { elMembers2.textContent = mm[1]; }
+      }
+    }
+
+    /* ── Corrige posts si encore phrase complète ── */
+    var elPosts2 = document.querySelector('.stat-num[data-stat="posts"]');
+    if (elPosts2 && (elPosts2.textContent || '').length > 6) {
+      var pFix2 = elPosts2.textContent.match(/\d+/);
+      if (pFix2) { elPosts2.textContent = pFix2[0]; }
     }
   });
 })();

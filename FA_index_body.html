@@ -755,7 +755,7 @@ selHorsRpTransform();
       <div class="stats-block">
         <div class="stats-content">
           <div class="stats-title">Statistiques</div>
-          <div class="stat-line"><span class="stat-num">{TOTAL_MEMBERS}</span> lunaires enregistré·e·s</div>
+          <div class="stat-line"><span class="stat-num" data-stat="members">…</span> lunaires enregistré·e·s</div>
           <div class="stat-line"><span class="stat-num">{TOTAL_POSTS}</span> messages postés</div>
         </div>
         <div class="stats-blob"></div>
@@ -804,6 +804,69 @@ selHorsRpTransform();
     "4": { title: "Groupe 4", text: "Description du quatrième groupe — contexte narratif, rôle politique ou social dans l'écosystème de la lune.", link: "#" },
     "5": { title: "Groupe 5", text: "Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l'administration.", link: "#" }
   };
+
+  /* ── Statistiques : corrige les variables FA qui retournent une phrase ── */
+  function selFixStats() {
+    document.querySelectorAll('.stat-num').forEach(function(el) {
+      var txt = el.textContent || '';
+      if (txt.length > 6) {
+        var m = txt.match(/\d+/);
+        if (m) { el.textContent = m[0]; }
+      }
+    });
+  }
+
+  /* ── Statistiques : nombre de membres via memberlist ── */
+  function selFetchMemberCount() {
+    var el = document.querySelector('.stat-num[data-stat="members"]');
+    if (!el) { return; }
+    fetch('/memberlist')
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var m = html.match(/(\d+)\s+membres? enregistr/i);
+        if (!m) { m = html.match(/total.*?(\d+)\s+membres?/i); }
+        if (m) { el.textContent = m[1]; }
+      })
+      .catch(function(e) { return e; });
+  }
+
+  /* ── Zone 1 : extrait le "qui est en ligne" du bloc caché FA ── */
+  function selWhoIsOnline() {
+    var zone = document.getElementById('selZone1');
+    if (!zone) { return; }
+    var src = null;
+    var hidden = document.querySelectorAll('div[style*="display:none"]');
+    for (var i = 0; i < hidden.length; i++) {
+      if (hidden[i].textContent.indexOf('utilisateurs en ligne') !== -1 ||
+          hidden[i].textContent.indexOf('utilisateur en ligne') !== -1) {
+        src = hidden[i]; break;
+      }
+    }
+    if (!src) { return; }
+    var lines = src.innerHTML.split(/<br\s*\/?>/i);
+    var totalMatch = src.textContent.match(/(\d+)\s+utilisateurs? en ligne/i);
+    var total = totalMatch ? totalMatch[1] : '0';
+    var memberLine = '';
+    for (var j = 0; j < lines.length; j++) {
+      if (lines[j].indexOf('gistr') !== -1 && lines[j].indexOf('24') === -1 && lines[j].indexOf('heure') === -1) {
+        memberLine = lines[j]; break;
+      }
+    }
+    var wrap = document.createElement('div');
+    wrap.className = 'sel-online-wrap';
+    var countEl = document.createElement('div');
+    countEl.className = 'sel-online-count';
+    countEl.textContent = total + ' en ligne';
+    wrap.appendChild(countEl);
+    if (memberLine) {
+      var colonIdx = memberLine.indexOf(':');
+      var membersEl = document.createElement('div');
+      membersEl.className = 'sel-online-members';
+      membersEl.innerHTML = colonIdx !== -1 ? memberLine.substring(colonIdx + 1).trim() : memberLine;
+      wrap.appendChild(membersEl);
+    }
+    zone.appendChild(wrap);
+  }
 
   function selGroupeInit() {
     var btns = document.querySelectorAll('#selGroupeBtns .groupe-btn');
@@ -856,11 +919,17 @@ selHorsRpTransform();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       selFooterReorder();
+      selFixStats();
+      selFetchMemberCount();
+      selWhoIsOnline();
       selGroupeInit();
       selNouveauAvatar();
     });
   } else {
     selFooterReorder();
+    selFixStats();
+    selFetchMemberCount();
+    selWhoIsOnline();
     selGroupeInit();
     selNouveauAvatar();
   }

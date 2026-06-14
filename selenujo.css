@@ -2593,6 +2593,35 @@ a.nouveau-name:hover { color: var(--gold); }
 }
 .icon-btn:hover::after { opacity: 1; }
 
+/* ── Zone 1 : Actuellement connecté·e·s ── */
+.sel-online-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sel-online-count {
+  font-size: 11px;
+  color: var(--text-lo);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sel-online-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.sel-online-members a {
+  font-size: 12px;
+  color: var(--gold-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.sel-online-members a:hover { color: var(--gold); }
+
 /* ── Shoutbox ── */
 .shoutbox-block {
   background: var(--surface-1);

@@ -92,8 +92,10 @@
     });
   });
 
-  /* Traitement de chaque bloc last-msg */
-  document.querySelectorAll('.last-msg').forEach(function(lm) {
+  /* Traitement de chaque bloc last-msg — différé pour passer après les scripts FA */
+  function selProcessLastMsg() {
+  document.querySelectorAll('.last-msg:not([data-sel])').forEach(function(lm) {
+    lm.setAttribute('data-sel', '1');
     var authorRaw = lm.querySelector('.lm-author-raw');
     if (!authorRaw) return;
     var raw = authorRaw.innerHTML;
@@ -164,6 +166,8 @@
       })(authorA.href, right);
     }
   });
+  }
+  setTimeout(selProcessLastMsg, 900);
 })();
 //]]>
 </script>

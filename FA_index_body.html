@@ -979,24 +979,29 @@ selHorsRpTransform();
       }
     }
 
-    /* ── Met à jour le compte membres si encore vide ── */
-    var elMembers2 = document.querySelector('.stat-num[data-stat="members"]');
-    if (elMembers2 && !elMembers2.textContent.match(/\d/)) {
-      /* Essaie le widget visible .mod-stats-users */
-      var msu = document.querySelector('.mod-stats-users');
-      if (msu) {
-        var mn = (msu.textContent || '').match(/\d+/);
-        if (mn) { elMembers2.textContent = mn[0]; }
-      }
-      /* Fallback : cherche dans body.textContent */
-      if (!elMembers2.textContent.match(/\d/)) {
-        var bText3 = document.body.textContent || '';
-        var mm = bText3.match(/(\d+)\s+membres?\s+enregistr/i) ||
-                 bText3.match(/membres?\s+:\s*(\d+)/i) ||
-                 bText3.match(/(\d+)\s+utilisateurs?\s+enregistr/i);
-        if (mm) { elMembers2.textContent = mm[1]; }
-      }
-    }
+    /* ── Met à jour le compte membres via fetch /memberlist ── */
+    fetch('/memberlist')
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        /* Essaie la pagination "sur X" */
+        var mPag = html.match(/sur\s+(\d+)/i) || html.match(/(\d+)\s*r[ée]sultat/i);
+        var count = mPag ? mPag[1] : null;
+        if (!count) {
+          /* Compte les liens de profil uniques /uN */
+          var links = html.match(/href="\/u\d+"/g) || [];
+          var ids = {};
+          for (var j = 0; j < links.length; j++) {
+            ids[links[j].replace(/\D/g, '')] = 1;
+          }
+          var c = Object.keys(ids).length;
+          if (c > 0) { count = String(c); }
+        }
+        if (count) {
+          var elM = document.querySelector('.stat-num[data-stat="members"]');
+          if (elM) { elM.textContent = count; }
+        }
+      })
+      .catch(function(e) { return e; });
 
     /* ── Corrige posts si encore phrase complète ── */
     var elPosts2 = document.querySelector('.stat-num[data-stat="posts"]');

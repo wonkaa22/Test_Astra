@@ -848,10 +848,15 @@ selHorsRpTransform();
   function selFooterReorder() {
     var footer = document.querySelector('.sel-footer-wrap');
     if (!footer) { return; }
-    var chatbox = document.getElementById('chatbox_popup');
-    if (!chatbox) { chatbox = document.querySelector('.panel.row3'); }
-    if (chatbox && chatbox.parentNode) {
-      chatbox.parentNode.insertBefore(footer, chatbox);
+    var popup = document.getElementById('chatbox_popup');
+    if (!popup) { return; }
+    var footerParent = footer.parentNode;
+    var target = popup;
+    while (target && target.parentNode !== footerParent) {
+      target = target.parentNode;
+    }
+    if (target && target.parentNode === footerParent) {
+      footerParent.insertBefore(footer, target);
     }
   }
 

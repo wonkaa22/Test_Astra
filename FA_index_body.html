@@ -845,12 +845,22 @@ selHorsRpTransform();
       .catch(function(e) { return e; });
   }
 
+  function selFooterReorder() {
+    var footer = document.querySelector('.sel-footer-wrap');
+    var chatbox = document.querySelector('.panel.row3');
+    if (footer && chatbox && chatbox.parentNode === footer.parentNode) {
+      chatbox.parentNode.insertBefore(footer, chatbox);
+    }
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
+      selFooterReorder();
       selGroupeInit();
       selNouveauAvatar();
     });
   } else {
+    selFooterReorder();
     selGroupeInit();
     selNouveauAvatar();
   }

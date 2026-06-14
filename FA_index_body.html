@@ -756,7 +756,7 @@ selHorsRpTransform();
         <div class="stats-content">
           <div class="stats-title">Statistiques</div>
           <div class="stat-line"><span class="stat-num" data-stat="members">{TOTAL_MEMBERS}</span> lunaires enregistré·e·s</div>
-          <div class="stat-line"><span class="stat-num">{TOTAL_POSTS}</span> messages postés</div>
+          <div class="stat-line"><span class="stat-num" data-stat="posts">{TOTAL_POSTS}</span> messages postés</div>
         </div>
         <div class="stats-blob"></div>
       </div>
@@ -805,42 +805,27 @@ selHorsRpTransform();
     "5": { title: "Groupe 5", text: "Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l'administration.", link: "#" }
   };
 
-  /* ── Statistiques : corrige les variables FA qui retournent une phrase ── */
+  /* ── Statistiques : lit les spans injectés par mod_statistics ── */
   function selFixStats() {
-    var els = document.querySelectorAll('.stat-num');
-    for (var i = 0; i < els.length; i++) {
-      var txt = els[i].textContent || '';
-      if (txt.length > 6) {
-        var m = txt.match(/\d+/);
-        if (m) { els[i].textContent = m[0]; }
-      }
+    var usersSpan = document.getElementById('selTotalUsers');
+    var postsSpan = document.getElementById('selTotalPosts');
+
+    var elMembers = document.querySelector('.stat-num[data-stat="members"]');
+    var elPosts   = document.querySelector('.stat-num[data-stat="posts"]');
+
+    if (usersSpan && elMembers) {
+      var uTxt = usersSpan.textContent || '';
+      var uNum = uTxt.match(/\d+/);
+      if (uNum) { elMembers.textContent = uNum[0]; }
+    }
+    if (postsSpan && elPosts) {
+      var pTxt = postsSpan.textContent || '';
+      var pNum = pTxt.match(/\d+/);
+      if (pNum) { elPosts.textContent = pNum[0]; }
     }
   }
 
-  /* ── Statistiques : nombre de membres via memberlist ── */
-  function selFetchMemberCount() {
-    var el = document.querySelector('.stat-num[data-stat="members"]');
-    if (!el) { return; }
-    fetch('/memberlist')
-      .then(function(r) { return r.text(); })
-      .then(function(html) {
-        /* essaie d'abord la pagination "sur X" */
-        var m = html.match(/sur\s+(\d+)/i);
-        if (!m) { m = html.match(/(\d+)\s*r[ée]sultat/i); }
-        if (!m) { m = html.match(/membres?\s+enregistr[ée]s?\s*[:\-]?\s*(\d+)/i); }
-        if (m) { el.textContent = m[1]; return; }
-        /* fallback : compter les liens de profil uniques /uN */
-        var matches = html.match(/href="\/u\d+"/g) || [];
-        var ids = {};
-        for (var i = 0; i < matches.length; i++) {
-          var num = matches[i].replace(/\D/g, '');
-          ids[num] = 1;
-        }
-        var c = Object.keys(ids).length;
-        if (c > 0) { el.textContent = c; }
-      })
-      .catch(function(e) { return e; });
-  }
+  function selFetchMemberCount() { /* remplacé par selFixStats via mod_statistics */ }
 
   /* ── Zone 1 : "qui est en ligne" — lit les spans injectés par mod_whoisonline ── */
   function selWhoIsOnline() {

@@ -661,7 +661,85 @@ selHorsRpTransform();
 </div>
 <!-- END disable_viewonline -->
 
+<div class="sel-chatbox-wrap">
 {CHATBOX_BOTTOM}
+</div>
+<script type="text/javascript">
+(function() {
+  function getChatDoc(obj) {
+    try {
+      var d = obj.contentDocument || (obj.contentWindow && obj.contentWindow.document);
+      return d;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function doInject(obj) {
+    var chatDoc = getChatDoc(obj);
+    if (!chatDoc || !chatDoc.head) { return false; }
+    if (!chatDoc.getElementById('sel-chatbox-fonts')) {
+      var preconnect1 = chatDoc.createElement('link');
+      preconnect1.rel = 'preconnect';
+      preconnect1.href = 'https://fonts.googleapis.com';
+      chatDoc.head.appendChild(preconnect1);
+
+      var preconnect2 = chatDoc.createElement('link');
+      preconnect2.rel = 'preconnect';
+      preconnect2.href = 'https://fonts.gstatic.com';
+      preconnect2.crossOrigin = 'crossorigin';
+      chatDoc.head.appendChild(preconnect2);
+
+      var fonts = chatDoc.createElement('link');
+      fonts.id = 'sel-chatbox-fonts';
+      fonts.rel = 'stylesheet';
+      fonts.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap';
+      chatDoc.head.appendChild(fonts);
+    }
+    if (!chatDoc.getElementById('sel-chatbox-css')) {
+      var css = chatDoc.createElement('link');
+      css.id = 'sel-chatbox-css';
+      css.rel = 'stylesheet';
+      css.href = 'https://wonkaa22.github.io/Test_Astra/selenujo.css';
+      chatDoc.head.appendChild(css);
+    }
+    syncTheme(obj, chatDoc);
+    return true;
+  }
+
+  function syncTheme(obj, chatDoc) {
+    chatDoc = chatDoc || getChatDoc(obj);
+    if (!chatDoc || !chatDoc.documentElement) { return; }
+    var isLight = document.documentElement.classList.contains('light');
+    chatDoc.documentElement.classList.toggle('light', isLight);
+  }
+
+  var boundObj = null;
+  function bindObject(obj) {
+    if (boundObj === obj) { return; }
+    boundObj = obj;
+    obj.addEventListener('load', function() { doInject(obj); });
+  }
+
+  var attempts = 0;
+  var poll = setInterval(function() {
+    attempts++;
+    var holder = document.getElementById('chatbox_bottom');
+    var obj = holder && holder.querySelector('object');
+    if (obj) {
+      bindObject(obj);
+      if (doInject(obj)) {
+        clearInterval(poll);
+      }
+    }
+    if (attempts > 100) { clearInterval(poll); }
+  }, 300);
+
+  new MutationObserver(function() {
+    if (boundObj) { syncTheme(boundObj); }
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
 
 <!-- Formulaire de connexion footer FA (masqué) -->
 <!-- BEGIN switch_user_login_form_footer -->

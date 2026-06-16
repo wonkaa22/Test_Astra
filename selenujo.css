@@ -2690,32 +2690,15 @@ a.nouveau-name:hover { color: var(--gold); }
    ════════════════════════════════════════════════════════ */
 
 /* -- Wrapper exterieur (document parent) -- */
-.sel-chatbox-wrap,
-.sel-chatbox-wrap .panel,
-.sel-chatbox-wrap .inner {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-.sel-chatbox-wrap {
+.sel-chatbox-wrap .panel {
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--surface-2);
   overflow: hidden;
+  padding: 8px;
 }
 
-.sel-chatbox-wrap .corners-top,
-.sel-chatbox-wrap .corners-bottom {
-  display: none;
-}
-
-.sel-chatbox-wrap #cp-main {
-  padding: 8px 10px;
-}
-
-.sel-chatbox-wrap img#chatbox_resize,
-.sel-chatbox-wrap img[onmousedown*="resizeElement"] {
+.sel-chatbox-wrap img#chatbox_resize {
   opacity: 0.5;
   filter: invert(0.6) sepia(1) saturate(2) hue-rotate(20deg);
 }

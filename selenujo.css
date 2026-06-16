@@ -2713,7 +2713,7 @@ a.nouveau-name:hover { color: var(--gold); }
    focus (qui ne doit plus repousser le reste, voir layout body.chatbox). */
 .sel-chatbox-wrap #chatbox_bottom,
 .sel-chatbox-wrap #chatbox_bottom object {
-  height: 640px !important;
+  height: 440px !important;
 }
 
 /* -- Document interne de la chatbox -- */

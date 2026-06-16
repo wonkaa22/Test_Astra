@@ -2690,6 +2690,10 @@ a.nouveau-name:hover { color: var(--gold); }
    ════════════════════════════════════════════════════════ */
 
 /* -- Wrapper exterieur (document parent) -- */
+.sel-chatbox-wrap {
+  width: 100%;
+}
+
 .sel-chatbox-wrap .panel {
   background: var(--surface-2);
   border: 1px solid var(--border);

@@ -2941,12 +2941,16 @@ body.chatbox {
   background: var(--surface-3) !important;
   border-top: 1px solid var(--border) !important;
   padding: 8px 12px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
 }
 
 #chatbox_footer form[name="post"] {
   display: flex !important;
   flex-direction: column !important;
   gap: 6px;
+  height: auto !important;
 }
 
 /* Zone 2 : mise en forme + aide, regroupes sur une seule ligne par le JS

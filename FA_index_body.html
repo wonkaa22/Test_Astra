@@ -857,6 +857,9 @@ selHorsRpTransform();
   function layoutFooter(chatDoc) {
     var footer = chatDoc.getElementById('chatbox_footer');
     if (!footer) { return; }
+    footer.style.setProperty('height', 'auto', 'important');
+    footer.style.setProperty('min-height', '0', 'important');
+    footer.style.setProperty('max-height', 'none', 'important');
     var formatBox = footer.querySelector('.right-box:not(.style-buttons)');
     var helpButton = footer.querySelector('#help-button');
     if (formatBox) {

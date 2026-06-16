@@ -2076,8 +2076,8 @@ button.switcheroo__form-button {
 .sel-w-staff-image { flex: 1; min-height: 90px; display: flex; align-items: center; justify-content: center; color: var(--text-ghost); font-size: 11px; font-style: italic; font-family: var(--font-serif); }
 
 /* Derniers messages */
-.sel-w-lastposts { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; }
-.sel-lastpost-list { flex: 1; overflow-y: auto; padding: 0 10px 10px; scrollbar-width: thin; scrollbar-color: var(--gold-faint) transparent; }
+.sel-w-lastposts { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; max-height: 260px; min-height: 0; }
+.sel-lastpost-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 10px 10px; scrollbar-width: thin; scrollbar-color: var(--gold-faint) transparent; }
 .sel-lastpost-list::-webkit-scrollbar { width: 3px; }
 .sel-lastpost-list::-webkit-scrollbar-thumb { background: var(--gold-faint); border-radius: 3px; }
 .sel-lastpost-row { display: flex; align-items: flex-start; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }

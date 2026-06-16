@@ -838,19 +838,69 @@ selHorsRpTransform();
     syncTheme(obj, chatDoc);
     layoutFooter(chatDoc);
     fixHeight(obj, chatDoc);
+    bindFullscreenToggle(obj, chatDoc);
     return true;
   }
 
   var CHATBOX_HEIGHT_PX = 480;
 
   function fixHeight(obj, chatDoc) {
-    var px = CHATBOX_HEIGHT_PX + 'px';
+    var h = obj.clientHeight || obj.offsetHeight || CHATBOX_HEIGHT_PX;
+    var px = h + 'px';
     if (chatDoc.documentElement) {
       chatDoc.documentElement.style.cssText = 'height:' + px + ' !important; overflow:hidden !important;';
     }
     if (chatDoc.body) {
       chatDoc.body.style.setProperty('height', px, 'important');
       chatDoc.body.style.setProperty('overflow', 'hidden', 'important');
+    }
+  }
+
+  /* Au lieu de naviguer vers /chatbox (page non personnalisable, hors
+     systeme de templates FA), le bouton "ChatBox" agrandit le widget
+     deja stylise en plein ecran par-dessus la page. */
+  function setFullscreen(obj, chatDoc, on) {
+    var wrap = document.querySelector('.sel-chatbox-wrap');
+    if (!wrap) { return; }
+    wrap.classList.toggle('sel-chatbox-fullscreen', on);
+    document.documentElement.classList.toggle('sel-chatbox-locked', on);
+    var closeBtn = chatDoc.getElementById('sel-chatbox-close');
+    if (closeBtn) { closeBtn.style.display = on ? 'inline-flex' : 'none'; }
+    requestAnimationFrame(function() {
+      fixHeight(obj, chatDoc);
+      layoutFooter(chatDoc);
+    });
+  }
+
+  function bindFullscreenToggle(obj, chatDoc) {
+    var titleLink = chatDoc.querySelector('a.chat-title');
+    if (titleLink && !titleLink.getAttribute('data-sel-bound')) {
+      titleLink.setAttribute('data-sel-bound', '1');
+      titleLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        setFullscreen(obj, chatDoc, true);
+      });
+    }
+    var optionsList = chatDoc.getElementById('chatbox_main_options');
+    if (optionsList && !chatDoc.getElementById('sel-chatbox-close')) {
+      var li = chatDoc.createElement('li');
+      var closeBtn = chatDoc.createElement('a');
+      closeBtn.id = 'sel-chatbox-close';
+      closeBtn.href = 'javascript:void(0)';
+      closeBtn.title = 'Reduire la ChatBox';
+      closeBtn.style.display = 'none';
+      closeBtn.textContent = '✕';
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        setFullscreen(obj, chatDoc, false);
+      });
+      li.appendChild(closeBtn);
+      optionsList.insertBefore(li, optionsList.firstChild);
+    }
+    chatDoc.removeEventListener('keydown', escHandler);
+    chatDoc.addEventListener('keydown', escHandler);
+    function escHandler(e) {
+      if (e.key === 'Escape') { setFullscreen(obj, chatDoc, false); }
     }
   }
 

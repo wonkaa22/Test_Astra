@@ -2707,6 +2707,34 @@ a.nouveau-name:hover { color: var(--gold); }
   filter: invert(0.6) sepia(1) saturate(2) hue-rotate(20deg);
 }
 
+/* Plein ecran : le bouton "ChatBox" ne navigue plus vers /chatbox (page
+   FA non personnalisable) mais agrandit ce meme widget deja stylise. */
+.sel-chatbox-wrap.sel-chatbox-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+}
+
+.sel-chatbox-wrap.sel-chatbox-fullscreen .panel {
+  height: 100%;
+  border-radius: 0;
+}
+
+.sel-chatbox-wrap.sel-chatbox-fullscreen #chatbox_bottom,
+.sel-chatbox-wrap.sel-chatbox-fullscreen #chatbox_bottom object {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+html.sel-chatbox-locked,
+html.sel-chatbox-locked body {
+  overflow: hidden !important;
+}
+
 /* FA fixe une hauteur de 300px en inline style sur #chatbox_bottom : on
    l'agrandit pour que le header, la colonne des membres et la zone de
    saisie restent visibles meme une fois le clavier/champ de message
@@ -2820,6 +2848,15 @@ body.chatbox {
 .chatbox-options a:hover {
   color: var(--gold) !important;
   border-color: var(--gold-dim);
+}
+
+#sel-chatbox-close {
+  font-weight: 600;
+}
+
+#sel-chatbox-close:hover {
+  color: #e06c6c !important;
+  border-color: #e06c6c !important;
 }
 
 #chatbox_members {

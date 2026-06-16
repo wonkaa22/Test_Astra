@@ -837,7 +837,21 @@ selHorsRpTransform();
     }
     syncTheme(obj, chatDoc);
     layoutFooter(chatDoc);
+    fixHeight(obj, chatDoc);
     return true;
+  }
+
+  function fixHeight(obj, chatDoc) {
+    var h = obj.clientHeight || obj.offsetHeight;
+    if (!h) { return; }
+    var px = h + 'px';
+    if (chatDoc.documentElement) {
+      chatDoc.documentElement.style.cssText = 'height:' + px + ' !important; overflow:hidden !important;';
+    }
+    if (chatDoc.body) {
+      chatDoc.body.style.setProperty('height', px, 'important');
+      chatDoc.body.style.setProperty('overflow', 'hidden', 'important');
+    }
   }
 
   function layoutFooter(chatDoc) {
@@ -888,7 +902,10 @@ selHorsRpTransform();
   setInterval(function() {
     if (!boundObj) { return; }
     var chatDoc = getChatDoc(boundObj);
-    if (chatDoc) { layoutFooter(chatDoc); }
+    if (chatDoc) {
+      layoutFooter(chatDoc);
+      fixHeight(boundObj, chatDoc);
+    }
   }, 1000);
 
   new MutationObserver(function() {

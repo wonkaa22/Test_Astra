@@ -784,7 +784,7 @@ selHorsRpTransform();
       </div>
 
       <!-- Zone 2 : Dernières 48h -->
-      <!-- Coller ici le code du plugin FA "Sujets actifs" (Portail > mod_recent_topics) -->
+      <!-- Rempli automatiquement par selFetchRecent48h() via /memberlist?mode=lastvisit&order=DESC -->
       <div class="dernieres-block">
         <div class="sub-title">Dernières 48h</div>
         <div class="sel-zone-plugin" id="selZone2"></div>
@@ -944,6 +944,80 @@ selHorsRpTransform();
       .catch(function(e) { return e; });
   }
 
+  /* ── Convertit le texte "Dernière visite" FA en objet Date ── */
+  function selParseLastVisit(text) {
+    text = (text || '').trim();
+    var now = new Date();
+    var hm = text.match(/(\d{1,2}):(\d{2})/);
+    if (/^Aujourd'hui/i.test(text)) {
+      var d1 = new Date(now);
+      if (hm) { d1.setHours(parseInt(hm[1], 10), parseInt(hm[2], 10), 0, 0); }
+      return d1;
+    }
+    if (/^Hier/i.test(text)) {
+      var d2 = new Date(now);
+      d2.setDate(d2.getDate() - 1);
+      if (hm) { d2.setHours(parseInt(hm[1], 10), parseInt(hm[2], 10), 0, 0); }
+      return d2;
+    }
+    var months = {
+      'janvier': 0, 'février': 1, 'fevrier': 1, 'mars': 2, 'avril': 3,
+      'mai': 4, 'juin': 5, 'juillet': 6, 'août': 7, 'aout': 7,
+      'septembre': 8, 'octobre': 9, 'novembre': 10, 'décembre': 11, 'decembre': 11
+    };
+    var dm = text.match(/(\d{1,2})\s+([A-Za-zéûôàè]+)\s+(\d{4})\s*-\s*(\d{1,2}):(\d{2})/);
+    if (dm) {
+      var month = months[dm[2].toLowerCase()];
+      if (typeof month === 'number') {
+        return new Date(parseInt(dm[3], 10), month, parseInt(dm[1], 10), parseInt(dm[4], 10), parseInt(dm[5], 10));
+      }
+    }
+    return null;
+  }
+
+  /* ── Zone 2 : liste des membres connectés dans les dernières 48h ── */
+  function selFetchRecent48h() {
+    var zone = document.getElementById('selZone2');
+    if (!zone) { return; }
+    fetch('/memberlist?mode=lastvisit&order=DESC')
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        var rows = doc.querySelectorAll('#memberlist tbody tr');
+        var now = new Date();
+        var limit = 48 * 60 * 60 * 1000;
+        var members = [];
+        for (var i = 0; i < rows.length; i++) {
+          var tds = rows[i].querySelectorAll('td');
+          if (tds.length < 5) { continue; }
+          var link = tds[1].querySelector('a[href]');
+          var visitDate = selParseLastVisit(tds[4].textContent);
+          if (!link || !visitDate) { continue; }
+          var diff = now.getTime() - visitDate.getTime();
+          if (diff < 0 || diff > limit) { break; }
+          members.push({ href: link.getAttribute('href'), name: link.textContent.trim() });
+        }
+        if (members.length === 0) {
+          zone.textContent = 'Aucun lunaire connecté ces dernières 48h.';
+          return;
+        }
+        var wrap = document.createElement('div');
+        wrap.className = 'sel-online-members';
+        for (var k = 0; k < members.length; k++) {
+          var a = document.createElement('a');
+          a.href = members[k].href;
+          a.textContent = members[k].name;
+          wrap.appendChild(a);
+          if (k < members.length - 1) {
+            wrap.appendChild(document.createTextNode(', '));
+          }
+        }
+        zone.appendChild(wrap);
+      })
+      .catch(function(e) { return e; });
+  }
+
   function selFooterReorder() {
     var footer = document.querySelector('.sel-footer-wrap');
     if (!footer) { return; }
@@ -1015,6 +1089,9 @@ selHorsRpTransform();
       var pFix2 = elPosts2.textContent.match(/\d+/);
       if (pFix2) { elPosts2.textContent = pFix2[0]; }
     }
+
+    /* ── Zone 2 : membres connectés dans les dernières 48h ── */
+    selFetchRecent48h();
   });
 })();
 </script>

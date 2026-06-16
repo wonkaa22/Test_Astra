@@ -836,7 +836,24 @@ selHorsRpTransform();
       chatDoc.head.appendChild(css);
     }
     syncTheme(obj, chatDoc);
+    layoutFooter(chatDoc);
     return true;
+  }
+
+  function layoutFooter(chatDoc) {
+    var form = chatDoc.querySelector('#chatbox_footer form');
+    if (!form || form.getAttribute('data-sel-laidout')) { return; }
+    var messengerForm = chatDoc.getElementById('chatbox_messenger_form');
+    var helpButton = chatDoc.getElementById('help-button');
+    var formatBox = null;
+    Array.prototype.forEach.call(form.children, function(child) {
+      if (child !== messengerForm && child !== helpButton) { formatBox = child; }
+    });
+    if (formatBox) {
+      formatBox.classList.add('sel-format-row');
+      if (helpButton) { formatBox.appendChild(helpButton); }
+    }
+    form.setAttribute('data-sel-laidout', '1');
   }
 
   function syncTheme(obj, chatDoc) {

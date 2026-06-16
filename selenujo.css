@@ -2722,7 +2722,8 @@ body.chatbox {
   font-family: var(--font-ui) !important;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #chatbox_header {
@@ -2811,6 +2812,8 @@ body.chatbox {
   background: var(--surface-3) !important;
   border-right: 1px solid var(--border) !important;
   padding-top: 4px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .member-title {
@@ -2837,6 +2840,7 @@ body.chatbox {
   grid-column: 2;
   grid-row: 2;
   overflow-y: auto;
+  min-height: 0;
   background: var(--surface-2) !important;
 }
 
@@ -2921,23 +2925,21 @@ body.chatbox {
 
 #chatbox_footer form[name="post"] {
   display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column !important;
   gap: 6px;
 }
 
-/* Zone 2 : mise en forme + aide, a gauche du champ de message, une seule ligne */
-.right-box:not(.style-buttons) {
-  order: 1;
+/* Zone 2 : mise en forme + aide, regroupes sur une seule ligne par le JS
+   d'injection (sel-format-row) -- voir FA_index_body.html. */
+.sel-format-row {
   display: flex !important;
   align-items: center;
   gap: 6px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  order: 2 !important;
 }
 
 #help-button {
-  order: 2;
   color: var(--text-lo) !important;
   border: 1px solid var(--border-mid);
   border-radius: 4px;
@@ -2949,11 +2951,10 @@ body.chatbox {
   cursor: pointer;
 }
 
-/* Zone 3 : champ de message, prend le reste de la largeur */
+/* Zone 3 : champ de message, en premier, hauteur agrandie */
 #chatbox_messenger_form {
-  order: 3;
-  flex: 1;
-  min-width: 140px;
+  order: 1 !important;
+  width: 100%;
 }
 
 .right-box.style-buttons {
@@ -2966,7 +2967,8 @@ body.chatbox {
   background: var(--surface-1) !important;
   border: 1px solid var(--border-mid) !important;
   border-radius: 8px !important;
-  padding: 0 6px;
+  padding: 0 8px;
+  min-height: 48px;
 }
 
 #message.inputbox {
@@ -2974,6 +2976,8 @@ body.chatbox {
   background: transparent !important;
   color: var(--text-hi) !important;
   border: none !important;
+  min-height: 44px;
+  font-size: 0.95rem !important;
 }
 
 #submit.button1 {

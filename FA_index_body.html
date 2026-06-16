@@ -813,7 +813,7 @@ selHorsRpTransform();
     var guest = gM ? parseInt(gM[1], 10) : 0;
     var parts = [];
     if (reg > 0)   { parts.push(reg   + ' lunaire'  + (reg   > 1 ? 's' : '')); }
-    if (guest > 0) { parts.push(guest + ' terrien'  + (guest > 1 ? 's' : '')); }
+    if (guest > 0) { parts.push(guest + ' terrien' + (guest > 1 ? '·ne·s' : '·ne')); }
     if (parts.length === 0) { return 'Aucun lunaire en ligne'; }
     return parts.join(' et ') + ' en ce moment';
   }

@@ -2739,8 +2739,7 @@ body.chatbox {
 }
 
 #tab_selector_cb {
-  grid-column: 2;
-  grid-row: 1;
+  display: none !important;
 }
 
 .chatbox-title {
@@ -2772,9 +2771,12 @@ body.chatbox {
   border-color: var(--gold-dim);
 }
 
+/* Nombre d'utilisateurs actuellement connectes a la chatbox (badge FA natif) */
 #nb-users-connected {
+  background: var(--surface-1) !important;
   color: var(--text-lo) !important;
-  font-size: 0.8rem !important;
+  font-size: 0.75rem !important;
+  border-radius: 6px !important;
 }
 
 .chatbox-options {
@@ -2843,6 +2845,17 @@ body.chatbox {
   background: transparent !important;
   padding: 6px 12px !important;
   margin: 0 !important;
+  font-size: 0.85rem !important;
+}
+
+#chatbox,
+#chatbox * {
+  font-family: var(--font-ui) !important;
+}
+
+#chatbox strong,
+#chatbox b {
+  font-weight: 500 !important;
 }
 
 .date-and-time {
@@ -2907,26 +2920,24 @@ body.chatbox {
 }
 
 #chatbox_footer form[name="post"] {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 8px;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 6px;
 }
 
-/* Zone 2 : mise en forme + aide, rangee du haut */
+/* Zone 2 : mise en forme + aide, a gauche du champ de message, une seule ligne */
 .right-box:not(.style-buttons) {
-  grid-column: 1;
-  grid-row: 1;
+  order: 1;
   display: flex !important;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 #help-button {
-  grid-column: 2;
-  grid-row: 1;
+  order: 2;
   color: var(--text-lo) !important;
   border: 1px solid var(--border-mid);
   border-radius: 4px;
@@ -2938,10 +2949,11 @@ body.chatbox {
   cursor: pointer;
 }
 
-/* Zone 3 : champ de message, rangee du bas */
+/* Zone 3 : champ de message, prend le reste de la largeur */
 #chatbox_messenger_form {
-  grid-column: 1 / 3;
-  grid-row: 2;
+  order: 3;
+  flex: 1;
+  min-width: 140px;
 }
 
 .right-box.style-buttons {

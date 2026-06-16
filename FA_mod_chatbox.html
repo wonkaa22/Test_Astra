@@ -1,0 +1,84 @@
+<div class="panel row3 mini-chatbox sel-chatbox-wrap">
+	<div class="inner">
+		<span class="corners-top"><span></span></span>
+		<div id="cp-main" class="ucp-main">
+			<br />
+			<div class="panel">
+				<div class="inner">
+					<span class="corners-top"><span></span></span>
+					<div id="{CHATBOX_MODID}" style="overflow:none;height:300px;"></div>
+					<script type="text/javascript">
+						insertChatBoxNew('{CHATBOX_MODID}', '{U_FRAME_CHATBOX}');
+
+						(function() {
+							var modId = '{CHATBOX_MODID}';
+
+							function injectSelenujoIntoChat() {
+								var holder = document.getElementById(modId);
+								if (!holder) { return; }
+								var obj = holder.querySelector('object');
+								if (!obj) { return; }
+
+								function doInject() {
+									var chatDoc = obj.contentDocument || (obj.contentWindow && obj.contentWindow.document);
+									if (!chatDoc || !chatDoc.head) { return; }
+									if (!chatDoc.getElementById('sel-chatbox-fonts')) {
+										var preconnect1 = chatDoc.createElement('link');
+										preconnect1.rel = 'preconnect';
+										preconnect1.href = 'https://fonts.googleapis.com';
+										chatDoc.head.appendChild(preconnect1);
+
+										var preconnect2 = chatDoc.createElement('link');
+										preconnect2.rel = 'preconnect';
+										preconnect2.href = 'https://fonts.gstatic.com';
+										preconnect2.crossOrigin = 'crossorigin';
+										chatDoc.head.appendChild(preconnect2);
+
+										var fonts = chatDoc.createElement('link');
+										fonts.id = 'sel-chatbox-fonts';
+										fonts.rel = 'stylesheet';
+										fonts.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap';
+										chatDoc.head.appendChild(fonts);
+									}
+									if (!chatDoc.getElementById('sel-chatbox-css')) {
+										var css = chatDoc.createElement('link');
+										css.id = 'sel-chatbox-css';
+										css.rel = 'stylesheet';
+										css.href = 'https://wonkaa22.github.io/Test_Astra/selenujo.css';
+										chatDoc.head.appendChild(css);
+									}
+									syncTheme(chatDoc);
+								}
+
+								function syncTheme(chatDoc) {
+									chatDoc = chatDoc || (obj.contentDocument || (obj.contentWindow && obj.contentWindow.document));
+									if (!chatDoc || !chatDoc.documentElement) { return; }
+									var isLight = document.documentElement.classList.contains('light');
+									chatDoc.documentElement.classList.toggle('light', isLight);
+								}
+
+								obj.addEventListener('load', doInject);
+								doInject();
+
+								new MutationObserver(function() { syncTheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+							}
+
+							if (document.readyState === 'complete' || document.readyState === 'interactive') {
+								injectSelenujoIntoChat();
+							} else {
+								document.addEventListener('DOMContentLoaded', injectSelenujoIntoChat);
+							}
+							window.addEventListener('load', injectSelenujoIntoChat);
+						})();
+					</script>
+					<img src="https://2img.net/i/fa/resize.gif" onmousedown="javascript:resizeElement(event, '{CHATBOX_MODID}');" alt="" style="cursor:se-resize; float: right;" />
+					<div class="clear"></div>
+					<span class="corners-bottom"><span></span></span>
+				</div>
+			</div>
+			<br />
+		</div>
+		<div class="clear"></div>
+		<span class="corners-bottom"><span></span></span>
+	</div>
+</div>

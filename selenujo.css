@@ -1231,8 +1231,18 @@ img { display: block; max-width: 100%; }
 .nouveau-img {
   flex-shrink: 0;
   width: 80px;
+  height: 80px;
+  align-self: center;
   background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
   border-right: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+.nouveau-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 .nouveau-info {
   flex: 1;
@@ -2272,6 +2282,8 @@ button.switcheroo__form-button {
 .nouveau-img {
   flex-shrink: 0;
   width: 80px;
+  height: 80px;
+  align-self: center;
   background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
   border-right: 1px solid rgba(255,255,255,0.05);
   overflow: hidden;
@@ -2280,6 +2292,7 @@ button.switcheroo__form-button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 

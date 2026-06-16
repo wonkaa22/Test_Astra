@@ -841,10 +841,10 @@ selHorsRpTransform();
     return true;
   }
 
+  var CHATBOX_HEIGHT_PX = 480;
+
   function fixHeight(obj, chatDoc) {
-    var h = obj.clientHeight || obj.offsetHeight;
-    if (!h) { return; }
-    var px = h + 'px';
+    var px = CHATBOX_HEIGHT_PX + 'px';
     if (chatDoc.documentElement) {
       chatDoc.documentElement.style.cssText = 'height:' + px + ' !important; overflow:hidden !important;';
     }

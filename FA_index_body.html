@@ -856,6 +856,7 @@ selHorsRpTransform();
   function syncTheme(obj, chatDoc) {
     chatDoc = chatDoc || getChatDoc(obj);
     if (!chatDoc || !chatDoc.documentElement) { return; }
+    chatDoc.documentElement.classList.add('chatbox-doc');
     var isLight = document.documentElement.classList.contains('light');
     chatDoc.documentElement.classList.toggle('light', isLight);
   }

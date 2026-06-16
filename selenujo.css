@@ -2716,8 +2716,16 @@ a.nouveau-name:hover { color: var(--gold); }
   height: 480px !important;
 }
 
-/* -- Document interne de la chatbox -- */
-html.chatbox-doc,
+/* -- Document interne de la chatbox --
+   On evite les unites vh : dans un <object type="text/html">, vh peut se
+   baser sur le mauvais viewport selon le navigateur. La classe
+   chatbox-doc est posee par le JS d'injection sur <html> pour ancrer une
+   chaine de hauteurs en pourcentage, fiable quelle que soit la taille
+   reelle du cadre. */
+html.chatbox-doc {
+  height: 100%;
+}
+
 body.chatbox {
   height: 100%;
 }
@@ -2731,7 +2739,6 @@ body.chatbox {
   font-family: var(--font-ui) !important;
   margin: 0;
   padding: 0;
-  height: 100vh;
   overflow: hidden;
 }
 

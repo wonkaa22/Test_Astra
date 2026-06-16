@@ -2707,6 +2707,15 @@ a.nouveau-name:hover { color: var(--gold); }
   filter: invert(0.6) sepia(1) saturate(2) hue-rotate(20deg);
 }
 
+/* FA fixe une hauteur de 300px en inline style sur #chatbox_bottom : on
+   l'agrandit pour que le header, la colonne des membres et la zone de
+   saisie restent visibles meme une fois le clavier/champ de message
+   focus (qui ne doit plus repousser le reste, voir layout body.chatbox). */
+.sel-chatbox-wrap #chatbox_bottom,
+.sel-chatbox-wrap #chatbox_bottom object {
+  height: 640px !important;
+}
+
 /* -- Document interne de la chatbox -- */
 html.chatbox-doc,
 body.chatbox {

@@ -841,19 +841,26 @@ selHorsRpTransform();
   }
 
   function layoutFooter(chatDoc) {
-    var form = chatDoc.querySelector('#chatbox_footer form');
-    if (!form || form.getAttribute('data-sel-laidout')) { return; }
+    var footer = chatDoc.getElementById('chatbox_footer');
+    var form = footer && footer.querySelector('form');
+    if (!form) { return; }
     var messengerForm = chatDoc.getElementById('chatbox_messenger_form');
     var helpButton = chatDoc.getElementById('help-button');
     var formatBox = null;
     Array.prototype.forEach.call(form.children, function(child) {
       if (child !== messengerForm && child !== helpButton) { formatBox = child; }
     });
+    if (!formatBox) {
+      Array.prototype.forEach.call(footer.children, function(child) {
+        if (child !== form && child !== helpButton && child !== messengerForm) { formatBox = formatBox || child; }
+      });
+    }
     if (formatBox) {
       formatBox.classList.add('sel-format-row');
-      if (helpButton) { formatBox.appendChild(helpButton); }
+      if (helpButton && helpButton.parentNode !== formatBox) {
+        formatBox.appendChild(helpButton);
+      }
     }
-    form.setAttribute('data-sel-laidout', '1');
   }
 
   function syncTheme(obj, chatDoc) {
@@ -883,6 +890,15 @@ selHorsRpTransform();
     }
     if (attempts > 100) { clearInterval(poll); }
   }, 300);
+
+  /* Le formulaire (boutons gras/italique/aide) peut etre regenere par le
+     JS de FA apres l'envoi d'un message ou un rafraichissement : on
+     reapplique regulierement le regroupement plutot qu'une seule fois. */
+  setInterval(function() {
+    if (!boundObj) { return; }
+    var chatDoc = getChatDoc(boundObj);
+    if (chatDoc) { layoutFooter(chatDoc); }
+  }, 1000);
 
   new MutationObserver(function() {
     if (boundObj) { syncTheme(boundObj); }

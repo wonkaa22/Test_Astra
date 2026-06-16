@@ -2713,7 +2713,7 @@ a.nouveau-name:hover { color: var(--gold); }
    focus (qui ne doit plus repousser le reste, voir layout body.chatbox). */
 .sel-chatbox-wrap #chatbox_bottom,
 .sel-chatbox-wrap #chatbox_bottom object {
-  height: 440px !important;
+  height: 480px !important;
 }
 
 /* -- Document interne de la chatbox -- */
@@ -2849,6 +2849,7 @@ body.chatbox {
   grid-column: 2;
   grid-row: 2;
   overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
   background: var(--surface-2) !important;
 }
@@ -2922,6 +2923,9 @@ body.chatbox {
 .user-msg .msg {
   grid-column: 2;
   grid-row: 2;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
 }
 
 #chatbox_footer {

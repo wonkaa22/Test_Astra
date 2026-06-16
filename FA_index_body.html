@@ -807,7 +807,8 @@ selHorsRpTransform();
     }
   }
 
-  function injectInto(chatDoc) {
+  function doInject(obj) {
+    var chatDoc = getChatDoc(obj);
     if (!chatDoc || !chatDoc.head) { return false; }
     if (!chatDoc.getElementById('sel-chatbox-fonts')) {
       var preconnect1 = chatDoc.createElement('link');
@@ -834,40 +835,15 @@ selHorsRpTransform();
       css.href = 'https://wonkaa22.github.io/Test_Astra/selenujo.css';
       chatDoc.head.appendChild(css);
     }
+    syncTheme(obj, chatDoc);
+    return true;
+  }
+
+  function syncTheme(obj, chatDoc) {
+    chatDoc = chatDoc || getChatDoc(obj);
+    if (!chatDoc || !chatDoc.documentElement) { return; }
     var isLight = document.documentElement.classList.contains('light');
     chatDoc.documentElement.classList.toggle('light', isLight);
-    return true;
-  }
-
-  function bindTitlePopup(chatDoc) {
-    var link = chatDoc.querySelector('.chat-title');
-    if (!link || link.getAttribute('data-sel-bound')) { return; }
-    link.setAttribute('data-sel-bound', '1');
-    link.addEventListener('click', function(ev) {
-      ev.preventDefault();
-      var win = (chatDoc.defaultView || window).open(link.href, 'chatbox');
-      if (!win) { return; }
-      var tries = 0;
-      var t = setInterval(function() {
-        tries++;
-        try {
-          if (win.document && win.document.head && win.document.readyState !== 'loading') {
-            injectInto(win.document);
-          }
-        } catch (e) {}
-        if (tries > 50) { clearInterval(t); }
-      }, 200);
-      win.addEventListener('load', function() {
-        try { injectInto(win.document); } catch (e) {}
-      });
-    });
-  }
-
-  function doInject(obj) {
-    var chatDoc = getChatDoc(obj);
-    if (!injectInto(chatDoc)) { return false; }
-    bindTitlePopup(chatDoc);
-    return true;
   }
 
   var boundObj = null;
@@ -892,13 +868,7 @@ selHorsRpTransform();
   }, 300);
 
   new MutationObserver(function() {
-    if (boundObj) {
-      var chatDoc = getChatDoc(boundObj);
-      if (chatDoc && chatDoc.documentElement) {
-        var isLight = document.documentElement.classList.contains('light');
-        chatDoc.documentElement.classList.toggle('light', isLight);
-      }
-    }
+    if (boundObj) { syncTheme(boundObj); }
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>

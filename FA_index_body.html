@@ -842,24 +842,14 @@ selHorsRpTransform();
 
   function layoutFooter(chatDoc) {
     var footer = chatDoc.getElementById('chatbox_footer');
-    var form = footer && footer.querySelector('form');
-    if (!form) { return; }
-    var messengerForm = chatDoc.getElementById('chatbox_messenger_form');
-    var helpButton = chatDoc.getElementById('help-button');
-    var formatBox = null;
-    Array.prototype.forEach.call(form.children, function(child) {
-      if (child !== messengerForm && child !== helpButton) { formatBox = child; }
-    });
-    if (!formatBox) {
-      Array.prototype.forEach.call(footer.children, function(child) {
-        if (child !== form && child !== helpButton && child !== messengerForm) { formatBox = formatBox || child; }
-      });
-    }
+    if (!footer) { return; }
+    var formatBox = footer.querySelector('.right-box:not(.style-buttons)');
+    var helpButton = footer.querySelector('#help-button');
     if (formatBox) {
       formatBox.classList.add('sel-format-row');
-      if (helpButton && helpButton.parentNode !== formatBox) {
-        formatBox.appendChild(helpButton);
-      }
+    }
+    if (formatBox && helpButton && helpButton.parentNode !== formatBox) {
+      formatBox.appendChild(helpButton);
     }
   }
 

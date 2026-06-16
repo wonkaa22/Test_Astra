@@ -2601,10 +2601,7 @@ a.nouveau-name:hover { color: var(--gold); }
 }
 
 .sel-online-count {
-  font-size: 11px;
-  color: var(--text-lo);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  display: none;
 }
 
 .sel-online-members {

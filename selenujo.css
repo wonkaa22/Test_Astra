@@ -942,6 +942,24 @@ img { display: block; max-width: 100%; }
   max-width: 100%;
   align-self: flex-start;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Forum "Personnages" : image existante (.adm-sub-img) prolongée en L inversé
+   pour combler l'espace sous les boutons et à droite du dernier message */
+.adm-sub-block:has(.adm-sub-img) { position: relative; }
+.adm-sub-block:has(.adm-sub-img)::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  left: 50%;
+  bottom: 18px;
+  height: 64px;
+  background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  z-index: 0;
 }
 .lm-body {
   flex: 1;
@@ -1003,6 +1021,7 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 699px) {
   .last-msg { width: 100%; min-width: 0; }
+  .adm-sub-block:has(.adm-sub-img)::after { display: none; }
 }
 
 

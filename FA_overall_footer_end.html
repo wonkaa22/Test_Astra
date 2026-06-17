@@ -215,41 +215,61 @@
 
       if (legend) { legend.remove(); }
 
-      /* Pied de page FA (© phpBB, Forum gratuit d'entraide, Statistiques,
-         Contact, Signaler un abus, Cookies...) : injecté en HTML brut
-         (liens, <br>, "|") directement dans <body>, sans conteneur, juste
-         après le commentaire "overall_footer_begin". Avec le body en
-         flex, chaque noeud devient un item séparé et s'affiche éclaté en
-         haut de page. On regroupe tout dans une seule barre en bas. */
+      console.log('[selViewforum] transform appliquee.');
+    })();
+
+    /* Pied de page du site (toutes les pages) : section "Nos partenaires"
+       (grille vide pour l'instant, à remplir plus tard) + barre des liens
+       légaux FA (© phpBB, Forum gratuit d'entraide, Statistiques, Contact,
+       Signaler un abus, Cookies...). Ces liens sont injectés en HTML brut
+       (liens, <br>, "|") directement dans <body>, sans conteneur, juste
+       après le commentaire "overall_footer_begin" : on les récupère pour
+       les ranger dans une seule barre propre. */
+    (function selBuildSiteFooter() {
       var bodyNodes = Array.prototype.slice.call(document.body.childNodes);
       var footerStart = bodyNodes.findIndex(function (n) {
         return n.nodeType === Node.COMMENT_NODE && /overall_footer_begin/i.test(n.textContent || '');
       });
-      if (footerStart > -1) {
-        var footerBar = document.createElement('div');
-        footerBar.className = 'site-footer-bar forum-width';
-        var footerLinks = [];
-        for (var fi = footerStart + 1; fi < bodyNodes.length; fi++) {
-          var fn = bodyNodes[fi];
-          if (fn.nodeName === 'A' || fn.nodeName === 'STRONG' || (fn.nodeName === 'SPAN' && fn.classList.contains('gensmall'))) {
-            footerLinks.push(fn);
-          } else if (fn.nodeName === 'SCRIPT' || fn.nodeName === 'IFRAME' || fn.nodeName === 'DIV') {
-            break;
-          } else {
-            fn.remove();
-          }
-        }
-        footerLinks.forEach(function (el, idx) {
-          if (idx > 0) { footerBar.appendChild(document.createTextNode(' | ')); }
-          footerBar.appendChild(el);
-        });
-        if (footerBar.childNodes.length) {
-          document.body.appendChild(footerBar);
-          footerBar.style.order = 9999;
+      if (footerStart === -1) { return; }
+
+      var legalBar = document.createElement('div');
+      legalBar.className = 'site-footer-bar forum-width';
+      var legalLinks = [];
+      for (var fi = footerStart + 1; fi < bodyNodes.length; fi++) {
+        var fn = bodyNodes[fi];
+        if (fn.nodeName === 'A' || fn.nodeName === 'STRONG' || (fn.nodeName === 'SPAN' && fn.classList.contains('gensmall'))) {
+          legalLinks.push(fn);
+        } else if (fn.nodeName === 'SCRIPT' || fn.nodeName === 'IFRAME' || fn.nodeName === 'DIV') {
+          break;
+        } else {
+          fn.remove();
         }
       }
+      legalLinks.forEach(function (el, idx) {
+        if (idx > 0) { legalBar.appendChild(document.createTextNode(' | ')); }
+        legalBar.appendChild(el);
+      });
+      if (!legalBar.childNodes.length) { return; }
 
-      console.log('[selViewforum] transform appliquee.');
+      var footer = document.createElement('footer');
+      footer.className = 'site-footer forum-width';
+
+      var partners = document.createElement('div');
+      partners.className = 'site-footer-partners';
+      var partnersTitle = document.createElement('h3');
+      partnersTitle.className = 'site-footer-partners-title';
+      partnersTitle.textContent = 'Nos partenaires';
+      var partnersGrid = document.createElement('div');
+      partnersGrid.className = 'site-footer-partners-grid';
+      /* Grille volontairement vide : ajouter ici des <a class="partner-square">
+         <img src="..." alt="..."></a> au fur et à mesure des partenariats. */
+      partners.appendChild(partnersTitle);
+      partners.appendChild(partnersGrid);
+
+      footer.appendChild(partners);
+      footer.appendChild(legalBar);
+      document.body.appendChild(footer);
+      footer.style.order = 9999;
     })();
   </script>
 

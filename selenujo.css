@@ -3333,6 +3333,7 @@ dl.icon {
 /* Cadre titre du sujet — grille pour empiler titre / "par auteur" à côté
    du badge, alors que ce sont des dd siblings à plat dans le HTML */
 dd.dterm {
+  position: relative;
   flex: 1;
   min-width: 0;
   background: var(--surface-2);
@@ -3356,7 +3357,7 @@ dd.dterm {
 }
 .topic-author { grid-column: 2; grid-row: 2; }
 /* Icône "vous avez participé" retirée par JS ; au cas où elle persiste */
-.topic-title-container img { display: none; }
+dd.dterm img { display: none; }
 h2.topic-title.hierarchy a.topictitle {
   font-family: var(--font-serif);
   font-size: 17px;
@@ -3370,11 +3371,11 @@ h2.topic-title.hierarchy a.topictitle:hover { color: var(--gold); }
 .topic-author .usr_grp_clr { font-weight: 500; }
 
 /* Compteurs Réponses / Vues — pilules façon .forum-stats, en chevauchement
-   du cadre titre (regroupées par JS dans .topic-stats sur li.row) */
+   du cadre titre (regroupées par JS dans .topic-stats, ajouté dans dd.dterm) */
 .topic-stats {
   position: absolute;
   top: -10px;
-  right: 14px;
+  right: 10px;
   display: flex;
   gap: 6px;
   z-index: 4;

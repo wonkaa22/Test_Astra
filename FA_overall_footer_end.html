@@ -83,19 +83,21 @@
         }
       });
 
-      /* Réponses / vues : sortis du cadre titre vers un badge superposé,
-         comme les pilules "sujets/messages" sur les forums (.forum-stats) */
+      /* Réponses / vues : sortis du cadre titre vers un badge superposé sur
+         CE MÊME cadre (et non sur le cadre dernier message), comme les
+         pilules "sujets/messages" sur les forums (.forum-stats) */
       document.querySelectorAll('ul.topiclist.topics.bg_none li.row').forEach(function (li) {
         var dl = li.querySelector('dl.icon');
         if (!dl) { return; }
+        var dterm = dl.querySelector('dd.dterm');
         var posts = dl.querySelector('dd.posts');
         var views = dl.querySelector('dd.views');
-        if (!posts && !views) { return; }
+        if (!dterm || (!posts && !views)) { return; }
         var wrap = document.createElement('div');
         wrap.className = 'topic-stats';
         if (views) { wrap.appendChild(views); }
         if (posts) { wrap.appendChild(posts); }
-        li.appendChild(wrap);
+        dterm.appendChild(wrap);
       });
 
       /* Lien "dernier message" : remplace l'icône flèche par une lune et
@@ -108,24 +110,29 @@
         dd.appendChild(jumpLink);
       });
 
-      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre */
-      document.querySelectorAll('.topic-title-container > img').forEach(function (img) {
+      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre,
+         où qu'elle se trouve dans le cadre titre */
+      document.querySelectorAll('dd.dterm img').forEach(function (img) {
         img.remove();
       });
 
-      /* Reloge "Rechercher" + "Poster un nouveau sujet" sous la description
-         du forum (barre du haut), à la place du lien "marquer comme lu"
-         qui est déjà disponible une seule fois en bas, à droite des sujets */
+      /* Reloge "Poster un nouveau sujet", "Trier" puis "Rechercher", dans cet
+         ordre, sur une seule ligne sous la description du forum, à la place
+         du lien "marquer comme lu" qui reste disponible une seule fois en
+         bas, à droite des sujets */
       if (topActions) {
-        var topBar  = topActions.querySelector('.topic-actions-buttons');
-        var subBtns = document.querySelector('.sub-header-buttons');
-        if (topBar && subBtns) {
+        var topBar    = topActions.querySelector('.topic-actions-buttons');
+        var subBtns   = document.querySelector('.sub-header-buttons');
+        var postBtn   = subBtns ? subBtns.querySelector('a.button1[href*="mode=newtopic"]') : null;
+        var searchBox = subBtns ? subBtns.querySelector('.search-box') : null;
+        var sortBox   = bottomActions ? bottomActions.querySelector('#sort-box') : null;
+        if (topBar) {
           topBar.innerHTML = '';
-          Array.prototype.slice.call(subBtns.children).forEach(function (el) {
-            topBar.appendChild(el);
-          });
-          subBtns.remove();
+          if (postBtn) { topBar.appendChild(postBtn); }
+          if (sortBox) { topBar.appendChild(sortBox); }
+          if (searchBox) { topBar.appendChild(searchBox); }
         }
+        if (subBtns) { subBtns.remove(); }
       }
 
       /* Retire le bouton "Poster un nouveau sujet" du bas (déjà présent en

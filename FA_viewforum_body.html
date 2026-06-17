@@ -1,0 +1,21 @@
+<script>
+function selViewforumTransform() {
+  var catBlock  = document.querySelector('.cat-block');
+  var topicsBox = document.querySelector('.forumbg.announcement') || document.querySelector('.forumbg');
+
+  // 1. Place les messages (sujets) au-dessus des sous-forums
+  if (catBlock && topicsBox && topicsBox.parentNode) {
+    topicsBox.parentNode.insertBefore(catBlock, topicsBox.nextSibling);
+  }
+
+  // 2. Aligne tout sur la même largeur que la navbar (.forum-width = 1050px)
+  var widthTargets = document.querySelectorAll(
+    '.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]'
+  );
+  widthTargets.forEach(function (el) {
+    el.classList.add('forum-width');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', selViewforumTransform);
+</script>

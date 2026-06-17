@@ -431,28 +431,24 @@ function selAdminTransform() {
     '<div class="adm-lower">' +
       '<div class="adm-left-col">' +
         '<div class="adm-sub-block">' +
-          '<div class="adm-sub-inner">' +
-            '<div class="adm-sub-links">' +
-              '<div class="adm-sub-title"><a href="' + (p ? p[1] : '#') + '">Personnages</a></div>' +
-              mkbtns(p) +
-            '</div>' +
-            '<div class="adm-sub-img"></div>' +
+          '<div class="adm-sub-title"><a href="' + (p ? p[1] : '#') + '">Personnages</a></div>' +
+          '<div class="adm-personnages-inner">' +
+            '<div class="adm-personnages-img"></div>' +
+            '<div class="adm-sub-links">' + mkbtns(p) + '</div>' +
           '</div>' +
           mklm(p) +
         '</div>' +
         '<div class="adm-sub-block">' +
           '<div class="adm-sub-title"><a href="' + (v ? v[1] : '#') + '">Vie sur la Lune</a></div>' +
           '<div class="adm-btn-grid2">' + mkbtns(v) + '</div>' +
-          mklm(v) +
+          '<div class="adm-vie-row">' + mklm(v) + '<div class="adm-vie-img"></div></div>' +
         '</div>' +
       '</div>' +
       '<div class="adm-sub-block">' +
         '<div class="adm-sub-title"><a href="' + (g ? g[1] : '#') + '">Gestion</a></div>' +
-        '<div class="adm-gestion-mid">' +
-          '<div class="adm-gestion-img"></div>' +
-          '<div class="adm-gestion-btns">' + mkbtns(g) + '</div>' +
-        '</div>' +
+        '<div class="adm-sub-links">' + mkbtns(g) + '</div>' +
         mklm(g) +
+        '<div class="adm-gestion-img"></div>' +
       '</div>' +
     '</div>';
   var content = ab.querySelector('.cat-content');

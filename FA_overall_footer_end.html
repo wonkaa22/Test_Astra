@@ -71,11 +71,15 @@
          (qui est la ligne entière du sujet), pointant vers un sprite dont on
          ne peut pas réutiliser juste l'URL (mauvais cadrage = icône fichier
          qui apparaissait à tort). On la remplace par une vraie lune, plus
-         claire si le sujet contient des messages non lus. */
+         claire si le sujet contient des messages non lus. Comme le nom du
+         fichier de fond n'est pas fiable pour détecter le statut, on se fie
+         aussi à la présence d'un 2e lien "nouveau message" dans le cadre du
+         dernier message (FA en ajoute un quand il y a du contenu non lu). */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
-        var bg = dl.style.backgroundImage;
-        if (!bg) { return; }
-        var isUnread = /new/i.test(bg);
+        var bg = dl.style.backgroundImage || '';
+        var lastpost = dl.querySelector('dd.lastpost');
+        var jumpLinkCount = lastpost ? lastpost.querySelectorAll('a[href*="#"]').length : 0;
+        var isUnread = /new/i.test(bg) || jumpLinkCount > 1;
         var badge = document.createElement('span');
         badge.className = 'topic-status-icon' + (isUnread ? ' is-unread' : '');
         badge.textContent = '☽';
@@ -108,12 +112,15 @@
          droite du cadre (hors du bloc nom/date). S'il y a plusieurs liens
          (icône supplémentaire FA pour les messages non lus), on n'en garde
          qu'un seul. */
+      /* La lune est affichée en CSS pur (::after sur .lastpost-jump) plutôt
+         qu'écrite ici en innerHTML, pour rester fixe même si FA réinjecte
+         plus tard un autre contenu (flèche/icône "nouveau message") dans ce
+         lien. */
       document.querySelectorAll('dd.lastpost').forEach(function (dd) {
         var jumpLinks = Array.prototype.slice.call(dd.querySelectorAll('a[href*="#"]'));
         if (!jumpLinks.length) { return; }
         var jumpLink = jumpLinks[jumpLinks.length - 1];
         jumpLinks.forEach(function (a) { if (a !== jumpLink) { a.remove(); } });
-        jumpLink.innerHTML = '☽';
         jumpLink.classList.add('lastpost-jump');
         dd.appendChild(jumpLink);
       });

@@ -49,7 +49,12 @@ function selViewforumTransform() {
     el.classList.add('forum-width');
   });
 }
-selViewforumTransform();
+if (document.readyState === 'complete') {
+  selViewforumTransform();
+} else {
+  window.addEventListener('load', selViewforumTransform);
+}
+setTimeout(selViewforumTransform, 1000);
 </script>
 
 </body>

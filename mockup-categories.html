@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Catégories — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .forum-width { width: 1050px; max-width: 100%; display: flex; flex-direction: column; gap: 28px; }
+
+  /* ═══════════════════════════════════════
+     BLOC CATÉGORIE
+     ═══════════════════════════════════════ */
+  .cat-block {
+    background: #16192a;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .cat-header:hover { background: rgba(255,255,255,0.02); }
+
+  .cat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.88);
+    letter-spacing: 0.02em;
+  }
+
+  .cat-toggle {
+    background: none;
+    border: 1px solid rgba(212,163,115,0.25);
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(212,163,115,0.7);
+    font-size: 11px;
+    padding: 5px 10px;
+    line-height: 1;
+    transition: transform 0.35s ease, border-color 0.2s, color 0.2s;
+  }
+  .cat-toggle:hover { color: #D4A373; border-color: rgba(212,163,115,0.5); }
+  .cat-toggle.is-collapsed { transform: rotate(180deg); }
+
+  /* Contenu repliable */
+  .cat-content {
+    padding: 22px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-height: 4000px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.3s ease, padding 0.3s ease;
+  }
+  .cat-content.is-collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════
+     LIGNE DE FORUM
+     ═══════════════════════════════════════ */
+  .forum-row {
+    position: relative;
+    border-radius: 12px;
+    background: #0f1220;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Stats (x sujets / x messages) — dépassent au-dessus */
+  .forum-stats {
+    position: absolute;
+    top: -13px;
+    right: 14px;
+    display: flex;
+    gap: 6px;
+    z-index: 4;
+  }
+  .stat-pill {
+    font-size: 10px;
+    color: rgba(180,185,210,0.6);
+    background: #16192a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 99px;
+    padding: 3px 10px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Inner : image gauche + contenu droit */
+  .forum-inner {
+    display: flex;
+    align-items: stretch;
+    min-height: 160px;
+  }
+
+  /* ═══════════════════════════════════════
+     IMAGE — parallélogramme
+     Bord gauche arrondi + coupe diagonale droite via ::after
+     ═══════════════════════════════════════ */
+  .forum-image {
+    position: relative;
+    flex-shrink: 0;
+    width: 38%;
+    border-radius: 11px 0 0 11px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3a58 45%, #1a2235 100%);
+    z-index: 1;
+  }
+
+  /* Triangle coloré qui "découpe" l'angle droit — couleur = bg du forum-row */
+  .forum-image::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 56px;
+    height: 100%;
+    background: #0f1220;
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+    z-index: 2;
+  }
+
+  .forum-name {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    z-index: 3;
+    line-height: 1;
+  }
+
+  /* ═══════════════════════════════════════
+     CONTENU DROIT
+     ═══════════════════════════════════════ */
+  .forum-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 14px 12px 8px;
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+  }
+
+  /* Description — chevauche la frontière image/contenu */
+  .forum-desc {
+    position: relative;
+    margin-left: -44px;
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 99px;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(200,207,224,0.7);
+    text-align: center;
+    letter-spacing: 0.02em;
+    z-index: 3;
+  }
+
+  /* Grille de sous-forums */
+  .subforums {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .sf-pill {
+    font-size: 11px;
+    color: rgba(200,207,224,0.75);
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 99px;
+    padding: 4px 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .sf-pill:hover { border-color: rgba(212,163,115,0.4); color: #D4A373; }
+
+  /* Dernier message */
+  .last-msg {
+    margin-top: auto;
+    padding: 7px 14px;
+    background: rgba(255,255,255,0.025);
+    border-radius: 8px;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 1049px) {
+    .forum-width { width: 100%; }
+    .forum-image { width: 33%; }
+    .forum-image::after { width: 44px; }
+    .forum-name { font-size: 22px; }
+  }
+
+  @media (max-width: 599px) {
+    body { padding: 20px 12px; }
+    .cat-header { padding: 12px 14px; }
+    .cat-title { font-size: 18px; }
+    .cat-content { padding: 10px; gap: 10px; }
+
+    /* Mobile : image en haut, contenu en dessous */
+    .forum-inner { flex-direction: column; }
+    .forum-image {
+      width: 100%;
+      min-height: 90px;
+      border-radius: 11px 11px 0 0;
+    }
+    /* Supprime la coupe diagonale en mobile (pas pertinente en pleine largeur) */
+    .forum-image::after { display: none; }
+    .forum-name { font-size: 24px; }
+    .forum-desc { margin-left: 0; }
+    .forum-stats { top: -12px; }
+  }
+</style>
+</head>
+<body>
+<div class="forum-width">
+
+  <!-- Catégorie 1 -->
+  <div class="cat-block">
+    <div class="cat-header">
+      <span class="cat-title">01. Zone de départ</span>
+      <button class="cat-toggle" aria-label="Replier">▲</button>
+    </div>
+    <div class="cat-content">
+
+      <!-- Forum 1 — description longue, 8 sous-forums -->
+      <div class="forum-row">
+        <div class="forum-stats">
+          <span class="stat-pill">24 sujets</span>
+          <span class="stat-pill">138 messages</span>
+        </div>
+        <div class="forum-inner">
+          <div class="forum-image">
+            <span class="forum-name">La Sortosipo</span>
+          </div>
+          <div class="forum-right">
+            <div class="forum-desc">Le grand dôme central de Selenujo, cœur politique et commercial de la nation. Ses avenues pressurisées s'étendent sous un ciel de verre et de cristaloj.</div>
+            <div class="subforums">
+              <span class="sf-pill">La Grande Place</span>
+              <span class="sf-pill">Les Ruelles</span>
+              <span class="sf-pill">Le Marché</span>
+              <span class="sf-pill">Les Ateliers</span>
+              <span class="sf-pill">L'Esplanade</span>
+              <span class="sf-pill">Les Appartements</span>
+              <span class="sf-pill">Le Port d'Amarrage</span>
+              <span class="sf-pill">Les Archives</span>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forum 2 — description courte, 4 sous-forums -->
+      <div class="forum-row">
+        <div class="forum-stats">
+          <span class="stat-pill">8 sujets</span>
+          <span class="stat-pill">31 messages</span>
+        </div>
+        <div class="forum-inner">
+          <div class="forum-image">
+            <span class="forum-name">Pontdomo</span>
+          </div>
+          <div class="forum-right">
+            <div class="forum-desc">Un dôme plus modeste à l'est, réputé pour ses jardins hydroponiques et sa communauté d'artisans.</div>
+            <div class="subforums">
+              <span class="sf-pill">Les Jardins</span>
+              <span class="sf-pill">Les Ateliers</span>
+              <span class="sf-pill">La Place du Marché</span>
+              <span class="sf-pill">Les Logements</span>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forum 3 — description très courte, 3 sous-forums -->
+      <div class="forum-row">
+        <div class="forum-stats">
+          <span class="stat-pill">3 sujets</span>
+          <span class="stat-pill">9 messages</span>
+        </div>
+        <div class="forum-inner">
+          <div class="forum-image">
+            <span class="forum-name">La Profunda</span>
+          </div>
+          <div class="forum-right">
+            <div class="forum-desc">Les tunnels non pressurisés au-delà des dômes. Territoire des sans-abri et des fugitifs.</div>
+            <div class="subforums">
+              <span class="sf-pill">Les Galeries</span>
+              <span class="sf-pill">Le Campement</span>
+              <span class="sf-pill">La Vieille Station</span>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Catégorie 2 (exemple replié par défaut) -->
+  <div class="cat-block">
+    <div class="cat-header">
+      <span class="cat-title">02. Zone périphérique</span>
+      <button class="cat-toggle is-collapsed" aria-label="Déplier">▲</button>
+    </div>
+    <div class="cat-content is-collapsed">
+      <div class="forum-row">
+        <div class="forum-stats">
+          <span class="stat-pill">5 sujets</span>
+          <span class="stat-pill">17 messages</span>
+        </div>
+        <div class="forum-inner">
+          <div class="forum-image">
+            <span class="forum-name">Āuroro</span>
+          </div>
+          <div class="forum-right">
+            <div class="forum-desc">Dôme de recherche scientifique, accès restreint.</div>
+            <div class="subforums">
+              <span class="sf-pill">Les Laboratoires</span>
+              <span class="sf-pill">L'Observatoire</span>
+              <span class="sf-pill">Les Résidences</span>
+              <span class="sf-pill">Le Sas d'entrée</span>
+              <span class="sf-pill">La Salle de conférences</span>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.cat-header').forEach(function(header) {
+  header.addEventListener('click', function() {
+    var content = header.nextElementSibling;
+    var toggle  = header.querySelector('.cat-toggle');
+    var collapsed = content.classList.toggle('is-collapsed');
+    toggle.classList.toggle('is-collapsed', collapsed);
+    toggle.setAttribute('aria-label', collapsed ? 'Déplier' : 'Replier');
+  });
+});
+</script>
+</body>
+</html>

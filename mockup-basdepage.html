@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Bas de page — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+  .forum-width { width: 1050px; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ═══════════════════════════════════════
+     LAYOUT PRINCIPAL — 2 colonnes
+     ═══════════════════════════════════════ */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Colonne gauche */
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Colonne droite */
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ═══════════════════════════════════════
+     BLOCS PARTAGÉS
+     ═══════════════════════════════════════ */
+  .sub-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.1;
+  }
+
+  /* ═══════════════════════════════════════
+     LIGNE SUPÉRIEURE GAUCHE
+     Nouveau lunaire + bloc image côte à côte
+     ═══════════════════════════════════════ */
+  .top-row {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  /* Bloc Nouveau lunaire */
+  .nouveau-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .nouveau-img {
+    flex-shrink: 0;
+    width: 80px;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.07);
+    font-size: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .nouveau-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 14px;
+  }
+
+  .nouveau-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .nouveau-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(212,163,115,0.85);
+    line-height: 1.1;
+  }
+
+  /* Bloc image décorative (à droite de "nouveau lunaire") */
+  .deco-block {
+    flex-shrink: 0;
+    width: 120px;
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: linear-gradient(135deg, #1e2745 0%, #2a3a58 45%, #1a2235 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.07);
+    font-size: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ═══════════════════════════════════════
+     ZONE 1 — Actuellement connecté.e.s
+     ═══════════════════════════════════════ */
+  .connectes-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .zone-placeholder {
+    background: rgba(255,255,255,0.018);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(255,255,255,0.2);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ═══════════════════════════════════════
+     ZONE 3 — Groupes + texte
+     ═══════════════════════════════════════ */
+  .groupes-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .groupes-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+    width: 160px;
+  }
+
+  .groupe-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .groupe-btn:hover {
+    background: #1a1f33;
+    border-color: rgba(212,163,115,0.3);
+    color: #D4A373;
+  }
+  .groupe-btn.active {
+    background: #1a1f33;
+    border-color: rgba(212,163,115,0.4);
+    color: #D4A373;
+  }
+
+  /* Zone texte description du groupe */
+  .groupe-desc {
+    flex: 1;
+    background: #0f1220;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .groupe-desc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.1;
+  }
+
+  .groupe-desc-text {
+    font-size: 11.5px;
+    color: rgba(200,207,224,0.55);
+    line-height: 1.6;
+  }
+
+  .groupe-desc-link {
+    margin-top: auto;
+    font-size: 11px;
+    color: rgba(212,163,115,0.6);
+    cursor: pointer;
+    transition: color 0.2s;
+    align-self: flex-start;
+  }
+  .groupe-desc-link:hover { color: #D4A373; }
+
+  /* ═══════════════════════════════════════
+     STATISTIQUES (colonne droite)
+     ═══════════════════════════════════════ */
+  .stats-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px 22px;
+    position: relative;
+    overflow: hidden;
+    min-height: 130px;
+  }
+
+  .stats-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stats-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .stat-line {
+    font-size: 12px;
+    color: rgba(200,207,224,0.6);
+    line-height: 1.6;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(212,163,115,0.8);
+    margin-right: 4px;
+  }
+
+  /* Blob décoratif */
+  .stats-blob {
+    position: absolute;
+    right: -20px;
+    bottom: -18px;
+    width: 110px;
+    height: 110px;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3555 45%, #1a2235 80%, #16192a 100%);
+    border-radius: 44% 56% 52% 48% / 36% 44% 56% 64%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.06);
+    font-size: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .stats-blob::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border-radius: inherit;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ═══════════════════════════════════════
+     LUNAIRE DU MOIS (colonne droite)
+     ═══════════════════════════════════════ */
+  .lunaire-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    min-height: 100px;
+  }
+
+  .lunaire-left {
+    flex: 1;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(215,108,88,0.18) 0%, rgba(127,80,86,0.14) 100%);
+  }
+
+  .lunaire-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(215,108,88,0.6);
+  }
+
+  .lunaire-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.1;
+  }
+
+  .lunaire-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: rgba(215,108,88,0.9);
+    margin-top: auto;
+    line-height: 1.2;
+  }
+
+  .lunaire-img {
+    flex-shrink: 0;
+    width: 90px;
+    background: linear-gradient(135deg, #3a1a1a 0%, #5a2e2a 50%, #3a1a1e 100%);
+    border-left: 1px solid rgba(215,108,88,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.07);
+    font-size: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ═══════════════════════════════════════
+     ZONE 4 — Icônes FA
+     ═══════════════════════════════════════ */
+  .zone4-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 12px 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    color: rgba(200,207,224,0.5);
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    position: relative;
+  }
+  .icon-btn:hover {
+    background: #1a1f33;
+    border-color: rgba(212,163,115,0.3);
+    color: #D4A373;
+  }
+
+  /* Tooltip */
+  .icon-btn::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f1220;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 10px;
+    white-space: nowrap;
+    color: rgba(200,207,224,0.7);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .icon-btn:hover::after { opacity: 1; }
+
+  /* ═══════════════════════════════════════
+     ZONE 2 — Dernières 48h
+     ═══════════════════════════════════════ */
+  .dernieres-block {
+    background: #16192a;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 1049px) {
+    .forum-width { width: 100%; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-right { flex-direction: row; flex-wrap: wrap; }
+    .footer-right > * { flex: 1 1 calc(50% - 8px); }
+    .stats-blob { width: 90px; height: 90px; right: -14px; bottom: -12px; }
+  }
+
+  @media (max-width: 699px) {
+    .footer-right { flex-direction: column; }
+    .footer-right > * { flex: none; width: 100%; }
+  }
+
+  @media (max-width: 599px) {
+    body { padding: 20px 12px; }
+    .top-row { flex-direction: column; }
+    .deco-block { width: 100%; min-height: 80px; }
+    .groupes-block { flex-direction: column; }
+    .groupes-btns { width: 100%; flex-direction: row; flex-wrap: wrap; }
+    .groupe-btn { flex: 1 1 calc(50% - 4px); }
+    .zone4-block { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="forum-width">
+  <div class="footer-grid">
+
+    <!-- ═══ COLONNE GAUCHE ═══ -->
+    <div class="footer-left">
+
+      <!-- Ligne supérieure : Nouveau lunaire + image déco -->
+      <div class="top-row">
+        <div class="nouveau-block">
+          <div class="nouveau-img">image</div>
+          <div class="nouveau-info">
+            <span class="nouveau-label">Nouveau lunaire</span>
+            <span class="nouveau-name">[Nom du dernier inscrit]</span>
+          </div>
+        </div>
+        <div class="deco-block">image décorative</div>
+      </div>
+
+      <!-- Zone 1 : Actuellement connecté.e.s -->
+      <div class="connectes-block">
+        <div class="sub-title">Actuellement connecté.e.s</div>
+        <div class="zone-placeholder">Zone 1 — Plugin ForumActif : membres connectés</div>
+      </div>
+
+      <!-- Zone 3 : Groupes + description -->
+      <div class="groupes-block">
+        <div class="groupes-btns">
+          <button class="groupe-btn active" data-group="1">Groupe 1</button>
+          <button class="groupe-btn" data-group="2">Groupe 2</button>
+          <button class="groupe-btn" data-group="3">Groupe 3</button>
+          <button class="groupe-btn" data-group="4">Groupe 4</button>
+          <button class="groupe-btn" data-group="5">Groupe 5</button>
+        </div>
+        <div class="groupe-desc" id="groupeDesc">
+          <div class="groupe-desc-title" id="groupeTitle">Groupe 1</div>
+          <div class="groupe-desc-text" id="groupeText">Description du groupe sélectionné — à remplir pour chaque groupe. Quelques lignes présentant ses membres, ses valeurs ou son rôle dans la nation de Selenujo.</div>
+          <a class="groupe-desc-link" href="#" id="groupeLink">Voir la page du groupe ↗</a>
+        </div>
+      </div>
+
+    </div><!-- /footer-left -->
+
+    <!-- ═══ COLONNE DROITE ═══ -->
+    <div class="footer-right">
+
+      <!-- Statistiques -->
+      <div class="stats-block">
+        <div class="stats-content">
+          <div class="stats-title">Statistiques</div>
+          <div class="stat-line"><span class="stat-num">XX</span> lunaires enregistré.e.s</div>
+          <div class="stat-line"><span class="stat-num">XX</span> messages postés</div>
+        </div>
+        <div class="stats-blob">image décorative</div>
+      </div>
+
+      <!-- Lunaire du mois -->
+      <div class="lunaire-block">
+        <div class="lunaire-left">
+          <span class="lunaire-label">Lunaire du mois</span>
+          <span class="lunaire-title">Lunaire<br>du mois</span>
+          <span class="lunaire-name">[Nom du personnage]</span>
+        </div>
+        <div class="lunaire-img">image</div>
+      </div>
+
+      <!-- Zone 4 : icônes FA -->
+      <div class="zone4-block">
+        <button class="icon-btn" data-tip="Tout marquer comme lu">✓</button>
+        <button class="icon-btn" data-tip="Supprimer les cookies">⊘</button>
+        <button class="icon-btn" data-tip="Règlement">§</button>
+        <button class="icon-btn" data-tip="FAQ">?</button>
+        <button class="icon-btn" data-tip="Rechercher">🔍</button>
+        <button class="icon-btn" data-tip="Membres">◈</button>
+        <button class="icon-btn" data-tip="Groupes">⬡</button>
+      </div>
+
+      <!-- Zone 2 : Dernières 48h -->
+      <div class="dernieres-block">
+        <div class="sub-title">Dernières 48h</div>
+        <div class="zone-placeholder">Zone 2 — Plugin ForumActif : sujets actifs</div>
+      </div>
+
+    </div><!-- /footer-right -->
+
+  </div><!-- /footer-grid -->
+</div>
+
+<script>
+(function() {
+  var groups = {
+    1: { title: 'Groupe 1', text: 'Description du groupe sélectionné — à remplir pour chaque groupe. Quelques lignes présentant ses membres, ses valeurs ou son rôle dans la nation de Selenujo.', link: '#' },
+    2: { title: 'Groupe 2', text: 'Description du deuxième groupe — à personnaliser selon la faction ou l\'organisation représentée dans le forum.', link: '#' },
+    3: { title: 'Groupe 3', text: 'Description du troisième groupe — présentation de ses attributions, de son histoire et de ses membres au sein de Selenujo.', link: '#' },
+    4: { title: 'Groupe 4', text: 'Description du quatrième groupe — contexte narratif, rôle politique ou social dans l\'écosystème de la lune.', link: '#' },
+    5: { title: 'Groupe 5', text: 'Description du cinquième groupe — texte libre à adapter selon la structure de groupes définie par l\'administration.', link: '#' }
+  };
+
+  var btns = document.querySelectorAll('.groupe-btn');
+  var titleEl = document.getElementById('groupeTitle');
+  var textEl  = document.getElementById('groupeText');
+  var linkEl  = document.getElementById('groupeLink');
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var g = groups[btn.dataset.group];
+      titleEl.textContent = g.title;
+      textEl.textContent  = g.text;
+      linkEl.href         = g.link;
+    });
+  });
+})();
+</script>
+</body>
+</html>

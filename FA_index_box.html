@@ -1,0 +1,79 @@
+<!-- Liens rapides FA (masqués, remplacés par notre footer) -->
+<ul class="linklist top" style="display:none;">
+  <!-- BEGIN switch_user_logged_in -->
+  <li><a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a></li>
+  <li><a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a></li>
+  <!-- END switch_user_logged_in -->
+  <li><a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a></li>
+  <!-- BEGIN switch_user_logged_in -->
+  <li><a href="{U_MARK_READ}">{L_MARK_FORUMS_READ}</a></li>
+  <!-- END switch_user_logged_in -->
+</ul>
+
+<!-- ═══════════════════════════════════════
+     BOUCLE CATÉGORIES
+     ═══════════════════════════════════════ -->
+<!-- BEGIN catrow -->
+
+  <!-- BEGIN tablehead -->
+  <div class="cat-block">
+    <div class="cat-header">
+      <span class="cat-title">{catrow.tablehead.L_FORUM}</span>
+      <button class="cat-toggle" type="button" aria-label="Replier">&#9650;</button>
+    </div>
+    <div class="cat-content">
+  <!-- END tablehead -->
+
+  <!-- BEGIN forumrow -->
+    <div class="forum-row">
+      <div class="forum-stats">
+        <span class="stat-pill">{catrow.forumrow.TOPICS} sujets</span>
+        <span class="stat-pill">{catrow.forumrow.POSTS} messages</span>
+      </div>
+      <div class="forum-inner">
+        <div class="forum-image">
+          <a href="{catrow.forumrow.U_VIEWFORUM}" class="forum-name">{catrow.forumrow.FORUM_NAME}</a>
+        </div>
+        <div class="forum-right">
+          <div class="forum-desc">{catrow.forumrow.FORUM_DESC}</div>
+          <div class="subforums">{catrow.forumrow.LINKS}</div>
+          <!-- BEGIN switch_topic_title -->
+          <div class="last-msg">
+            <div class="lm-body">
+              <a class="lm-title" href="{catrow.forumrow.U_LATEST_TOPIC}">{catrow.forumrow.LATEST_TOPIC_NAME}</a>
+              <span class="lm-time"></span>
+              <div class="lm-author lm-author-raw">{catrow.forumrow.USER_LAST_POST}</div>
+            </div>
+            <div class="lm-right">
+              <a class="lm-moon" href="{catrow.forumrow.U_LATEST_TOPIC}">&#9789;</a>
+            </div>
+          </div>
+          <!-- END switch_topic_title -->
+        </div>
+      </div>
+    </div>
+  <!-- END forumrow -->
+
+  <!-- BEGIN tablefoot -->
+    </div><!-- /cat-content -->
+  </div><!-- /cat-block -->
+  <!-- END tablefoot -->
+
+<!-- END catrow -->
+
+<!-- Images de forum FA (masquées) -->
+<!-- BEGIN switch_forum_images -->
+<div style="display:none;">{switch_forum_images.SCRIPTS}</div>
+<!-- END switch_forum_images -->
+
+<!-- Liens de bas FA (masqués) -->
+<!-- BEGIN switch_on_index -->
+<div style="display:none;">
+  <a href="{U_TODAY_ACTIVE}">{L_TODAY_ACTIVE}</a>
+  <a href="{U_TODAY_POSTERS}">{L_TODAY_POSTERS}</a>
+  <a href="{U_OVERALL_POSTERS}">{L_OVERALL_POSTERS}</a>
+  <!-- BEGIN switch_delete_cookies -->
+  <a href="{switch_on_index.switch_delete_cookies.U_DELETE_COOKIES}">{switch_on_index.switch_delete_cookies.L_DELETE_COOKIES}</a>
+  <!-- END switch_delete_cookies -->
+</div>
+<!-- END switch_on_index -->

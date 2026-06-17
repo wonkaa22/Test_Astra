@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup Admin — Selenujo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0d14; font-family: 'Inter', sans-serif; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+  .forum-width { width: 1050px; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ═══════════════════════════════════════
+     BLOC ADMIN
+     ═══════════════════════════════════════ */
+  .admin-block {
+    background: #16192a;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+  }
+
+  /* Barre de titre / toggle */
+  .admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .admin-header:hover { background: rgba(255,255,255,0.02); }
+
+  .admin-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.88);
+    letter-spacing: 0.02em;
+  }
+
+  .admin-toggle {
+    background: none;
+    border: 1px solid rgba(212,163,115,0.25);
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(212,163,115,0.7);
+    font-size: 11px;
+    padding: 5px 10px;
+    line-height: 1;
+    transition: transform 0.35s ease, border-color 0.2s, color 0.2s;
+  }
+  .admin-toggle:hover { color: #D4A373; border-color: rgba(212,163,115,0.5); }
+  .admin-toggle.is-collapsed { transform: rotate(180deg); }
+
+  /* Contenu repliable */
+  .admin-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 2400px;
+    opacity: 1;
+    transition: max-height 0.45s ease, opacity 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+  }
+  .admin-content.is-collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════
+     GUIDEBOOK
+     ═══════════════════════════════════════ */
+  .guidebook-block {
+    background: #0f1220;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 26px 28px 26px 28px;
+    position: relative;
+    min-height: 190px;
+    overflow: visible;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .guidebook-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+    max-width: 270px;
+  }
+
+  .guidebook-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 46px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.93);
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .guidebook-link {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    color: rgba(212,163,115,0.8);
+    line-height: 1.5;
+    cursor: pointer;
+    transition: color 0.2s, padding-left 0.2s;
+    display: inline-block;
+  }
+  .guidebook-link:hover { color: #D4A373; padding-left: 6px; }
+
+  /* Image blob qui déborde à droite et en bas */
+  .guidebook-blob {
+    position: absolute;
+    right: -24px;
+    top: -14px;
+    bottom: -22px;
+    width: 56%;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3555 35%, #1a2235 70%, #16192a 100%);
+    border-radius: 44% 56% 52% 48% / 36% 44% 56% 64%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.07);
+    font-size: 12px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  /* Sous-blob pour donner un peu de profondeur */
+  .guidebook-blob::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: inherit;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ═══════════════════════════════════════
+     GRILLE INFÉRIEURE
+     ═══════════════════════════════════════ */
+  .admin-lower {
+    display: grid;
+    grid-template-columns: 1fr 290px;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .admin-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Sous-blocs */
+  .sub-block {
+    background: #0f1220;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sub-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.1;
+  }
+
+  /* Boutons forum */
+  .forum-btn {
+    display: block;
+    width: 100%;
+    padding: 9px 14px;
+    background: #11151D;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.7);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .forum-btn:hover {
+    background: #1a1f33;
+    border-color: rgba(212,163,115,0.3);
+    color: #D4A373;
+  }
+
+  /* Dernier message */
+  .last-msg {
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.025);
+    border-radius: 8px;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(255,255,255,0.28);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.045);
+  }
+
+  /* ═══════════════════════════════════════
+     PERSONNAGES
+     ═══════════════════════════════════════ */
+  .personnages-top {
+    display: flex;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .personnages-btns {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .personnages-img {
+    width: 155px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.1);
+    font-size: 11px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ═══════════════════════════════════════
+     VIE SUR LA LUNE
+     ═══════════════════════════════════════ */
+  .btn-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* ═══════════════════════════════════════
+     GESTION
+     ═══════════════════════════════════════ */
+  /* Desktop : image sous les boutons, pleine largeur */
+  .gestion-mid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gestion-btns { display: flex; flex-direction: column; gap: 8px; }
+  .gestion-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.1);
+    font-size: 11px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 1049px) {
+    .forum-width { width: 100%; }
+    .admin-lower { grid-template-columns: 1fr; }
+    .guidebook-blob { width: 50%; right: -16px; }
+    /* Gestion tablette : image à gauche des boutons, petite comme personnages */
+    .gestion-mid { flex-direction: row; align-items: stretch; }
+    .gestion-img { width: 130px; aspect-ratio: unset; }
+    .gestion-btns { flex: 1; }
+  }
+
+  @media (max-width: 599px) {
+    body { padding: 20px 12px; }
+    .admin-header { padding: 12px 16px; }
+    .admin-title { font-size: 20px; }
+    .admin-content { padding: 12px; gap: 12px; }
+    .guidebook-block { padding: 18px 16px; min-height: 150px; }
+    .guidebook-title { font-size: 34px; }
+    .guidebook-link { font-size: 18px; }
+    .guidebook-blob { width: 44%; right: -10px; top: -8px; bottom: -14px; }
+    .btn-grid-2 { grid-template-columns: 1fr; }
+    /* Personnages : image réduite, même hauteur que les boutons */
+    .personnages-img { width: 80px; align-self: stretch; }
+    /* Gestion mobile : image redevient pleine largeur, aplatie */
+    .gestion-mid { flex-direction: column; }
+    .gestion-img { width: 100%; aspect-ratio: 2/1; height: auto; }
+    .gestion-btns { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="forum-width">
+  <div class="admin-block">
+
+    <!-- En-tête avec toggle -->
+    <div class="admin-header" id="adminHeader">
+      <span class="admin-title">00. Administration</span>
+      <button class="admin-toggle" id="adminToggle" aria-label="Replier la section">▲</button>
+    </div>
+
+    <!-- Contenu collapsible -->
+    <div class="admin-content" id="adminContent">
+
+      <!-- Guidebook -->
+      <div class="guidebook-block">
+        <div class="guidebook-left">
+          <h2 class="guidebook-title">Guidebook</h2>
+          <a class="guidebook-link" href="#">Contexte</a>
+          <a class="guidebook-link" href="#">Règlement</a>
+          <a class="guidebook-link" href="#">Groupes</a>
+        </div>
+        <div class="guidebook-blob">image décorative</div>
+      </div>
+
+      <!-- Grille inférieure -->
+      <div class="admin-lower">
+
+        <!-- Colonne gauche -->
+        <div class="admin-left-col">
+
+          <!-- Personnages -->
+          <div class="sub-block">
+            <div class="personnages-top">
+              <div class="personnages-btns">
+                <div class="sub-title">Personnages</div>
+                <a href="#" class="forum-btn">Fiches personnages</a>
+                <a href="#" class="forum-btn">Registres</a>
+                <a href="#" class="forum-btn">Relations</a>
+              </div>
+              <div class="personnages-img">image décorative</div>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+
+          <!-- Vie sur la Lune -->
+          <div class="sub-block">
+            <div class="sub-title">Vie sur la Lune</div>
+            <div class="btn-grid-2">
+              <a href="#" class="forum-btn">Demander ses points</a>
+              <a href="#" class="forum-btn">Absences</a>
+              <a href="#" class="forum-btn">Demandes de RP</a>
+              <a href="#" class="forum-btn">Boutique</a>
+            </div>
+            <div class="last-msg">Dernier message posté dans ce forum</div>
+          </div>
+
+        </div>
+
+        <!-- Colonne droite — Gestion -->
+        <div class="sub-block">
+          <div class="sub-title">Gestion</div>
+          <div class="gestion-mid">
+            <div class="gestion-img">image décorative</div>
+            <div class="gestion-btns">
+              <a href="#" class="forum-btn">Partenariats</a>
+              <a href="#" class="forum-btn">Questions</a>
+              <a href="#" class="forum-btn">Actualités</a>
+            </div>
+          </div>
+          <div class="last-msg">Dernier message posté dans ce forum</div>
+        </div>
+
+      </div><!-- /admin-lower -->
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-block -->
+</div>
+
+<script>
+(function() {
+  var header  = document.getElementById('adminHeader');
+  var toggle  = document.getElementById('adminToggle');
+  var content = document.getElementById('adminContent');
+
+  header.addEventListener('click', function() {
+    var collapsed = content.classList.toggle('is-collapsed');
+    toggle.classList.toggle('is-collapsed', collapsed);
+    toggle.setAttribute('aria-label', collapsed ? 'Déplier la section' : 'Replier la section');
+  });
+})();
+</script>
+</body>
+</html>

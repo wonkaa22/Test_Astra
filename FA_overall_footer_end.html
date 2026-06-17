@@ -1,0 +1,174 @@
+  <!-- Switcheroo — scripts et initialisation -->
+  <script src="https://cdn.jsdelivr.net/gh/caezd/switcheroo@master/monomer.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/caezd/switcheroo@master/switcheroo.js"></script>
+  <script>
+    (function() {
+      if (typeof _userdata !== 'undefined' && _userdata['session_logged_in']) {
+        new Switcheroo('#switcheroo', {
+          logo: '',
+          enableReorder: true,
+          updateAvatar: true,
+          confirm: true,
+          deleteIcon: '×',
+          addIcon: '+',
+        }, {
+          button: { add: "Associer un personnage" },
+          msg: {
+            error:   "Une erreur est survenue lors du Switcheroo.",
+            confirm: "Confirmer le changement de personnage ?",
+          },
+          modal: {
+            password_label: "Mot de passe",
+            username_label: "Nom d'utilisateur",
+            login_button:   "Connexion",
+          }
+        });
+      }
+    })();
+
+    /* Page Valero (viewforum) : messages au-dessus des sous-forums + largeur uniforme */
+    (function selViewforumTransform() {
+      var body      = document.body;
+      var children  = Array.prototype.slice.call(body.children);
+      var catBlock  = children.filter(function (el) { return el.classList.contains('cat-block'); })[0];
+      var forumbgs  = children.filter(function (el) { return el.classList.contains('forumbg'); });
+      var topicsBox = forumbgs.length ? forumbgs[forumbgs.length - 1] : null;
+
+      console.log('[selViewforum] cat-block:', catBlock, 'forumbg:', topicsBox);
+
+      if (!catBlock || !topicsBox) {
+        console.log('[selViewforum] abandon : pas une page viewforum.');
+        return;
+      }
+
+      var topActions    = document.querySelector('.topic-actions:not(.bottom)');
+      var bottomActions = document.querySelector('.topic-actions.bottom');
+
+      var newOrder = children.filter(function (el) { return el !== catBlock; });
+      var insertAfter = (bottomActions && newOrder.indexOf(bottomActions) > -1) ? bottomActions : topicsBox;
+      newOrder.splice(newOrder.indexOf(insertAfter) + 1, 0, catBlock);
+
+      body.style.display = 'flex';
+      body.style.flexDirection = 'column';
+      newOrder.forEach(function (el, i) { el.style.order = i; });
+
+      var widthTargets = document.querySelectorAll('.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]');
+      widthTargets.forEach(function (el) {
+        el.classList.add('forum-width');
+      });
+
+      /* Remplace le séparateur "::" du fil d'Ariane par "☽" */
+      var pathEl = document.querySelector('.sub-header-path');
+      if (pathEl) {
+        Array.prototype.forEach.call(pathEl.childNodes, function (node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = node.textContent.replace(/::/g, '☽');
+          }
+        });
+      }
+
+      /* Icône lu/non-lu : FA la pose en background-image inline sur dl.icon
+         (qui est la ligne entière du sujet). On l'extrait dans un badge
+         dédié inséré dans le cadre du titre, puis on neutralise le fond
+         du dl pour pouvoir le transformer en flex row (voir CSS). */
+      document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
+        var bg = dl.style.backgroundImage;
+        if (!bg) { return; }
+        var badge = document.createElement('span');
+        badge.className = 'topic-status-icon';
+        badge.style.backgroundImage = bg;
+        var dterm = dl.querySelector('dd.dterm');
+        if (dterm) {
+          dterm.insertBefore(badge, dterm.firstChild);
+        }
+      });
+
+      /* Réponses / vues : sortis du cadre titre vers un badge superposé sur
+         CE MÊME cadre (et non sur le cadre dernier message), comme les
+         pilules "sujets/messages" sur les forums (.forum-stats) */
+      document.querySelectorAll('ul.topiclist.topics.bg_none li.row').forEach(function (li) {
+        var dl = li.querySelector('dl.icon');
+        if (!dl) { return; }
+        var dterm = dl.querySelector('dd.dterm');
+        var posts = dl.querySelector('dd.posts');
+        var views = dl.querySelector('dd.views');
+        if (!dterm || (!posts && !views)) { return; }
+        var wrap = document.createElement('div');
+        wrap.className = 'topic-stats';
+        if (views) { wrap.appendChild(views); }
+        if (posts) { wrap.appendChild(posts); }
+        dterm.appendChild(wrap);
+      });
+
+      /* Lien "dernier message" : remplace l'icône flèche par une lune et
+         le déplace à droite du cadre (hors du bloc nom/date) */
+      document.querySelectorAll('dd.lastpost').forEach(function (dd) {
+        var jumpLink = dd.querySelector('a[href*="#"]');
+        if (!jumpLink) { return; }
+        jumpLink.innerHTML = '☽';
+        jumpLink.classList.add('lastpost-jump');
+        dd.appendChild(jumpLink);
+      });
+
+      /* Remplace l'icône "vous avez participé" (fichier) à gauche du titre
+         par une petite puce discrète, plutôt que de la masquer */
+      document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
+        var lastpost = dl.querySelector('dd.lastpost');
+        Array.prototype.slice.call(dl.querySelectorAll('img')).forEach(function (img) {
+          if (lastpost && lastpost.contains(img)) { return; }
+          var dot = document.createElement('span');
+          dot.className = 'topic-participated';
+          dot.title = img.getAttribute('title') || img.getAttribute('alt') || '';
+          img.replaceWith(dot);
+        });
+      });
+
+      /* Bouton "Rechercher" : remplace l'icône/texte par la lune utilisée
+         partout ailleurs, intégrée dans le cadre du champ de recherche */
+      document.querySelectorAll('.search-box button').forEach(function (btn) {
+        btn.innerHTML = '☽';
+      });
+
+      /* Reloge "Poster un nouveau sujet", "Trier" puis "Rechercher", dans cet
+         ordre, sur une seule ligne sous la description du forum, à la place
+         du lien "marquer comme lu" qui reste disponible une seule fois en
+         bas, à droite des sujets */
+      if (topActions) {
+        var topBar    = topActions.querySelector('.topic-actions-buttons');
+        var subBtns   = document.querySelector('.sub-header-buttons');
+        var postBtn   = subBtns ? subBtns.querySelector('a.button1[href*="mode=newtopic"]') : null;
+        var searchBox = subBtns ? subBtns.querySelector('.search-box') : null;
+        var sortBox   = bottomActions ? bottomActions.querySelector('#sort-box') : null;
+        if (topBar) {
+          topBar.innerHTML = '';
+          if (postBtn) { topBar.appendChild(postBtn); }
+          if (sortBox) { topBar.appendChild(sortBox); }
+          if (searchBox) { topBar.appendChild(searchBox); }
+        }
+        if (subBtns) { subBtns.remove(); }
+      }
+
+      /* Retire le bouton "Poster un nouveau sujet" du bas (déjà présent en
+         haut, sous la description) pour éviter le doublon */
+      if (bottomActions) {
+        var bottomPostBtn = bottomActions.querySelector('a.button1[href*="mode=newtopic"]');
+        if (bottomPostBtn) { bottomPostBtn.remove(); }
+      }
+
+      /* Retire le menu "Plus !" injecté par insert_plus_menu_new (FA) :
+         redondant avec les boutons déjà présents */
+      document.querySelectorAll('.topic-actions-buttons').forEach(function (bar) {
+        Array.prototype.slice.call(bar.children).forEach(function (child) {
+          var label = (child.textContent || '').trim();
+          if (label === 'Plus !' || child.id === 'plus-link' || child.id === 'plus-menu') {
+            child.remove();
+          }
+        });
+      });
+
+      console.log('[selViewforum] transform appliquee.');
+    })();
+  </script>
+
+</body>
+</html>

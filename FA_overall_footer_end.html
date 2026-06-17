@@ -173,6 +173,46 @@
         });
       });
 
+      /* Nettoyage du bas de page : texte brut "Utilisateurs parcourant
+         actuellement ce forum", bloc modérateurs/permissions (#info_open)
+         et légende des icônes (#picture_legend). On les retire tous, sauf
+         si un invité non connecté n'a pas le droit de poster dans ce forum
+         précis : dans ce cas on affiche un seul message de négation à la
+         place du bloc permissions. */
+      if (bottomActions) {
+        var infoOpen   = bottomActions.querySelector('#info_open');
+        var legend      = bottomActions.querySelector('#picture_legend');
+        var jumpboxForm = bottomActions.querySelector('form[name="jumpbox"]');
+
+        if (infoOpen) {
+          var isLoggedIn = (typeof _userdata !== 'undefined' && _userdata['session_logged_in']);
+          var permsText  = infoOpen.textContent || '';
+          var guestCantPost = /ne pouvez pas poster/i.test(permsText);
+
+          /* Retire tout ce qui traîne entre le formulaire jumpbox et
+             #info_open (texte "Utilisateurs parcourant...", liens, <br>) */
+          if (jumpboxForm) {
+            var node = jumpboxForm.nextSibling;
+            while (node && node !== infoOpen) {
+              var toRemove = node;
+              node = node.nextSibling;
+              toRemove.remove();
+            }
+          }
+
+          if (!isLoggedIn && guestCantPost) {
+            var notice = document.createElement('p');
+            notice.className = 'forum-guest-notice';
+            notice.textContent = "Vous devez être inscrit·e et connecté·e pour poster dans ce forum.";
+            infoOpen.parentNode.replaceChild(notice, infoOpen);
+          } else {
+            infoOpen.remove();
+          }
+        }
+
+        if (legend) { legend.remove(); }
+      }
+
       console.log('[selViewforum] transform appliquee.');
     })();
   </script>

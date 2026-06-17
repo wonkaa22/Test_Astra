@@ -285,6 +285,36 @@
       document.body.appendChild(footer);
       footer.style.order = 9999;
     })();
+
+    /* Avatar manquant dans le cadre "dernier message" des sous-forums :
+       FA ne génère pas l'image ici (contrairement à la page d'accueil),
+       seul un lien vers le profil de l'auteur est présent. On va chercher
+       l'avatar sur la page de profil (.mod-login-avatar img) et on
+       l'insère dans .lm-right, dans le même habillage que .lm-avatar-clip. */
+    (function selFillMissingLastpostAvatars() {
+      document.querySelectorAll('.lm-right').forEach(function (lmRight) {
+        if (lmRight.querySelector('.lm-avatar-clip')) { return; }
+        var lmBody = lmRight.previousElementSibling;
+        if (!lmBody || !lmBody.classList.contains('lm-body')) { return; }
+        var authorLink = lmBody.querySelector('.lm-author a[href^="/u"]');
+        if (!authorLink) { return; }
+        fetch(authorLink.getAttribute('href'))
+          .then(function (res) { return res.text(); })
+          .then(function (html) {
+            var avatarImg = new DOMParser().parseFromString(html, 'text/html').querySelector('.mod-login-avatar img');
+            if (!avatarImg) { return; }
+            var clip = document.createElement('div');
+            clip.className = 'lm-avatar-clip';
+            var img = document.createElement('img');
+            img.src = avatarImg.getAttribute('src');
+            img.alt = avatarImg.getAttribute('alt') || '';
+            img.loading = 'lazy';
+            clip.appendChild(img);
+            lmRight.insertBefore(clip, lmRight.firstChild);
+          })
+          .catch(function () {});
+      });
+    })();
   </script>
 
 </body>

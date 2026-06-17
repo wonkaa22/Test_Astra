@@ -68,15 +68,17 @@
       }
 
       /* Icône lu/non-lu : FA la pose en background-image inline sur dl.icon
-         (qui est la ligne entière du sujet). On l'extrait dans un badge
-         dédié inséré dans le cadre du titre, puis on neutralise le fond
-         du dl pour pouvoir le transformer en flex row (voir CSS). */
+         (qui est la ligne entière du sujet), pointant vers un sprite dont on
+         ne peut pas réutiliser juste l'URL (mauvais cadrage = icône fichier
+         qui apparaissait à tort). On la remplace par une vraie lune, plus
+         claire si le sujet contient des messages non lus. */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
         var bg = dl.style.backgroundImage;
         if (!bg) { return; }
+        var isUnread = /new/i.test(bg);
         var badge = document.createElement('span');
-        badge.className = 'topic-status-icon';
-        badge.style.backgroundImage = bg;
+        badge.className = 'topic-status-icon' + (isUnread ? ' is-unread' : '');
+        badge.textContent = '☽';
         var dterm = dl.querySelector('dd.dterm');
         if (dterm) {
           dterm.insertBefore(badge, dterm.firstChild);

@@ -36,7 +36,14 @@ function selViewforumTransform() {
   var forumbgs  = children.filter(function (el) { return el.classList.contains('forumbg'); });
   var topicsBox = forumbgs.length ? forumbgs[forumbgs.length - 1] : null;
 
-  if (!catBlock || !topicsBox) return; // pas une page viewforum, on ne touche à rien
+  console.log('[selViewforum] direct cat-block:', catBlock, 'direct forumbg:', topicsBox,
+    'all cat-block:', document.querySelectorAll('.cat-block').length,
+    'all forumbg:', document.querySelectorAll('.forumbg').length);
+
+  if (!catBlock || !topicsBox) {
+    console.log('[selViewforum] abandon : élément(s) introuvable(s) en enfant direct de <body>.');
+    return;
+  }
 
   // 1. Place les messages (sujets) au-dessus des sous-forums, SANS déplacer les
   //    noeuds dans le DOM (ça casserait les sélecteurs CSS basés sur l'ordre des

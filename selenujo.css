@@ -3210,6 +3210,28 @@ body.chatbox {
   font-style: italic;
   color: var(--text-mid);
 }
+
+/* Pied de page FA (© phpBB, statistiques, contact...) regroupé en une
+   seule barre par JS, au lieu d'être éclaté dans le flux flex de body */
+.site-footer-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 24px;
+  padding: 16px 0;
+  font-size: 12px;
+  color: var(--text-lo);
+  text-align: center;
+}
+.site-footer-bar a {
+  color: var(--text-lo);
+  text-decoration: none;
+}
+.site-footer-bar a:hover {
+  color: var(--gold);
+}
 .topic-actions-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .topic-actions a,
 .topic-actions button,

@@ -36,18 +36,16 @@ function selViewforumTransform() {
   var forumbgs  = children.filter(function (el) { return el.classList.contains('forumbg'); });
   var topicsBox = forumbgs.length ? forumbgs[forumbgs.length - 1] : null;
 
-  console.log('[selViewforum] direct cat-block:', catBlock, 'direct forumbg:', topicsBox,
-    'all cat-block:', document.querySelectorAll('.cat-block').length,
-    'all forumbg:', document.querySelectorAll('.forumbg').length);
+  console.log('[selViewforum] direct cat-block:', catBlock, 'direct forumbg:', topicsBox, 'all cat-block:', document.querySelectorAll('.cat-block').length, 'all forumbg:', document.querySelectorAll('.forumbg').length);
 
   if (!catBlock || !topicsBox) {
-    console.log('[selViewforum] abandon : élément(s) introuvable(s) en enfant direct de <body>.');
+    console.log('[selViewforum] abandon : element(s) introuvable(s) en enfant direct de body.');
     return;
   }
 
-  // 1. Place les messages (sujets) au-dessus des sous-forums, SANS déplacer les
-  //    noeuds dans le DOM (ça casserait les sélecteurs CSS basés sur l'ordre des
-  //    frères) : on rejoue juste l'ordre visuel via flex + order.
+  /* Place les messages (sujets) au-dessus des sous-forums, SANS deplacer les
+     noeuds dans le DOM (ca casserait les selecteurs CSS bases sur l'ordre des
+     freres) : on rejoue juste l'ordre visuel via flex + order. */
   var newOrder = children.filter(function (el) { return el !== catBlock; });
   newOrder.splice(newOrder.indexOf(topicsBox) + 1, 0, catBlock);
 
@@ -55,19 +53,15 @@ function selViewforumTransform() {
   body.style.flexDirection = 'column';
   newOrder.forEach(function (el, i) { el.style.order = i; });
 
-  // 2. Aligne tout sur la même largeur que la navbar (.forum-width = 1050px)
-  var widthTargets = document.querySelectorAll(
-    '.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]'
-  );
+  /* Aligne tout sur la meme largeur que la navbar (.forum-width = 1050px) */
+  var widthTargets = document.querySelectorAll('.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]');
   widthTargets.forEach(function (el) {
     el.classList.add('forum-width');
   });
+
+  console.log('[selViewforum] transform appliquee.');
 }
-if (document.readyState === 'complete') {
-  selViewforumTransform();
-} else {
-  window.addEventListener('load', selViewforumTransform);
-}
+if (document.readyState === 'complete') { selViewforumTransform(); } else { window.addEventListener('load', selViewforumTransform); }
 setTimeout(selViewforumTransform, 1000);
 </script>
 

@@ -322,7 +322,7 @@ function selHorsRpTransform() {
       subs.push([subAs[si].textContent.trim(), subAs[si].href]);
     }
     var lmDiv = rows[ri].querySelector('.last-msg');
-    var lm = (lmDiv && lmDiv.textContent.trim()) ? lmDiv.innerHTML : null;
+    var lm = (lmDiv && lmDiv.textContent.trim()) ? lmDiv.outerHTML : null;
     rowArr.push([nm, nEl.href, subs, lm]);
   }
   function findSec(nm) {
@@ -341,7 +341,7 @@ function selHorsRpTransform() {
   }
   function mklm(sec) {
     if (!sec || !sec[3]) return '';
-    return '<div class="hrp-last-msg">' + sec[3] + '</div>';
+    return sec[3];
   }
   var det = findSec('tente');
   var ent = findSec('Entraide');
@@ -395,8 +395,8 @@ function selAdminTransform() {
     for (var si = 0; si < subAs.length; si++) {
       subs.push([subAs[si].textContent.trim(), subAs[si].href]);
     }
-    var lmEl = rows[ri].querySelector('.last-msg a');
-    var lm = lmEl ? [lmEl.textContent.trim(), lmEl.href] : null;
+    var lmEl = rows[ri].querySelector('.last-msg');
+    var lm = (lmEl && lmEl.textContent.trim()) ? lmEl.outerHTML : null;
     rowArr.push([nm, nEl.href, subs, lm]);
   }
   function findSec(nm) {
@@ -415,7 +415,7 @@ function selAdminTransform() {
   }
   function mklm(sec) {
     if (!sec || !sec[3]) return '';
-    return '<div class="adm-last-msg"><a href="' + sec[3][1] + '">' + sec[3][0] + '</a></div>';
+    return sec[3];
   }
   var p = findSec('Personnages');
   var v = findSec('Vie sur la Lune');

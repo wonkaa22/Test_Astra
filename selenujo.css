@@ -746,16 +746,33 @@ img { display: block; max-width: 100%; }
 .hrp-col-entraide .last-msg,
 .adm-sub-block .last-msg,
 .adm-sub-inner .last-msg {
-  margin-top: auto;
   align-self: stretch;
   width: auto;
   max-width: none;
 }
+.hrp-col-detente .last-msg { margin-top: auto; }
 
-/* Colonne Archives : boutons réduits et répartis sur toute la hauteur
-   pour combler l'espace sans laisser de vide en bas */
-.hrp-col-archives .hrp-buttons { flex: 1; justify-content: space-between; gap: 0; }
+/* Entraide : image décorative fine sous le cadre du dernier message,
+   qui s'étire pour combler l'espace restant en bas de colonne */
+.hrp-entraide-img {
+  flex: 1;
+  min-height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
+  border: 1px solid var(--border);
+}
+
+/* Archives : image décorative juste sous le titre, qui s'étire pour
+   combler l'espace au-dessus des boutons (espacement standard restauré) */
+.hrp-col-archives .hrp-buttons { gap: 8px; }
 .hrp-col-archives .hrp-btn { padding: 7px 10px; font-size: 11px; }
+.hrp-archives-img {
+  flex: 1;
+  min-height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e2745 0%, #2a3a58 60%, #1a2235 100%);
+  border: 1px solid var(--border);
+}
 
 @media (max-width: 1049px) {
   .hrp-cols { grid-template-columns: 1fr; }

@@ -649,7 +649,7 @@ img { display: block; max-width: 100%; }
 .adm-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 /* Vie sur la Lune : dernier message et image en 50/50 */
-.adm-vie-row { display: flex; gap: 10px; align-items: stretch; }
+.adm-vie-row { display: flex; gap: 8px; align-items: stretch; }
 .adm-vie-row .last-msg { flex: 1; }
 .adm-vie-img {
   flex: 1;

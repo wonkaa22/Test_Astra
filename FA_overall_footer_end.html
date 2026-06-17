@@ -70,26 +70,17 @@
       /* Icône lu/non-lu : FA la pose en background-image inline sur dl.icon
          (qui est la ligne entière du sujet), pointant vers un sprite dont on
          ne peut pas réutiliser juste l'URL (mauvais cadrage = icône fichier
-         qui apparaissait à tort). On la remplace par une vraie lune, plus
-         claire si le sujet contient des messages non lus. Comme le nom du
-         fichier de fond n'est pas fiable pour détecter le statut, on se fie
-         aussi à la présence d'un 2e lien "nouveau message" dans le cadre du
-         dernier message (FA en ajoute un quand il y a du contenu non lu). */
+         qui apparaissait à tort). On la remplace par une vraie lune, dorée
+         si le sujet a des messages non lus. FA pose alors title="Nouveaux
+         messages" sur dd.dterm et utilise topic_unread.png en fond. */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
-        var bg = dl.style.backgroundImage || '';
-        var lastpost  = dl.querySelector('dd.lastpost');
-        var avatar    = lastpost ? lastpost.querySelector('.lastpost-avatar') : null;
-        var nameEl    = lastpost ? lastpost.querySelector('strong') : null;
-        var jumpCount = lastpost ? Array.prototype.filter.call(lastpost.querySelectorAll('a'), function (a) {
-          if (avatar && avatar.contains(a)) { return false; }
-          if (nameEl && nameEl.contains(a)) { return false; }
-          return true;
-        }).length : 0;
-        var isUnread = /new/i.test(bg) || jumpCount > 1;
+        var bg    = dl.style.backgroundImage || '';
+        var dterm = dl.querySelector('dd.dterm');
+        var title = dterm ? (dterm.getAttribute('title') || '') : '';
+        var isUnread = /unread/i.test(bg) || /nouveau/i.test(title);
         var badge = document.createElement('span');
         badge.className = 'topic-status-icon' + (isUnread ? ' is-unread' : '');
         badge.textContent = '☽';
-        var dterm = dl.querySelector('dd.dterm');
         if (dterm) {
           dterm.insertBefore(badge, dterm.firstChild);
         }

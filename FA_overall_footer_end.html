@@ -25,45 +25,37 @@
         });
       }
     })();
+
+    /* Page Valero (viewforum) : messages au-dessus des sous-forums + largeur uniforme */
+    (function selViewforumTransform() {
+      var body      = document.body;
+      var children  = Array.prototype.slice.call(body.children);
+      var catBlock  = children.filter(function (el) { return el.classList.contains('cat-block'); })[0];
+      var forumbgs  = children.filter(function (el) { return el.classList.contains('forumbg'); });
+      var topicsBox = forumbgs.length ? forumbgs[forumbgs.length - 1] : null;
+
+      console.log('[selViewforum] cat-block:', catBlock, 'forumbg:', topicsBox);
+
+      if (!catBlock || !topicsBox) {
+        console.log('[selViewforum] abandon : pas une page viewforum.');
+        return;
+      }
+
+      var newOrder = children.filter(function (el) { return el !== catBlock; });
+      newOrder.splice(newOrder.indexOf(topicsBox) + 1, 0, catBlock);
+
+      body.style.display = 'flex';
+      body.style.flexDirection = 'column';
+      newOrder.forEach(function (el, i) { el.style.order = i; });
+
+      var widthTargets = document.querySelectorAll('.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]');
+      widthTargets.forEach(function (el) {
+        el.classList.add('forum-width');
+      });
+
+      console.log('[selViewforum] transform appliquee.');
+    })();
   </script>
-
-<!-- Page Valero (viewforum) : messages au-dessus des sous-forums + largeur uniforme -->
-<script>
-function selViewforumTransform() {
-  var body      = document.body;
-  var children  = Array.prototype.slice.call(body.children);
-  var catBlock  = children.filter(function (el) { return el.classList.contains('cat-block'); })[0];
-  var forumbgs  = children.filter(function (el) { return el.classList.contains('forumbg'); });
-  var topicsBox = forumbgs.length ? forumbgs[forumbgs.length - 1] : null;
-
-  console.log('[selViewforum] direct cat-block:', catBlock, 'direct forumbg:', topicsBox, 'all cat-block:', document.querySelectorAll('.cat-block').length, 'all forumbg:', document.querySelectorAll('.forumbg').length);
-
-  if (!catBlock || !topicsBox) {
-    console.log('[selViewforum] abandon : element(s) introuvable(s) en enfant direct de body.');
-    return;
-  }
-
-  /* Place les messages (sujets) au-dessus des sous-forums, SANS deplacer les
-     noeuds dans le DOM (ca casserait les selecteurs CSS bases sur l'ordre des
-     freres) : on rejoue juste l'ordre visuel via flex + order. */
-  var newOrder = children.filter(function (el) { return el !== catBlock; });
-  newOrder.splice(newOrder.indexOf(topicsBox) + 1, 0, catBlock);
-
-  body.style.display = 'flex';
-  body.style.flexDirection = 'column';
-  newOrder.forEach(function (el, i) { el.style.order = i; });
-
-  /* Aligne tout sur la meme largeur que la navbar (.forum-width = 1050px) */
-  var widthTargets = document.querySelectorAll('.cat-block, .forumbg, .sub-header, #page-desc, .topic-actions, .pagination, form[name="jumpbox"]');
-  widthTargets.forEach(function (el) {
-    el.classList.add('forum-width');
-  });
-
-  console.log('[selViewforum] transform appliquee.');
-}
-if (document.readyState === 'complete') { selViewforumTransform(); } else { window.addEventListener('load', selViewforumTransform); }
-setTimeout(selViewforumTransform, 1000);
-</script>
 
 </body>
 </html>

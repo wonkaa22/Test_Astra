@@ -3425,17 +3425,31 @@ dd.lastpost {
 .lastpost-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .lastpost-infos { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
 dd.lastpost dfn { display: none; }
-/* Lien "voir le dernier message" : icône remplacée par une lune (JS),
-   déplacé à droite du cadre */
+/* Lien "voir le dernier message" : déplacé à droite du cadre par JS. La
+   lune est dessinée en CSS pur (::after) plutôt qu'écrite en innerHTML, et
+   tout contenu natif (texte/icône flèche) est masqué, pour qu'elle reste
+   fixe même si FA réinjecte un autre contenu selon le statut lu/non-lu. */
 .lastpost-jump {
   flex-shrink: 0;
   margin-left: auto;
-  color: var(--gold-dim);
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 0;
+  color: transparent;
   text-decoration: none;
+  overflow: hidden;
+}
+.lastpost-jump img { display: none !important; }
+.lastpost-jump::after {
+  content: '☽';
+  font-size: 16px;
+  color: var(--gold-dim);
   transition: color 0.2s;
 }
-.lastpost-jump:hover { color: var(--gold); }
+.lastpost-jump:hover::after { color: var(--gold); }
 
 /* Espace entre la grande carte (description/sujets/actions) et les
    sous-forums, repositionnés après elle par selViewforumTransform */

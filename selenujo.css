@@ -648,11 +648,12 @@ img { display: block; max-width: 100%; }
 
 .adm-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-/* Vie sur la Lune : dernier message et image en 50/50 */
-.adm-vie-row { display: flex; gap: 8px; align-items: stretch; }
-.adm-vie-row .last-msg { flex: 1; }
+/* Vie sur la Lune : dernier message et image en 50/50, sur la même
+   grille (1fr 1fr) que la rangée de boutons pour garantir un alignement
+   pixel-perfect entre les deux rangées */
+.adm-vie-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: stretch; }
+.adm-vie-row .last-msg { width: auto; min-width: 0; }
 .adm-vie-img {
-  flex: 1;
   border-radius: 8px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
@@ -680,7 +681,7 @@ img { display: block; max-width: 100%; }
   .adm-btn-grid2 { grid-template-columns: 1fr; }
   .adm-personnages-inner { flex-direction: column; }
   .adm-personnages-img { width: 100%; min-height: 80px; }
-  .adm-vie-row { flex-direction: column; }
+  .adm-vie-row { grid-template-columns: 1fr; }
   .adm-vie-img { width: 100%; min-height: 50px; }
 }
 

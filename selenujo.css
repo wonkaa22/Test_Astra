@@ -631,15 +631,23 @@ img { display: block; max-width: 100%; }
 }
 .adm-btn:hover { background: var(--surface-4); border-color: var(--gold-faint); color: var(--gold); }
 
-.adm-sub-inner { display: flex; gap: 14px; align-items: stretch; }
+.adm-sub-block:has(.adm-sub-img) { position: relative; }
+.adm-sub-inner { display: flex; gap: 14px; align-items: stretch; padding-right: 169px; }
 .adm-sub-links { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+/* Image existante prolongée en un seul bloc en forme de L inversé :
+   barre étroite en haut (comme avant) + pied large en bas, qui comble
+   l'espace à droite du dernier message — un seul cadre, pas deux blocs */
 .adm-sub-img {
-  width: 155px;
-  flex-shrink: 0;
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: calc(50% - 20px);
+  right: 20px;
   border-radius: 10px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
-  min-height: 100px;
+  clip-path: polygon(35% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 52%, 35% 52%);
+  z-index: 0;
 }
 
 .adm-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -666,7 +674,6 @@ img { display: block; max-width: 100%; }
   .adm-gb-link { font-size: 18px; }
   .adm-gb-blob { width: 44%; right: -10px; }
   .adm-btn-grid2 { grid-template-columns: 1fr; }
-  .adm-sub-img { width: 80px; }
   .adm-gestion-mid { flex-direction: column; }
   .adm-gestion-img { width: 100%; aspect-ratio: 2/1; }
 }
@@ -946,21 +953,6 @@ img { display: block; max-width: 100%; }
   z-index: 1;
 }
 
-/* Forum "Personnages" : image existante (.adm-sub-img) prolongée en L inversé
-   pour combler l'espace sous les boutons et à droite du dernier message */
-.adm-sub-block:has(.adm-sub-img) { position: relative; }
-.adm-sub-block:has(.adm-sub-img)::after {
-  content: '';
-  position: absolute;
-  right: 20px;
-  left: 50%;
-  bottom: 18px;
-  height: 64px;
-  background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  z-index: 0;
-}
 .lm-body {
   flex: 1;
   display: flex;
@@ -1021,7 +1013,8 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 699px) {
   .last-msg { width: 100%; min-width: 0; }
-  .adm-sub-block:has(.adm-sub-img)::after { display: none; }
+  .adm-sub-img { display: none; }
+  .adm-sub-inner { padding-right: 0; }
 }
 
 

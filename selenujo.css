@@ -3330,15 +3330,19 @@ dl.icon {
    dl.icon, intégré dans le cadre du titre (voir selViewforumTransform) */
 .topic-status-icon {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  background-position: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--text-lo);
   background-color: var(--surface-3);
   border: 1px solid var(--border-mid);
 }
+.topic-status-icon.is-unread { color: var(--gold); border-color: var(--gold-faint); }
 
 /* Cadre titre du sujet — grille pour empiler titre / "par auteur" à côté
    du badge, alors que ce sont des dd siblings à plat dans le HTML */

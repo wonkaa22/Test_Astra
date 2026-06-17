@@ -636,10 +636,10 @@ img { display: block; max-width: 100%; }
 .adm-sub-links { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 /* Image existante prolongée en un seul bloc en forme de L inversé via
    clip-path : les 3 coins du rectangle non découpés restent ronds
-   (border-radius), et les 3 sommets ajoutés par la découpe (coin
-   intérieur + les deux pointes de la marche) sont chanfreinés pour
-   adoucir l'angle, vu qu'un border-radius ne s'applique pas dessus —
-   comble l'espace sous les boutons et à droite du dernier message */
+   (border-radius) ; les 3 sommets ajoutés par la découpe (coin
+   intérieur + les deux pointes de la marche) restent des angles droits,
+   un border-radius ne pouvant pas s'appliquer dessus — comble l'espace
+   sous les boutons et à droite du dernier message */
 .adm-sub-img {
   position: absolute;
   top: 18px;
@@ -649,7 +649,7 @@ img { display: block; max-width: 100%; }
   border-radius: 14px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
-  clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 69%, 5% 74%, 50% 74%, 55% 69%, 55% 5%);
+  clip-path: polygon(55% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 70%, 55% 70%);
   z-index: 0;
 }
 

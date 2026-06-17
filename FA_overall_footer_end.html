@@ -261,8 +261,22 @@
       partnersTitle.textContent = 'Nos partenaires';
       var partnersGrid = document.createElement('div');
       partnersGrid.className = 'site-footer-partners-grid';
-      /* Grille volontairement vide : ajouter ici des <a class="partner-square">
-         <img src="..." alt="..."></a> au fur et à mesure des partenariats. */
+      /* PLACEHOLDER temporaire (image générique) pour visualiser la place
+         prise par la grille avant d'avoir les vrais logos partenaires.
+         Remplacer chaque src par le logo réel, et ajuster le nombre de
+         carrés selon le nombre de partenariats. */
+      var partnerPlaceholderSrc = 'https://2img.net/i.imgur.com/21QSwFx.png';
+      for (var pi = 0; pi < 8; pi++) {
+        var partnerLink = document.createElement('a');
+        partnerLink.className = 'partner-square';
+        partnerLink.href = '#';
+        var partnerImg = document.createElement('img');
+        partnerImg.src = partnerPlaceholderSrc;
+        partnerImg.alt = 'Partenaire';
+        partnerImg.loading = 'lazy';
+        partnerLink.appendChild(partnerImg);
+        partnersGrid.appendChild(partnerLink);
+      }
       partners.appendChild(partnersTitle);
       partners.appendChild(partnersGrid);
 

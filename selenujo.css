@@ -3211,19 +3211,61 @@ body.chatbox {
   color: var(--text-mid);
 }
 
-/* Pied de page FA (© phpBB, statistiques, contact...) regroupé en une
-   seule barre par JS, au lieu d'être éclaté dans le flux flex de body */
+/* Pied de page du site, injecté par JS sur toutes les pages : section
+   "Nos partenaires" (grille de carrés) + barre des liens légaux FA
+   (© phpBB, statistiques, contact...), regroupés au lieu d'être éclatés
+   dans le flux brut de body. */
+.site-footer {
+  margin-top: 32px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.site-footer-partners {
+  padding: 22px 24px 18px;
+}
+.site-footer-partners-title {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.site-footer-partners-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 50px;
+}
+.site-footer-partners-grid .partner-square {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.site-footer-partners-grid .partner-square:hover { border-color: var(--gold-dim); }
+.site-footer-partners-grid .partner-square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .site-footer-bar {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 24px;
-  padding: 16px 0;
+  padding: 14px 0;
   font-size: 12px;
   color: var(--text-lo);
   text-align: center;
+  border-top: 1px solid var(--border);
 }
 .site-footer-bar a {
   color: var(--text-lo);

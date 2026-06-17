@@ -633,9 +633,9 @@ img { display: block; max-width: 100%; }
 
 .adm-sub-links { display: flex; flex-direction: column; gap: 8px; }
 
-/* Personnages : image agrandie à gauche sur toute la hauteur ; boutons et
-   dernier message poussés à droite, dans une colonne plus étroite pour
-   laisser plus de place à l'image */
+/* Personnages : image agrandie à gauche sur toute la hauteur (boutons +
+   dernier message), boutons et dernier message étirés sur le reste de la
+   largeur à droite */
 .adm-personnages-inner { display: flex; gap: 14px; align-items: stretch; }
 .adm-personnages-img {
   flex-shrink: 0;
@@ -644,19 +644,15 @@ img { display: block; max-width: 100%; }
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
 }
-.adm-personnages-right { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; align-items: flex-end; }
-.adm-personnages-right .adm-sub-links { width: 230px; }
-.adm-personnages-right .last-msg { width: 230px; align-self: flex-end; max-width: 100%; }
+.adm-personnages-right { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 
 .adm-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-/* Vie sur la Lune : image fine à droite du dernier message, juste assez
-   large pour combler l'espace sans en laisser de vide */
+/* Vie sur la Lune : dernier message et image en 50/50 */
 .adm-vie-row { display: flex; gap: 10px; align-items: stretch; }
 .adm-vie-row .last-msg { flex: 1; }
 .adm-vie-img {
-  flex-shrink: 0;
-  width: 230px;
+  flex: 1;
   border-radius: 8px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
@@ -675,6 +671,7 @@ img { display: block; max-width: 100%; }
 @media (max-width: 1049px) {
   .adm-lower { grid-template-columns: 1fr; }
   .adm-gb-blob { width: 50%; right: -16px; }
+  .adm-gestion-img { display: none; }
 }
 @media (max-width: 599px) {
   .adm-gb-title { font-size: 34px; }

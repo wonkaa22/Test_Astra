@@ -110,10 +110,20 @@
         dd.appendChild(jumpLink);
       });
 
-      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre,
-         où qu'elle se trouve dans le cadre titre */
-      document.querySelectorAll('dd.dterm img').forEach(function (img) {
-        img.remove();
+      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre :
+         tout <img> de la ligne sauf l'avatar du dernier posteur */
+      document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
+        var lastpost = dl.querySelector('dd.lastpost');
+        Array.prototype.slice.call(dl.querySelectorAll('img')).forEach(function (img) {
+          if (lastpost && lastpost.contains(img)) { return; }
+          img.remove();
+        });
+      });
+
+      /* Bouton "Rechercher" : remplace l'icône/texte par la lune utilisée
+         partout ailleurs, intégrée dans le cadre du champ de recherche */
+      document.querySelectorAll('.search-box button').forEach(function (btn) {
+        btn.innerHTML = '☽';
       });
 
       /* Reloge "Poster un nouveau sujet", "Trier" puis "Rechercher", dans cet

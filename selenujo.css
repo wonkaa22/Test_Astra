@@ -3072,6 +3072,7 @@ body.chatbox {
 .sub-header {
   background: var(--surface-1);
   border: 1px solid var(--border);
+  border-bottom: none;
   border-radius: 18px 18px 0 0;
   padding: 18px 22px 14px;
   display: flex;
@@ -3115,28 +3116,33 @@ body.chatbox {
   flex-shrink: 0;
 }
 .search-box { display: flex; }
-.search-box form { display: flex; align-items: center; }
+.search-box form { position: relative; display: flex; align-items: center; }
 .search-box .inputbox {
   background: var(--surface-3);
   border: 1px solid var(--border);
-  border-radius: 8px 0 0 8px;
+  border-radius: 8px;
   color: var(--text-hi);
   font-size: 12px;
-  padding: 8px 12px;
+  padding: 8px 30px 8px 12px;
   width: 150px;
   outline: none;
 }
+/* Bouton de validation intégré dans le champ, remplacé par une lune (JS) */
 .search-box button {
-  background: var(--surface-3);
-  border: 1px solid var(--border);
-  border-left: none;
-  border-radius: 0 8px 8px 0;
-  color: var(--text-mid);
-  padding: 8px 10px;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gold-dim);
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.2s;
 }
-.search-box button:hover { color: var(--gold); background: var(--surface-4); }
+.search-box button:hover { color: var(--gold); }
 
 .sub-header-buttons > a.button1 {
   display: inline-flex;
@@ -3157,8 +3163,8 @@ body.chatbox {
 /* Carte description du forum */
 #page-desc {
   background: var(--surface-1);
-  border: 1px solid var(--border);
-  border-top: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   padding: 14px 22px;
 }
 .page-desc-content {
@@ -3172,8 +3178,8 @@ body.chatbox {
    injecté par FA) — le menu "Plus !" est retiré par JS car redondant */
 .topic-actions {
   background: var(--surface-1);
-  border: 1px solid var(--border);
-  border-top: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   padding: 10px 22px;
   display: flex;
   align-items: center;
@@ -3182,8 +3188,7 @@ body.chatbox {
 }
 .topic-actions.bottom {
   border-radius: 0 0 18px 18px;
-  margin-top: 16px;
-  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 .topic-actions-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .topic-actions a,
@@ -3281,10 +3286,9 @@ body.chatbox {
 /* Liste des sujets */
 .forumbg.announcement {
   background: var(--surface-1);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   overflow: hidden;
-  margin-top: 16px;
 }
 /* En-tête de colonnes FA (Sujets / Réponses / Vues / ...) masquée :
    ces infos sont déjà reprises dans chaque carte de sujet */
@@ -3426,6 +3430,10 @@ dd.lastpost dfn { display: none; }
   transition: color 0.2s;
 }
 .lastpost-jump:hover { color: var(--gold); }
+
+/* Espace entre la grande carte (description/sujets/actions) et les
+   sous-forums, repositionnés après elle par selViewforumTransform */
+.cat-block.forum-width { margin-top: 24px; }
 
 @media (max-width: 699px) {
   .sub-header { flex-direction: column; align-items: stretch; }

@@ -53,6 +53,16 @@
         el.classList.add('forum-width');
       });
 
+      /* Remplace le séparateur "::" du fil d'Ariane par "☽" */
+      var pathEl = document.querySelector('.sub-header-path');
+      if (pathEl) {
+        Array.prototype.forEach.call(pathEl.childNodes, function (node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = node.textContent.replace(/::/g, '☽');
+          }
+        });
+      }
+
       console.log('[selViewforum] transform appliquee.');
     })();
   </script>

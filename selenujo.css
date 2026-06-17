@@ -3060,3 +3060,211 @@ body.chatbox {
 :root.light #chatbox {
   background: var(--surface-2) !important;
 }
+
+
+/* ───────────────────────────────────────────────────────────────
+   12. VIEWFORUM — fil d'Ariane, description, sujets
+   ─────────────────────────────────────────────────────────────── */
+
+/* Fil d'Ariane */
+.sub-header { padding: 2px 4px 10px; }
+.sub-header-path {
+  font-size: 11px;
+  color: var(--text-lo);
+  letter-spacing: 0.02em;
+}
+.sub-header-path a { color: var(--gold-dim); transition: color 0.2s; }
+.sub-header-path a:hover { color: var(--gold); }
+
+/* Carte titre + description du forum */
+#page-desc {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  padding: 18px 22px 10px;
+}
+#page-desc h2,
+#page-desc .page-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-hi);
+  margin-bottom: 6px;
+}
+.page-desc-content {
+  font-size: 12.5px;
+  color: var(--text-mid);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Barre d'actions (poster / trier / rechercher) */
+.topic-actions {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.topic-actions.bottom {
+  border-radius: 0 0 18px 18px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.topic-actions-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.topic-actions a,
+.topic-actions button,
+#sort-btn,
+.search-box a {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-mid);
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.topic-actions a:hover,
+.topic-actions button:hover,
+#sort-btn:hover {
+  background: var(--surface-4);
+  border-color: var(--gold-faint);
+  color: var(--gold);
+}
+.search-box { margin-left: auto; }
+
+/* Pagination — masquée tant qu'il n'y a qu'une page (pas de lien) */
+.pagination {
+  border: 1px solid var(--border);
+  border-top: none;
+  background: var(--surface-1);
+  padding: 8px 22px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.pagination:not(:has(a)) { display: none; }
+.pagination a,
+.pagination strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 12px;
+  color: var(--text-mid);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  text-decoration: none;
+}
+.pagination a:hover { color: var(--gold); border-color: var(--gold-faint); }
+.pagination strong {
+  color: var(--gold);
+  border-color: var(--gold-faint);
+  background: var(--surface-4);
+}
+
+/* Liste des sujets */
+.forumbg.announcement {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+/* En-tête de colonnes (Sujets / Réponses / Vues / ...) — infos déjà
+   présentes dans les cartes, pas besoin de la rangée d'en-tête */
+.topiclist.topics { display: none; }
+
+.topiclist.topics.bg_none {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  list-style: none;
+}
+.topiclist.topics.bg_none > li.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+}
+
+/* Icône lu/non-lu (soleil/lune) — chevauche le cadre du titre */
+dl.icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  z-index: 2;
+  margin-right: -13px;
+}
+
+/* Cadre titre du sujet */
+dd.dterm {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 16px 10px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.topic-title-container { display: flex; flex-direction: column; gap: 2px; }
+h2.topic-title.hierarchy a.topictitle {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-hi);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+h2.topic-title.hierarchy a.topictitle:hover { color: var(--gold); }
+.topic-author { font-size: 11px; color: var(--text-lo); }
+.topic-author .usr_grp_clr { font-weight: 500; }
+
+/* Colonnes Réponses / Vues — masquées (déjà géré par tri natif si besoin) */
+dd.posts, dd.views { display: none; }
+
+/* Cadre dernier message */
+dd.lastpost {
+  flex-shrink: 0;
+  width: 230px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lastpost-avatar { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; overflow: hidden; }
+.lastpost-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lastpost-infos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 11px; }
+.lastpost-infos a { color: var(--gold-dim); }
+.lastpost-infos a:hover { color: var(--gold); }
+.lastpost-infos .post-date,
+.lastpost-infos time { color: var(--text-lo); font-size: 10px; }
+
+@media (max-width: 699px) {
+  .topiclist.topics.bg_none > li.row { flex-wrap: wrap; }
+  dd.lastpost { width: 100%; }
+}

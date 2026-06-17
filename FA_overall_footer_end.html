@@ -215,6 +215,40 @@
 
       if (legend) { legend.remove(); }
 
+      /* Pied de page FA (© phpBB, Forum gratuit d'entraide, Statistiques,
+         Contact, Signaler un abus, Cookies...) : injecté en HTML brut
+         (liens, <br>, "|") directement dans <body>, sans conteneur, juste
+         après le commentaire "overall_footer_begin". Avec le body en
+         flex, chaque noeud devient un item séparé et s'affiche éclaté en
+         haut de page. On regroupe tout dans une seule barre en bas. */
+      var bodyNodes = Array.prototype.slice.call(document.body.childNodes);
+      var footerStart = bodyNodes.findIndex(function (n) {
+        return n.nodeType === Node.COMMENT_NODE && /overall_footer_begin/i.test(n.textContent || '');
+      });
+      if (footerStart > -1) {
+        var footerBar = document.createElement('div');
+        footerBar.className = 'site-footer-bar forum-width';
+        var footerLinks = [];
+        for (var fi = footerStart + 1; fi < bodyNodes.length; fi++) {
+          var fn = bodyNodes[fi];
+          if (fn.nodeName === 'A' || fn.nodeName === 'STRONG' || (fn.nodeName === 'SPAN' && fn.classList.contains('gensmall'))) {
+            footerLinks.push(fn);
+          } else if (fn.nodeName === 'SCRIPT' || fn.nodeName === 'IFRAME' || fn.nodeName === 'DIV') {
+            break;
+          } else {
+            fn.remove();
+          }
+        }
+        footerLinks.forEach(function (el, idx) {
+          if (idx > 0) { footerBar.appendChild(document.createTextNode(' | ')); }
+          footerBar.appendChild(el);
+        });
+        if (footerBar.childNodes.length) {
+          document.body.appendChild(footerBar);
+          footerBar.style.order = 9999;
+        }
+      }
+
       console.log('[selViewforum] transform appliquee.');
     })();
   </script>

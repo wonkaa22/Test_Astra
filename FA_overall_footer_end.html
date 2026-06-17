@@ -71,13 +71,13 @@
          (qui est la ligne entière du sujet), pointant vers un sprite dont on
          ne peut pas réutiliser juste l'URL (mauvais cadrage = icône fichier
          qui apparaissait à tort). On la remplace par une vraie lune, dorée
-         si le sujet a des messages non lus. FA pose alors title="Nouveaux
-         messages" sur dd.dterm et utilise topic_unread.png en fond. */
+         si le sujet a des messages non lus (fond topic_unread.png vs
+         topic_read.png — le title "Pas de nouveaux messages" contient lui
+         aussi "nouveaux", donc pas fiable pour la détection). */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
         var bg    = dl.style.backgroundImage || '';
         var dterm = dl.querySelector('dd.dterm');
-        var title = dterm ? (dterm.getAttribute('title') || '') : '';
-        var isUnread = /unread/i.test(bg) || /nouveau/i.test(title);
+        var isUnread = /unread/i.test(bg);
         var badge = document.createElement('span');
         badge.className = 'topic-status-icon' + (isUnread ? ' is-unread' : '');
         badge.textContent = '☽';

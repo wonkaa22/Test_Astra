@@ -347,30 +347,25 @@ function selHorsRpTransform() {
   var ent = findSec('Entraide');
   var arc = findSec('Archives');
   var html =
-    '<div class="hrp-top">' +
-      '<div class="hrp-top-img"></div>' +
-      '<div class="hrp-mid">' +
-        '<div class="hrp-mid-top">' +
-          '<div class="hrp-buttons">' + mkbtns(det) + '</div>' +
-          '<div class="hrp-cat-name"><a href="' + (det ? det[1] : '#') + '">Détente</a></div>' +
-        '</div>' +
-        mklm(det) +
-      '</div>' +
-    '</div>' +
-    '<div class="hrp-lower">' +
-      '<div class="hrp-sub-block">' +
-        '<div class="hrp-sub-title"><a href="' + (ent ? ent[1] : '#') + '">Entraide et partage</a></div>' +
-        '<div class="hrp-entraide-inner">' +
-          '<div class="hrp-entraide-left">' +
-            '<div class="hrp-btn-grid2">' + mkbtns(ent) + '</div>' +
-            mklm(ent) +
+    '<div class="hrp-cols">' +
+      '<div class="hrp-sub-block hrp-col-detente">' +
+        '<div class="hrp-detente-inner">' +
+          '<div class="hrp-top-img"></div>' +
+          '<div class="hrp-detente-right">' +
+            '<div class="hrp-sub-title"><a href="' + (det ? det[1] : '#') + '">Détente</a></div>' +
+            '<div class="hrp-buttons">' + mkbtns(det) + '</div>' +
+            mklm(det) +
           '</div>' +
-          '<div class="hrp-entraide-img"></div>' +
         '</div>' +
       '</div>' +
-      '<div class="hrp-sub-block">' +
+      '<div class="hrp-sub-block hrp-col-entraide">' +
+        '<div class="hrp-sub-title"><a href="' + (ent ? ent[1] : '#') + '">Entraide et partage</a></div>' +
+        '<div class="hrp-buttons">' + mkbtns(ent) + '</div>' +
+        mklm(ent) +
+      '</div>' +
+      '<div class="hrp-sub-block hrp-col-archives">' +
         '<div class="hrp-sub-title"><a href="' + (arc ? arc[1] : '#') + '">Archives</a></div>' +
-        '<div class="hrp-btn-grid2x2">' + mkbtns(arc) + '</div>' +
+        '<div class="hrp-buttons">' + mkbtns(arc) + '</div>' +
       '</div>' +
     '</div>';
   var content = hb.querySelector('.cat-content');

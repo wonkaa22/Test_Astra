@@ -77,9 +77,15 @@
          dernier message (FA en ajoute un quand il y a du contenu non lu). */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
         var bg = dl.style.backgroundImage || '';
-        var lastpost = dl.querySelector('dd.lastpost');
-        var jumpLinkCount = lastpost ? lastpost.querySelectorAll('a[href*="#"]').length : 0;
-        var isUnread = /new/i.test(bg) || jumpLinkCount > 1;
+        var lastpost  = dl.querySelector('dd.lastpost');
+        var avatar    = lastpost ? lastpost.querySelector('.lastpost-avatar') : null;
+        var nameEl    = lastpost ? lastpost.querySelector('strong') : null;
+        var jumpCount = lastpost ? Array.prototype.filter.call(lastpost.querySelectorAll('a'), function (a) {
+          if (avatar && avatar.contains(a)) { return false; }
+          if (nameEl && nameEl.contains(a)) { return false; }
+          return true;
+        }).length : 0;
+        var isUnread = /new/i.test(bg) || jumpCount > 1;
         var badge = document.createElement('span');
         badge.className = 'topic-status-icon' + (isUnread ? ' is-unread' : '');
         badge.textContent = '☽';
@@ -106,21 +112,24 @@
         dterm.appendChild(wrap);
       });
 
-      /* Lien "dernier message" : remplace l'icône (flèche, ou icône "nouveau
-         message" quand le sujet contient des messages non lus) par une lune
-         fixe, qui ne change jamais selon le statut du sujet, déplacée à
-         droite du cadre (hors du bloc nom/date). S'il y a plusieurs liens
-         (icône supplémentaire FA pour les messages non lus), on n'en garde
-         qu'un seul. */
-      /* La lune est affichée en CSS pur (::after sur .lastpost-jump) plutôt
-         qu'écrite ici en innerHTML, pour rester fixe même si FA réinjecte
-         plus tard un autre contenu (flèche/icône "nouveau message") dans ce
-         lien. */
+      /* Lien "dernier message" : remplace tout son contenu (flèche, image,
+         ou icône "nouveau message" quand le sujet a des messages non lus)
+         par une lune fixe, déplacée à droite du cadre (hors du bloc
+         nom/date). On cible tous les liens du cadre (hors avatar), pas
+         seulement ceux avec un href en "#", au cas où l'icône "nouveau
+         message" utilise un autre type de lien ; on n'en garde qu'un seul. */
       document.querySelectorAll('dd.lastpost').forEach(function (dd) {
-        var jumpLinks = Array.prototype.slice.call(dd.querySelectorAll('a[href*="#"]'));
-        if (!jumpLinks.length) { return; }
-        var jumpLink = jumpLinks[jumpLinks.length - 1];
-        jumpLinks.forEach(function (a) { if (a !== jumpLink) { a.remove(); } });
+        var avatar = dd.querySelector('.lastpost-avatar');
+        var nameEl = dd.querySelector('strong');
+        var anchors = Array.prototype.slice.call(dd.querySelectorAll('a')).filter(function (a) {
+          if (avatar && avatar.contains(a)) { return false; }
+          if (nameEl && nameEl.contains(a)) { return false; }
+          return true;
+        });
+        if (!anchors.length) { return; }
+        var jumpLink = anchors[anchors.length - 1];
+        anchors.forEach(function (a) { if (a !== jumpLink) { a.remove(); } });
+        jumpLink.textContent = '☽';
         jumpLink.classList.add('lastpost-jump');
         dd.appendChild(jumpLink);
       });

@@ -41,8 +41,12 @@
         return;
       }
 
+      var topActions    = document.querySelector('.topic-actions:not(.bottom)');
+      var bottomActions = document.querySelector('.topic-actions.bottom');
+
       var newOrder = children.filter(function (el) { return el !== catBlock; });
-      newOrder.splice(newOrder.indexOf(topicsBox) + 1, 0, catBlock);
+      var insertAfter = (bottomActions && newOrder.indexOf(bottomActions) > -1) ? bottomActions : topicsBox;
+      newOrder.splice(newOrder.indexOf(insertAfter) + 1, 0, catBlock);
 
       body.style.display = 'flex';
       body.style.flexDirection = 'column';
@@ -78,6 +82,58 @@
           dterm.insertBefore(badge, dterm.firstChild);
         }
       });
+
+      /* Réponses / vues : sortis du cadre titre vers un badge superposé,
+         comme les pilules "sujets/messages" sur les forums (.forum-stats) */
+      document.querySelectorAll('ul.topiclist.topics.bg_none li.row').forEach(function (li) {
+        var dl = li.querySelector('dl.icon');
+        if (!dl) { return; }
+        var posts = dl.querySelector('dd.posts');
+        var views = dl.querySelector('dd.views');
+        if (!posts && !views) { return; }
+        var wrap = document.createElement('div');
+        wrap.className = 'topic-stats';
+        if (views) { wrap.appendChild(views); }
+        if (posts) { wrap.appendChild(posts); }
+        li.appendChild(wrap);
+      });
+
+      /* Lien "dernier message" : remplace l'icône flèche par une lune et
+         le déplace à droite du cadre (hors du bloc nom/date) */
+      document.querySelectorAll('dd.lastpost').forEach(function (dd) {
+        var jumpLink = dd.querySelector('a[href*="#"]');
+        if (!jumpLink) { return; }
+        jumpLink.innerHTML = '☽';
+        jumpLink.classList.add('lastpost-jump');
+        dd.appendChild(jumpLink);
+      });
+
+      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre */
+      document.querySelectorAll('.topic-title-container > img').forEach(function (img) {
+        img.remove();
+      });
+
+      /* Reloge "Rechercher" + "Poster un nouveau sujet" sous la description
+         du forum (barre du haut), à la place du lien "marquer comme lu"
+         qui est déjà disponible une seule fois en bas, à droite des sujets */
+      if (topActions) {
+        var topBar  = topActions.querySelector('.topic-actions-buttons');
+        var subBtns = document.querySelector('.sub-header-buttons');
+        if (topBar && subBtns) {
+          topBar.innerHTML = '';
+          Array.prototype.slice.call(subBtns.children).forEach(function (el) {
+            topBar.appendChild(el);
+          });
+          subBtns.remove();
+        }
+      }
+
+      /* Retire le bouton "Poster un nouveau sujet" du bas (déjà présent en
+         haut, sous la description) pour éviter le doublon */
+      if (bottomActions) {
+        var bottomPostBtn = bottomActions.querySelector('a.button1[href*="mode=newtopic"]');
+        if (bottomPostBtn) { bottomPostBtn.remove(); }
+      }
 
       /* Retire le menu "Plus !" injecté par insert_plus_menu_new (FA) :
          redondant avec les boutons déjà présents */

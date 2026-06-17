@@ -3296,8 +3296,8 @@ ul.topiclist.topics > li.header {
 ul.topiclist.topics.bg_none {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 14px;
+  gap: 18px;
+  padding: 18px 14px 14px;
   list-style: none;
 }
 ul.topiclist.topics.bg_none > li.row {
@@ -3307,7 +3307,8 @@ ul.topiclist.topics.bg_none > li.row {
 
 /* dl.icon est la ligne complète d'un sujet (FA y place le sun/moon en
    background-image inline) ; ses dd enfants sont mis en flex pour le
-   cadre titre + compteurs + dernier message */
+   cadre titre + dernier message (réponses/vues sont sortis vers
+   .topic-stats par JS, voir selViewforumTransform) */
 dl.icon {
   display: flex;
   align-items: center;
@@ -3354,7 +3355,8 @@ dd.dterm {
   gap: 6px;
 }
 .topic-author { grid-column: 2; grid-row: 2; }
-.topic-title-container img { flex-shrink: 0; }
+/* Icône "vous avez participé" retirée par JS ; au cas où elle persiste */
+.topic-title-container img { display: none; }
 h2.topic-title.hierarchy a.topictitle {
   font-family: var(--font-serif);
   font-size: 17px;
@@ -3367,15 +3369,24 @@ h2.topic-title.hierarchy a.topictitle:hover { color: var(--gold); }
 .topic-author { font-size: 11px; color: var(--text-lo); }
 .topic-author .usr_grp_clr { font-weight: 500; }
 
-/* Compteurs Réponses / Vues — pilules façon .forum-stats */
+/* Compteurs Réponses / Vues — pilules façon .forum-stats, en chevauchement
+   du cadre titre (regroupées par JS dans .topic-stats sur li.row) */
+.topic-stats {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  display: flex;
+  gap: 6px;
+  z-index: 4;
+}
 dd.posts, dd.views {
   flex-shrink: 0;
   font-size: 10px;
   color: rgba(180,185,210,0.6);
-  background: var(--surface-3);
+  background: var(--surface-1);
   border: 1px solid var(--border-mid);
   border-radius: 99px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   white-space: nowrap;
 }
 dd.posts dfn, dd.views dfn { font-style: normal; margin-left: 3px; }
@@ -3401,13 +3412,23 @@ dd.lastpost {
   overflow: hidden;
 }
 .lastpost-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lastpost-infos { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
 dd.lastpost dfn { display: none; }
-dd.lastpost a[href*="#"] img { width: 16px; height: 16px; vertical-align: middle; opacity: 0.6; }
-dd.lastpost a[href*="#"]:hover img { opacity: 1; }
+/* Lien "voir le dernier message" : icône remplacée par une lune (JS),
+   déplacé à droite du cadre */
+.lastpost-jump {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--gold-dim);
+  font-size: 16px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.lastpost-jump:hover { color: var(--gold); }
 
 @media (max-width: 699px) {
   .sub-header { flex-direction: column; align-items: stretch; }
   dd.dterm { flex-wrap: wrap; }
-  dd.posts, dd.views { display: none; }
+  .topic-stats { display: none; }
   dd.lastpost { width: 100%; }
 }

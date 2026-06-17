@@ -175,43 +175,45 @@
 
       /* Nettoyage du bas de page : texte brut "Utilisateurs parcourant
          actuellement ce forum", bloc modérateurs/permissions (#info_open)
-         et légende des icônes (#picture_legend). On les retire tous, sauf
-         si un invité non connecté n'a pas le droit de poster dans ce forum
-         précis : dans ce cas on affiche un seul message de négation à la
-         place du bloc permissions. */
-      if (bottomActions) {
-        var infoOpen   = bottomActions.querySelector('#info_open');
-        var legend      = bottomActions.querySelector('#picture_legend');
-        var jumpboxForm = bottomActions.querySelector('form[name="jumpbox"]');
+         et légende des icônes (#picture_legend). FA place ces trois
+         éléments directement enfants de <body> (pas dans .topic-actions),
+         d'où le ciblage via document plutôt que bottomActions. On les
+         retire tous, sauf si un invité non connecté n'a pas le droit de
+         poster dans ce forum précis : dans ce cas on affiche un seul
+         message de négation à la place du bloc permissions. */
+      var infoOpen = document.getElementById('info_open');
+      var legend   = document.getElementById('picture_legend');
 
-        if (infoOpen) {
-          var isLoggedIn = (typeof _userdata !== 'undefined' && _userdata['session_logged_in']);
-          var permsText  = infoOpen.textContent || '';
-          var guestCantPost = /ne pouvez pas poster/i.test(permsText);
-
-          /* Retire tout ce qui traîne entre le formulaire jumpbox et
-             #info_open (texte "Utilisateurs parcourant...", liens, <br>) */
-          if (jumpboxForm) {
-            var node = jumpboxForm.nextSibling;
-            while (node && node !== infoOpen) {
-              var toRemove = node;
-              node = node.nextSibling;
-              toRemove.remove();
-            }
-          }
-
-          if (!isLoggedIn && guestCantPost) {
-            var notice = document.createElement('p');
-            notice.className = 'forum-guest-notice';
-            notice.textContent = "Vous devez être inscrit·e et connecté·e pour poster dans ce forum.";
-            infoOpen.parentNode.replaceChild(notice, infoOpen);
-          } else {
-            infoOpen.remove();
+      /* Retire le texte "Utilisateurs parcourant..." et les <a>/<br> qui
+         le suivent, flottant directement dans <body> */
+      Array.prototype.slice.call(document.body.childNodes).forEach(function (node) {
+        if (node.nodeType === Node.TEXT_NODE && /Utilisateurs parcourant/i.test(node.textContent)) {
+          var next = node.nextSibling;
+          node.remove();
+          while (next && (next.nodeName === 'A' || next.nodeName === 'BR' || next.nodeType === Node.TEXT_NODE)) {
+            var toRemove = next;
+            next = next.nextSibling;
+            toRemove.remove();
           }
         }
+      });
 
-        if (legend) { legend.remove(); }
+      if (infoOpen) {
+        var isLoggedIn = (typeof _userdata !== 'undefined' && _userdata['session_logged_in']);
+        var permsText  = infoOpen.textContent || '';
+        var guestCantPost = /ne pouvez pas poster/i.test(permsText);
+
+        if (!isLoggedIn && guestCantPost) {
+          var notice = document.createElement('p');
+          notice.className = 'forum-guest-notice';
+          notice.textContent = "Vous devez être inscrit·e et connecté·e pour poster dans ce forum.";
+          infoOpen.parentNode.replaceChild(notice, infoOpen);
+        } else {
+          infoOpen.remove();
+        }
       }
+
+      if (legend) { legend.remove(); }
 
       console.log('[selViewforum] transform appliquee.');
     })();

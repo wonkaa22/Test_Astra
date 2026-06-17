@@ -110,13 +110,16 @@
         dd.appendChild(jumpLink);
       });
 
-      /* Supprime l'icône "vous avez participé" (fichier) à gauche du titre :
-         tout <img> de la ligne sauf l'avatar du dernier posteur */
+      /* Remplace l'icône "vous avez participé" (fichier) à gauche du titre
+         par une petite puce discrète, plutôt que de la masquer */
       document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
         var lastpost = dl.querySelector('dd.lastpost');
         Array.prototype.slice.call(dl.querySelectorAll('img')).forEach(function (img) {
           if (lastpost && lastpost.contains(img)) { return; }
-          img.remove();
+          var dot = document.createElement('span');
+          dot.className = 'topic-participated';
+          dot.title = img.getAttribute('title') || img.getAttribute('alt') || '';
+          img.replaceWith(dot);
         });
       });
 

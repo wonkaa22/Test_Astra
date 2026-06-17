@@ -3133,8 +3133,13 @@ body.chatbox {
   right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: auto;
+  height: auto;
   color: var(--gold-dim);
   font-size: 14px;
   line-height: 1;
@@ -3142,7 +3147,8 @@ body.chatbox {
   cursor: pointer;
   transition: color 0.2s;
 }
-.search-box button:hover { color: var(--gold); }
+.search-box button:hover,
+.search-box button:focus { color: var(--gold); background: none !important; }
 
 .sub-header-buttons > a.button1 {
   display: inline-flex;
@@ -3362,6 +3368,15 @@ dd.dterm {
 .topic-author { grid-column: 2; grid-row: 2; }
 /* Icône "vous avez participé" retirée par JS ; au cas où elle persiste */
 dd.dterm img { display: none; }
+/* Remplace l'icône fichier "vous avez participé" (voir JS) */
+.topic-participated {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  flex-shrink: 0;
+}
 h2.topic-title.hierarchy a.topictitle {
   font-family: var(--font-serif);
   font-size: 17px;
@@ -3437,6 +3452,7 @@ dd.lastpost dfn { display: none; }
 
 @media (max-width: 699px) {
   .sub-header { flex-direction: column; align-items: stretch; }
+  dl.icon { flex-direction: column; align-items: stretch; }
   dd.dterm { flex-wrap: wrap; }
   .topic-stats { display: none; }
   dd.lastpost { width: 100%; }

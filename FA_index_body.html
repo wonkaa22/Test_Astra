@@ -434,9 +434,11 @@ function selAdminTransform() {
           '<div class="adm-sub-title"><a href="' + (p ? p[1] : '#') + '">Personnages</a></div>' +
           '<div class="adm-personnages-inner">' +
             '<div class="adm-personnages-img"></div>' +
-            '<div class="adm-sub-links">' + mkbtns(p) + '</div>' +
+            '<div class="adm-personnages-right">' +
+              '<div class="adm-sub-links">' + mkbtns(p) + '</div>' +
+              mklm(p) +
+            '</div>' +
           '</div>' +
-          mklm(p) +
         '</div>' +
         '<div class="adm-sub-block">' +
           '<div class="adm-sub-title"><a href="' + (v ? v[1] : '#') + '">Vie sur la Lune</a></div>' +

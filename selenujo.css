@@ -633,18 +633,17 @@ img { display: block; max-width: 100%; }
 
 .adm-sub-links { display: flex; flex-direction: column; gap: 8px; }
 
-/* Personnages : image à gauche, boutons à droite, dernier message en
-   pleine largeur sous la ligne ; l'image s'étire à la même hauteur que
-   les boutons (align-items: stretch par défaut) */
+/* Personnages : image à gauche sur toute la hauteur (boutons + dernier
+   message), qui se trouvent à droite dans une colonne plus étroite */
 .adm-personnages-inner { display: flex; gap: 14px; align-items: stretch; }
 .adm-personnages-img {
   flex-shrink: 0;
-  width: 140px;
+  width: 190px;
   border-radius: 10px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
 }
-.adm-personnages-inner .adm-sub-links { flex: 1; }
+.adm-personnages-right { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 
 .adm-btn-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -654,7 +653,7 @@ img { display: block; max-width: 100%; }
 .adm-vie-row .last-msg { flex: 1; }
 .adm-vie-img {
   flex-shrink: 0;
-  width: 110px;
+  width: 170px;
   border-radius: 8px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);

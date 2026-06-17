@@ -632,11 +632,13 @@ img { display: block; max-width: 100%; }
 .adm-btn:hover { background: var(--surface-4); border-color: var(--gold-faint); color: var(--gold); }
 
 .adm-sub-block:has(.adm-sub-img) { position: relative; }
-.adm-sub-inner { display: flex; gap: 14px; align-items: stretch; padding-right: 184px; }
+.adm-sub-inner { display: flex; gap: 14px; align-items: stretch; padding-right: 165px; }
 .adm-sub-links { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 /* Image existante prolongée en un seul bloc en forme de L inversé via
-   clip-path : on découpe juste le coin haut-gauche d'un rectangle plein,
-   les 3 autres coins restent ronds (border-radius) car non découpés —
+   clip-path : les 3 coins du rectangle non découpés restent ronds
+   (border-radius), et les 3 sommets ajoutés par la découpe (coin
+   intérieur + les deux pointes de la marche) sont chanfreinés pour
+   adoucir l'angle, vu qu'un border-radius ne s'applique pas dessus —
    comble l'espace sous les boutons et à droite du dernier message */
 .adm-sub-img {
   position: absolute;
@@ -647,7 +649,7 @@ img { display: block; max-width: 100%; }
   border-radius: 14px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
-  clip-path: polygon(55% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 74%, 55% 74%);
+  clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 69%, 5% 74%, 50% 74%, 55% 69%, 55% 5%);
   z-index: 0;
 }
 

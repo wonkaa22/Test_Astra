@@ -649,7 +649,7 @@ img { display: block; max-width: 100%; }
   border-radius: 14px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3555 60%, #1a2235 100%);
   border: 1px solid var(--border);
-  clip-path: polygon(55% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 70%, 55% 70%);
+  clip-path: polygon(55% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 76%, 55% 76%);
   z-index: 0;
 }
 

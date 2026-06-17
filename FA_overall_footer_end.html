@@ -102,27 +102,25 @@
         dterm.appendChild(wrap);
       });
 
-      /* Lien "dernier message" : remplace l'icône flèche par une lune et
-         le déplace à droite du cadre (hors du bloc nom/date) */
+      /* Lien "dernier message" : remplace l'icône (flèche, ou icône "nouveau
+         message" quand le sujet contient des messages non lus) par une lune
+         fixe, qui ne change jamais selon le statut du sujet, déplacée à
+         droite du cadre (hors du bloc nom/date). S'il y a plusieurs liens
+         (icône supplémentaire FA pour les messages non lus), on n'en garde
+         qu'un seul. */
       document.querySelectorAll('dd.lastpost').forEach(function (dd) {
-        var jumpLink = dd.querySelector('a[href*="#"]');
-        if (!jumpLink) { return; }
+        var jumpLinks = Array.prototype.slice.call(dd.querySelectorAll('a[href*="#"]'));
+        if (!jumpLinks.length) { return; }
+        var jumpLink = jumpLinks[jumpLinks.length - 1];
+        jumpLinks.forEach(function (a) { if (a !== jumpLink) { a.remove(); } });
         jumpLink.innerHTML = '☽';
         jumpLink.classList.add('lastpost-jump');
         dd.appendChild(jumpLink);
       });
 
-      /* Remplace l'icône "vous avez participé" (fichier) à gauche du titre
-         par une petite puce discrète, plutôt que de la masquer */
-      document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
-        var lastpost = dl.querySelector('dd.lastpost');
-        Array.prototype.slice.call(dl.querySelectorAll('img')).forEach(function (img) {
-          if (lastpost && lastpost.contains(img)) { return; }
-          var dot = document.createElement('span');
-          dot.className = 'topic-participated';
-          dot.title = img.getAttribute('title') || img.getAttribute('alt') || '';
-          img.replaceWith(dot);
-        });
+      /* Retire l'icône "vous avez participé" (fichier) à gauche du titre */
+      document.querySelectorAll('dd.dterm img').forEach(function (img) {
+        img.remove();
       });
 
       /* Bouton "Rechercher" : remplace l'icône/texte par la lune utilisée

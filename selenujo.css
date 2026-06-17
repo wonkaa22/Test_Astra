@@ -3326,23 +3326,19 @@ dl.icon {
   background-image: none !important;
 }
 
-/* Badge lu/non-lu recréé par JS à partir du background-image inline de
-   dl.icon, intégré dans le cadre du titre (voir selViewforumTransform) */
+/* Badge lu/non-lu (lune) recréé par JS à partir du statut du sujet, sans
+   cadre ni fond — juste la lune, dorée si le sujet a des messages non lus */
 .topic-status-icon {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  font-size: 12px;
+  font-size: 18px;
   line-height: 1;
   color: var(--text-lo);
-  background-color: var(--surface-3);
-  border: 1px solid var(--border-mid);
 }
-.topic-status-icon.is-unread { color: var(--gold); border-color: var(--gold-faint); }
+.topic-status-icon.is-unread { color: var(--gold); }
 
 /* Cadre titre du sujet — grille pour empiler titre / "par auteur" à côté
    du badge, alors que ce sont des dd siblings à plat dans le HTML */
@@ -3372,15 +3368,6 @@ dd.dterm {
 .topic-author { grid-column: 2; grid-row: 2; }
 /* Icône "vous avez participé" retirée par JS ; au cas où elle persiste */
 dd.dterm img { display: none; }
-/* Remplace l'icône fichier "vous avez participé" (voir JS) */
-.topic-participated {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--gold-dim);
-  flex-shrink: 0;
-}
 h2.topic-title.hierarchy a.topictitle {
   font-family: var(--font-serif);
   font-size: 17px;

@@ -3196,6 +3196,20 @@ body.chatbox {
   border-radius: 0 0 18px 18px;
   border-bottom: 1px solid var(--border);
 }
+
+/* Légende des icônes et bloc modérateurs/permissions : retirés par JS,
+   masqués ici aussi en filet de sécurité si le JS n'a pas encore tourné */
+#picture_legend,
+#info_open {
+  display: none;
+}
+.forum-guest-notice {
+  width: 100%;
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--text-mid);
+}
 .topic-actions-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .topic-actions a,
 .topic-actions button,

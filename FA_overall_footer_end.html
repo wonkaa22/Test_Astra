@@ -63,6 +63,33 @@
         });
       }
 
+      /* Icône lu/non-lu : FA la pose en background-image inline sur dl.icon
+         (qui est la ligne entière du sujet). On l'extrait dans un badge
+         dédié inséré dans le cadre du titre, puis on neutralise le fond
+         du dl pour pouvoir le transformer en flex row (voir CSS). */
+      document.querySelectorAll('ul.topiclist.topics.bg_none dl.icon').forEach(function (dl) {
+        var bg = dl.style.backgroundImage;
+        if (!bg) { return; }
+        var badge = document.createElement('span');
+        badge.className = 'topic-status-icon';
+        badge.style.backgroundImage = bg;
+        var dterm = dl.querySelector('dd.dterm');
+        if (dterm) {
+          dterm.insertBefore(badge, dterm.firstChild);
+        }
+      });
+
+      /* Retire le menu "Plus !" injecté par insert_plus_menu_new (FA) :
+         redondant avec les boutons déjà présents */
+      document.querySelectorAll('.topic-actions-buttons').forEach(function (bar) {
+        Array.prototype.slice.call(bar.children).forEach(function (child) {
+          var label = (child.textContent || '').trim();
+          if (label === 'Plus !' || child.id === 'plus-link' || child.id === 'plus-menu') {
+            child.remove();
+          }
+        });
+      });
+
       console.log('[selViewforum] transform appliquee.');
     })();
   </script>

@@ -996,6 +996,8 @@ img { display: block; max-width: 100%; }
   transition: color 0.2s;
 }
 .lm-moon:hover { color: var(--gold); }
+/* Icône résiduelle FA ("Voir le dernier message") redondante avec .lm-moon */
+.last-post-icon { display: none !important; }
 
 @media (max-width: 699px) {
   .last-msg { width: 100%; min-width: 0; }

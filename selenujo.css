@@ -686,7 +686,7 @@ img { display: block; max-width: 100%; }
    ─────────────────────────────────────────────────────────────── */
 .cat-block.is-horsrp .cat-content { padding: 20px; gap: 16px; }
 
-.hrp-cols { display: grid; grid-template-columns: 1.6fr 1.15fr 0.85fr; gap: 16px; align-items: start; }
+.hrp-cols { display: grid; grid-template-columns: 1.75fr 1.05fr 0.7fr; gap: 16px; align-items: stretch; }
 
 .hrp-sub-block {
   background: var(--surface-2);
@@ -696,6 +696,8 @@ img { display: block; max-width: 100%; }
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
+  box-sizing: border-box;
 }
 .hrp-sub-title {
   font-family: var(--font-serif);
@@ -728,24 +730,32 @@ img { display: block; max-width: 100%; }
 
 /* Colonne Détente : image à gauche, titre + boutons + dernier message à droite,
    tous calés sur la même largeur */
-.hrp-detente-inner { display: flex; gap: 14px; align-items: stretch; }
+.hrp-detente-inner { display: flex; gap: 14px; align-items: stretch; height: 100%; }
 .hrp-top-img {
   flex-shrink: 0;
-  width: 90px;
+  width: 140px;
   border-radius: 10px;
   background: linear-gradient(135deg, #1e2745 0%, #2a3a58 45%, #1a2235 100%);
   border: 1px solid var(--border);
-  min-height: 160px;
 }
 .hrp-detente-right { flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 
+/* Le cadre du dernier message s'étire pour occuper toute la largeur
+   disponible, comme les boutons, au lieu de sa largeur par défaut (50%) */
 .hrp-col-detente .last-msg,
 .hrp-col-entraide .last-msg,
 .adm-sub-block .last-msg,
 .adm-sub-inner .last-msg {
   margin-top: auto;
-  width: 100%;
+  align-self: stretch;
+  width: auto;
+  max-width: none;
 }
+
+/* Colonne Archives : boutons réduits et répartis sur toute la hauteur
+   pour combler l'espace sans laisser de vide en bas */
+.hrp-col-archives .hrp-buttons { flex: 1; justify-content: space-between; gap: 0; }
+.hrp-col-archives .hrp-btn { padding: 7px 10px; font-size: 11px; }
 
 @media (max-width: 1049px) {
   .hrp-cols { grid-template-columns: 1fr; }

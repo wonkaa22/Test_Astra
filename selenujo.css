@@ -937,6 +937,11 @@ img { display: block; max-width: 100%; }
   padding-top: 8px;
   padding-bottom: 8px;
   overflow: hidden;
+  width: 50%;
+  min-width: 220px;
+  max-width: 100%;
+  align-self: flex-start;
+  box-sizing: border-box;
 }
 .lm-body {
   flex: 1;
@@ -995,6 +1000,10 @@ img { display: block; max-width: 100%; }
   transition: color 0.2s;
 }
 .lm-moon:hover { color: var(--gold); }
+
+@media (max-width: 699px) {
+  .last-msg { width: 100%; min-width: 0; }
+}
 
 
 /* ───────────────────────────────────────────────────────────────

@@ -3201,7 +3201,8 @@ body.chatbox {
 /* Légende des icônes et bloc modérateurs/permissions : retirés par JS,
    masqués ici aussi en filet de sécurité si le JS n'a pas encore tourné */
 #picture_legend,
-#info_open {
+#info_open,
+form[name="jumpbox"] {
   display: none;
 }
 .forum-guest-notice {

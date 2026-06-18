@@ -293,7 +293,8 @@
        l'insère dans .lm-right, dans le même habillage que .lm-avatar-clip. */
     (function selFillMissingLastpostAvatars() {
       document.querySelectorAll('.lm-right').forEach(function (lmRight) {
-        if (lmRight.querySelector('.lm-avatar-clip')) { return; }
+        if (lmRight.dataset.avatarChecked || lmRight.querySelector('.lm-avatar-clip')) { return; }
+        lmRight.dataset.avatarChecked = '1';
         var lmBody = lmRight.previousElementSibling;
         if (!lmBody || !lmBody.classList.contains('lm-body')) { return; }
         var authorLink = lmBody.querySelector('.lm-author a[href^="/u"]');
@@ -301,6 +302,7 @@
         fetch(authorLink.getAttribute('href'))
           .then(function (res) { return res.text(); })
           .then(function (html) {
+            if (lmRight.querySelector('.lm-avatar-clip')) { return; }
             var avatarImg = new DOMParser().parseFromString(html, 'text/html').querySelector('.mod-login-avatar img');
             if (!avatarImg) { return; }
             var clip = document.createElement('div');

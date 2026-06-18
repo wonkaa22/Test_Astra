@@ -3576,9 +3576,7 @@ dd.lastpost dfn { display: none; }
   border-radius: 14px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   z-index: 9000;
-  display: none;
 }
-#notiffi_panel.is-open { display: block; }
 
 .no_notification {
   display: block;

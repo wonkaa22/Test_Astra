@@ -238,6 +238,7 @@
       for (var fi = footerStart + 1; fi < bodyNodes.length; fi++) {
         var fn = bodyNodes[fi];
         if (fn.nodeName === 'A' || fn.nodeName === 'STRONG' || (fn.nodeName === 'SPAN' && fn.classList.contains('gensmall'))) {
+          fn.style.order = '';
           legalLinks.push(fn);
         } else if (fn.nodeName === 'SCRIPT' || fn.nodeName === 'IFRAME' || fn.nodeName === 'DIV') {
           break;

@@ -90,6 +90,19 @@
 
 <!-- Panneau des notifications -->
 <div id="notiffi_panel">
+  <!-- Conteneur des actions -->
+    <div class="notiffi_manage">
+      <!-- Lien vers la page de gestion des notifications dans le profil -->
+        <a class="notiffi_see_all" href="/profile?mode=editprofile&page_profil=notifications">Voir toutes les notifications</a>
+
+        <!-- Bouton d'action -->
+        <div class="notiffi_actions">
+            <button id="notiffi_mark_as_read">Marquer comme lu</button>
+            <button id="notiffi_delete_all">Tout supprimer</button>
+        </div>
+    </div>
+    <!-- Fin du couteur des actions -->
+
     <!-- Conteneur des notifications -->
     <template class="all_notifications" type="template/potion" data-name="all_notifs">
 
@@ -115,19 +128,6 @@
 
     </template>
     <!-- Fin du conteneur des notifications -->
-
-  <!-- Conteneur des actions -->
-    <div class="notiffi_manage">
-      <!-- Lien vers la page de gestion des notifications dans le profil -->
-        <a class="notiffi_see_all" href="/profile?mode=editprofile&page_profil=notifications">Voir toutes les notifications</a>
-
-        <!-- Bouton d'action -->
-        <div class="notiffi_actions">
-            <button id="notiffi_mark_as_read">Marquer comme lu</button>
-            <button id="notiffi_delete_all">Tout supprimer</button>
-        </div>
-    </div>
-    <!-- Fin du couteur des actions -->
 </div>
 <!-- Fin du panneau des notifications -->
 
@@ -213,6 +213,16 @@
       notifLi.innerHTML = '';
       notifBtn.appendChild(notifPanel);
       notifLi.appendChild(notifBtn);
+      var notifTrigger = notifBtn.querySelector('.ntf_button-text') || notifBtn;
+      notifTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        notifPanel.classList.toggle('is-open');
+      });
+      document.addEventListener('click', function(e) {
+        if (!notifBtn.contains(e.target)) {
+          notifPanel.classList.remove('is-open');
+        }
+      });
     }
   } else {
     if (notifLi) { notifLi.remove(); }

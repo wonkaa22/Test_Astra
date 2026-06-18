@@ -3539,21 +3539,32 @@ dd.lastpost dfn { display: none; }
 
 #notiffi_button {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  padding: 6px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-family: var(--font-ui);
   color: var(--text-mid);
-  font-size: 13px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
-#notiffi_button:hover { color: var(--gold); }
+#notiffi_button:hover {
+  color: var(--gold);
+  border-color: var(--gold-faint);
+  background: var(--surface-4);
+}
 #notiffi_button .unread_count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 16px;
   height: 16px;
-  padding: 0 4px;
+  padding: 0 5px;
   border-radius: 8px;
   background: var(--gold);
   color: var(--surface-2);
@@ -3652,15 +3663,17 @@ dd.lastpost dfn { display: none; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 8px 14px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border);
+  border-radius: 14px 14px 0 0;
   background: var(--surface-2);
 }
 .notiffi_see_all {
   font-size: 11px;
   color: var(--gold-dim);
   text-decoration: none;
-  max-width: 130px;
+  flex: 1;
+  min-width: 0;
 }
 .notiffi_see_all:hover { color: var(--gold); }
 .notiffi_actions {

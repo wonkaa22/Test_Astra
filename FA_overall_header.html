@@ -139,6 +139,9 @@
   if (loggedIn) {
     document.getElementById('selNavSep').style.display = '';
     document.getElementById('switcheroo').style.display = '';
+  } else {
+    var notifLi = document.getElementById('sel-notif-li');
+    if (notifLi) { notifLi.remove(); }
   }
 })();
 //]]>

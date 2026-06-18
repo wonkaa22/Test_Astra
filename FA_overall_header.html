@@ -80,6 +80,73 @@
 
 <body id="modernbb">
 
+<!-- NOTIFFI -->
+<!-- BEGIN switch_user_logged_in -->
+<!-- Bouton pour ouvrir le panneau des notifications -->
+<div id="notiffi_button">
+    <span class="ntf_button-text">Notifications</span>
+    <template class="unread_count" type="template/potion" data-name="unread_notifs">[count]</template>
+</div>
+
+<!-- Panneau des notifications -->
+<div id="notiffi_panel">
+    <!-- Conteneur des notifications -->
+    <template class="all_notifications" type="template/potion" data-name="all_notifs">
+
+      <!-- Panneau si vide de notification -->
+      [isEmpty]
+          <span class="no_notification">[text]</span>
+      [/isEmpty]
+
+      <!-- Notification -->
+      [notifs]
+      <div class="notification [type] [read]" data-notif-id="[id]">
+          <div class="notif_details">
+            <div class="notif_avatar">[avatar]</div>
+            <div class="notif_icon">[icon]</div>
+          </div>
+          <div class="notif_content">
+              <div class="notif_text">[text]</div>
+              <div class="notif_time">[time]</div>
+          </div>
+          <button @click="deleteNotif" class="notif_close"><i class="bi bi-x"></i></button>
+      </div>
+      [/notifs]
+
+    </template>
+    <!-- Fin du conteneur des notifications -->
+
+  <!-- Conteneur des actions -->
+    <div class="notiffi_manage">
+      <!-- Lien vers la page de gestion des notifications dans le profil -->
+        <a class="notiffi_see_all" href="/profile?mode=editprofile&page_profil=notifications">Voir toutes les notifications</a>
+
+        <!-- Bouton d'action -->
+        <div class="notiffi_actions">
+            <button id="notiffi_mark_as_read">Marquer comme lu</button>
+            <button id="notiffi_delete_all">Tout supprimer</button>
+        </div>
+    </div>
+    <!-- Fin du couteur des actions -->
+</div>
+<!-- Fin du panneau des notifications -->
+
+<!-- Popup d'alerte d'une nouvelle notification -->
+<template type="template/potion" data-name="alert_notif">
+  <div class="notification alert [alert.type]">
+          <div class="notif_details">
+            <div class="notif_avatar">[alert.avatar]</div>
+          </div>
+          <div class="notif_content">
+              <div class="notif_text">[alert.text]</div>
+          </div>
+          <button id="alert_dismiss" class="alert_close"><i class="bi bi-x"></i></button>
+      </div>
+</template>
+<!-- Fin du popup -->
+<!-- END switch_user_logged_in -->
+<!-- NOTIFFIN -->
+
 <!-- BEGIN inactive_users_modal -->
 <div id="inactive_popup" style="z-index:10000 !important;">
   <div class="h3">{inactive_users_modal.L_MODAL_TITLE}</div>

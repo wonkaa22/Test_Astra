@@ -203,11 +203,18 @@
 
 (function() {
   var loggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+  var notifLi = document.getElementById('sel-notif-li');
   if (loggedIn) {
     document.getElementById('selNavSep').style.display = '';
     document.getElementById('switcheroo').style.display = '';
+    var notifBtn = document.getElementById('notiffi_button');
+    var notifPanel = document.getElementById('notiffi_panel');
+    if (notifLi && notifBtn && notifPanel) {
+      notifLi.innerHTML = '';
+      notifBtn.appendChild(notifPanel);
+      notifLi.appendChild(notifBtn);
+    }
   } else {
-    var notifLi = document.getElementById('sel-notif-li');
     if (notifLi) { notifLi.remove(); }
   }
 })();

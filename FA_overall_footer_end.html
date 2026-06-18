@@ -292,30 +292,36 @@
        l'avatar sur la page de profil (.mod-login-avatar img) et on
        l'insère dans .lm-right, dans le même habillage que .lm-avatar-clip. */
     (function selFillMissingLastpostAvatars() {
-      document.querySelectorAll('.lm-right').forEach(function (lmRight) {
-        if (lmRight.dataset.avatarChecked || lmRight.querySelector('.lm-avatar-clip')) { return; }
-        lmRight.dataset.avatarChecked = '1';
-        var lmBody = lmRight.previousElementSibling;
-        if (!lmBody || !lmBody.classList.contains('lm-body')) { return; }
-        var authorLink = lmBody.querySelector('.lm-author a[href^="/u"]');
-        if (!authorLink) { return; }
-        fetch(authorLink.getAttribute('href'))
-          .then(function (res) { return res.text(); })
-          .then(function (html) {
-            if (lmRight.querySelector('.lm-avatar-clip')) { return; }
-            var avatarImg = new DOMParser().parseFromString(html, 'text/html').querySelector('.mod-login-avatar img');
-            if (!avatarImg) { return; }
-            var clip = document.createElement('div');
-            clip.className = 'lm-avatar-clip';
-            var img = document.createElement('img');
-            img.src = avatarImg.getAttribute('src');
-            img.alt = avatarImg.getAttribute('alt') || '';
-            img.loading = 'lazy';
-            clip.appendChild(img);
-            lmRight.insertBefore(clip, lmRight.firstChild);
-          })
-          .catch(function () { /* avatar introuvable, on ignore */ });
-      });
+      /* Certains widgets (boîtes "derniers messages" de la page d'accueil)
+         chargent leur propre avatar en différé après le rendu initial. On
+         attend un court instant avant d'agir, pour ne pas créer de doublon
+         si FA finit par insérer le sien entre-temps. */
+      setTimeout(function () {
+        document.querySelectorAll('.lm-right').forEach(function (lmRight) {
+          if (lmRight.dataset.avatarChecked || lmRight.querySelector('.lm-avatar-clip')) { return; }
+          lmRight.dataset.avatarChecked = '1';
+          var lmBody = lmRight.previousElementSibling;
+          if (!lmBody || !lmBody.classList.contains('lm-body')) { return; }
+          var authorLink = lmBody.querySelector('.lm-author a[href^="/u"]');
+          if (!authorLink) { return; }
+          fetch(authorLink.getAttribute('href'))
+            .then(function (res) { return res.text(); })
+            .then(function (html) {
+              if (lmRight.querySelector('.lm-avatar-clip')) { return; }
+              var avatarImg = new DOMParser().parseFromString(html, 'text/html').querySelector('.mod-login-avatar img');
+              if (!avatarImg) { return; }
+              var clip = document.createElement('div');
+              clip.className = 'lm-avatar-clip';
+              var img = document.createElement('img');
+              img.src = avatarImg.getAttribute('src');
+              img.alt = avatarImg.getAttribute('alt') || '';
+              img.loading = 'lazy';
+              clip.appendChild(img);
+              lmRight.insertBefore(clip, lmRight.firstChild);
+            })
+            .catch(function () { /* avatar introuvable, on ignore */ });
+        });
+      }, 1500);
     })();
   </script>
 

@@ -4028,8 +4028,6 @@ ul.profile-icons li a:hover { color: var(--gold); background: var(--surface-3); 
   padding: 0 14px;
 }
 
-/* ── Barre d'actions du sujet : masque "Poster un nouveau sujet" ── */
-.sel-viewtopic .topic-actions a[href*="mode=newtopic"] { display: none !important; }
 
 /* ── Zone de réponse rapide ── */
 #quick_reply {

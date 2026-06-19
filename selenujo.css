@@ -3783,3 +3783,302 @@ dd.lastpost dfn { display: none; }
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
   z-index: 9500;
 }
+
+/* ═══════════════════════════════════════
+   SUJET (viewtopic) — page de discussion
+   ═══════════════════════════════════════ */
+
+/* Cadre unique englobant tous les posts */
+#sel-topic-posts {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.post {
+  display: flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Colonne profil (gauche) */
+.postprofile {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--surface-3);
+  border-right: 1px solid var(--border);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+.postprofile dl,
+.postprofile dt,
+.postprofile dd { margin: 0; padding: 0; width: 100%; }
+
+.postprofile-avatar {
+  width: 100%;
+  aspect-ratio: 200 / 320;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-4);
+  border: 1px solid var(--border-mid);
+}
+.postprofile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.postprofile-name { margin-top: 4px; }
+.postprofile-name a { text-decoration: none; }
+.postprofile-name strong {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--text-hi);
+}
+.postprofile-name span[class*="usr_grp_clr"] strong { color: inherit !important; }
+
+/* Statut en ligne / hors ligne (injecté par FA) */
+.postprofile .online-status,
+.postprofile dd.profile-online,
+.postprofile dd.profile-offline {
+  font-size: 11px;
+  color: var(--text-lo);
+}
+.postprofile .online-status.online,
+.postprofile dd.profile-online { color: var(--gold); }
+
+/* "Groupe" — texte simple, sans cadre */
+.postprofile-group {
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+
+/* Rang — espace réservé, jamais encadré */
+.postprofile-rank {
+  font-size: 12px;
+  color: var(--gold-dim);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* Sous-bloc infos de profil (pronoms, âge, etc.) — léger, pas une vraie boîte forte */
+.postprofile-info {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-mid);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-mid);
+  text-align: left;
+  width: 100%;
+}
+.postprofile-info .label span { color: var(--text-lo) !important; }
+
+/* Icônes de contact — masquées si vides (FA ne génère pas le lien si non rempli) */
+.postprofile-contact {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.postprofile-contact a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--surface-4);
+  border: 1px solid var(--border);
+}
+.postprofile-contact a:hover { border-color: var(--gold-dim); }
+.postprofile-contact img { width: 14px; height: 14px; opacity: 0.85; }
+.postprofile-contact a[href=""],
+.postprofile-contact a:not([href]) { display: none; }
+/* Emplacement réservé pour une icône carrée additionnelle */
+.postprofile-contact-extra {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--surface-4);
+  border: 1px dashed var(--border-mid);
+}
+
+/* Colonne principale (droite) */
+.post-head {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 8px 14px 0;
+}
+.post-menu {
+  background: none;
+  border: none;
+  color: var(--text-lo);
+  cursor: pointer;
+  font-size: 16px;
+}
+.post-menu:hover { color: var(--gold); }
+ul.profile-icons {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+ul.profile-icons li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--surface-4);
+  color: var(--text-mid);
+  font-size: 12px;
+  text-decoration: none;
+}
+ul.profile-icons li a:hover { color: var(--gold); background: var(--surface-3); }
+
+.post-head .topic-title {
+  margin: 0;
+  padding: 0 14px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--text-hi);
+}
+.post-head .topic-title img { display: none; }
+.post-head .topic-title a { color: var(--text-hi); text-decoration: none; }
+
+.topic-date {
+  padding: 2px 14px 10px;
+  font-size: 11.5px;
+  color: var(--text-lo);
+  border-bottom: 1px solid var(--border);
+}
+/* Numéro du post formaté "#1", "#2"... via JS (sel-post-num) */
+.sel-post-num {
+  color: var(--gold-dim);
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+.postbody { padding: 14px; }
+.postbody .content {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-mid);
+}
+.postbody .content img { max-width: 100%; }
+
+/* Likes / dislikes */
+.fa_like_div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 14px;
+  margin-top: auto;
+  justify-content: flex-end;
+}
+.fa_like_div .rep-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+.fa_like_div .rep-button svg { width: 14px; height: 14px; flex-shrink: 0; }
+.fa_like_div .fa_like:hover { color: var(--gold); border-color: var(--gold-dim); }
+.fa_like_div .fa_dislike:hover { color: var(--coral); border-color: var(--coral); }
+.fa_like_div .rep-button i { display: none; } /* anciennes icônes Ionicons remplacées par SVG inline via JS */
+.fa_like_list,
+.fa_dislike_list {
+  width: 100%;
+  font-size: 11.5px;
+  color: var(--text-lo);
+  padding: 0 14px;
+}
+
+/* ── Barre d'actions du sujet : masque "Poster un nouveau sujet" ── */
+.sel-viewtopic .topic-actions a[href*="mode=newtopic"] { display: none !important; }
+
+/* ── Zone de réponse rapide ── */
+#quick_reply {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-start;
+}
+#quick_reply .sel-qr-avatar {
+  width: 70px;
+  aspect-ratio: 200 / 320;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-4);
+  border: 1px solid var(--border-mid);
+  flex-shrink: 0;
+}
+#quick_reply .sel-qr-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#quick_reply .sceditor-container,
+#quick_reply textarea {
+  flex: 1;
+  min-width: 260px;
+}
+
+.sceditor-container {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+}
+.sceditor-toolbar {
+  background: var(--surface-3) !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 10px 10px 0 0 !important;
+}
+.sceditor-button div {
+  filter: invert(0.7) brightness(1.4);
+  opacity: 0.85;
+}
+.sceditor-button:hover div { opacity: 1; }
+.sceditor-container iframe,
+.sceditor-container textarea {
+  background: var(--surface-2) !important;
+  color: var(--text-hi) !important;
+}
+
+.sel-word-counter {
+  width: 100%;
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-lo);
+  margin-top: 4px;
+}

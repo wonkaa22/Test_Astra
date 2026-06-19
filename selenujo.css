@@ -3730,9 +3730,9 @@ dd.lastpost dfn { display: none; }
   border: none;
   cursor: pointer;
   color: var(--text-lo);
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1;
-  padding: 2px;
+  padding: 2px 4px;
 }
 .notif_close:hover { color: var(--coral); }
 

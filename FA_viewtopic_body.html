@@ -53,7 +53,7 @@ showHiddenMessage = function(id) {
 </script>
 <!-- END switch_push_direct_send -->
 
-<div class="sub-header">
+<div class="sub-header forum-width">
 	<div class="sub-header-info">
 		<h1 class="page-title">
 			<a href="{TOPIC_URL}">{TOPIC_TITLE}</a>
@@ -79,7 +79,7 @@ showHiddenMessage = function(id) {
 	</div>
 </div>
 
-<div class="topic-actions">
+<div class="topic-actions forum-width">
 	<!-- BEGIN topicpagination -->
 		<div class="pagination">
 			{PAGINATION}
@@ -110,7 +110,7 @@ showHiddenMessage = function(id) {
 	</div>
 </div>
 
-<div class="quick-nav-topics">
+<div class="quick-nav-topics forum-width">
     <!-- BEGIN switch_isconnect -->
 	<a href="{U_VIEW_OLDER_TOPIC}">{L_VIEW_PREVIOUS_TOPIC}</a>
     <!-- END switch_isconnect -->
@@ -123,7 +123,7 @@ showHiddenMessage = function(id) {
 {POLL_DISPLAY}
 
 <!-- Cadre unique englobant tous les posts (Selenujo) -->
-<div id="sel-topic-posts">
+<div id="sel-topic-posts" class="forum-width">
 <!-- BEGIN postrow -->
 	<!-- BEGIN hidden -->
 		<div class="post {postrow.hidden.ROW_COUNT}">
@@ -176,38 +176,38 @@ showHiddenMessage = function(id) {
 				<div class="menu-wrap">
 					<div class="post-menu">+</div>
 					<ul class="profile-icons">
-						<li class="btn-thank">
+						<li class="btn-thank" title="Remercier">
 							<a href="{postrow.displayed.THANK_URL}">
-								<i class="ion-heart"></i>
+								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 14.25C7.79 14.25 7.6 14.18 7.45 14.06C5.96 12.87 4.61 11.76 3.5 10.74C1.62 9.04 0.5 7.38 0.5 5.5C0.5 3.74 1.86 2.38 3.62 2.38C4.7 2.38 5.71 2.92 6.36 3.78L8 5.91L9.64 3.78C10.29 2.92 11.3 2.38 12.38 2.38C14.14 2.38 15.5 3.74 15.5 5.5C15.5 7.38 14.38 9.04 12.5 10.74C11.39 11.76 10.04 12.87 8.55 14.06C8.4 14.18 8.21 14.25 8 14.25Z"/></svg>
 							</a>
 						</li>
-						<li class="btn-quote-multi">
+						<li class="btn-quote-multi" title="Citer (multi)">
 							<span onclick="{postrow.displayed.MULTIQUOTE_URL}" id="post_mq{TOPIC_ID}_{postrow.displayed.U_POST_ID}">
-								<i class="ion-quote"></i>
-								<i class="ion-ios-plus-empty"></i>
+								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h4v4H4.5C4.5 9 5.5 9.5 6.5 9.5v1.5C4 11 3 9.5 3 7V3zm6 0h4v4h-2.5c0 2 1 2.5 2 2.5v1.5c-2.5 0-3.5-1.5-3.5-4V3z"/></svg>
+								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3v4M6 5h4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
 							</span>
 						</li>
-						<li class="btn-quote">
+						<li class="btn-quote" title="Citer">
 							<a href="{postrow.displayed.QUOTE_URL}">
-								<i class="ion-quote"></i>
+								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h4v4H4.5C4.5 9 5.5 9.5 6.5 9.5v1.5C4 11 3 9.5 3 7V3zm6 0h4v4h-2.5c0 2 1 2.5 2 2.5v1.5c-2.5 0-3.5-1.5-3.5-4V3z"/></svg>
 							</a>
 						</li>
-						<li class="btn-edit">
+						<li class="btn-edit" title="Éditer">
 							<a href="{postrow.displayed.EDIT_URL}">
-								<i class="ion-edit"></i>
+								<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M11 2l3 3-8 8-3.5.5.5-3.5 8-8z"/></svg>
 							</a>
 						</li>
-						<li class="btn-delete">
+						<li class="btn-delete" title="Supprimer">
 							<a href="{postrow.displayed.DELETE_URL}">
-								<i class="ion-trash-a"></i>
+								<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.5 9.5h6l.5-9.5"/></svg>
 							</a>
 						</li>
-						<li class="btn-ip">
+						<li class="btn-ip" title="Adresse IP">
 							<a href="{postrow.displayed.IP_URL}">
-								<i class="ion-ios-information"></i>
+								<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6.3"/><path d="M8 7v4M8 5v.01" stroke-linecap="round"/></svg>
 							</a>
 						</li>
-						<li class="btn-report">
+						<li class="btn-report" title="Signaler">
 							{postrow.displayed.REPORT_IMG}
 						</li>
 					</ul>
@@ -328,7 +328,7 @@ showHiddenMessage = function(id) {
 
 <a name="bottomtitle"></a>
 
-<div class="quick-nav-topics bottom">
+<div class="quick-nav-topics bottom forum-width">
     <!-- BEGIN switch_isconnect -->
 	<a href="{U_VIEW_OLDER_TOPIC}">{L_VIEW_PREVIOUS_TOPIC}</a>
     <!-- END switch_isconnect -->
@@ -338,7 +338,7 @@ showHiddenMessage = function(id) {
     <!-- END switch_isconnect -->
 </div>
 
-<div class="topic-actions bottom">
+<div class="topic-actions bottom forum-width">
 	<!-- BEGIN topicpagination -->
 		<div class="pagination">
 			{PAGINATION}
@@ -365,10 +365,10 @@ showHiddenMessage = function(id) {
 </div>
 
 <!-- BEGIN promot_trafic -->
-	<div class="block" id="ptrafic_close" style="display: none;">
+	<div class="block forum-width" id="ptrafic_close" style="display: none;">
 		<div class="h3"><a href="javascript:ShowHideLayer('ptrafic_open','ptrafic_close');"><i class="ion-ios-plus-outline"></i></a>{PROMOT_TRAFIC_TITLE}</div>
 	</div>
-	<div class="block" id="ptrafic_open" style="display:'';">
+	<div class="block forum-width" id="ptrafic_open" style="display:'';">
 		<div class="h3"><a href="javascript:ShowHideLayer('ptrafic_open','ptrafic_close');"><i class="ion-ios-minus-outline"></i></a>{PROMOT_TRAFIC_TITLE}</div>
 		<ul class="ptrafic">
 			<!-- BEGIN link -->
@@ -383,7 +383,7 @@ showHiddenMessage = function(id) {
 <!-- END promot_trafic -->
 
 <!-- BEGIN switch_forum_rules -->
-<div class="post row1" id="forum_rules">
+<div class="post row1 forum-width" id="forum_rules">
 	<div class="h3">{L_FORUM_RULES}</div>
 	<div class="clear"></div>
 	<table class="postbody">
@@ -403,10 +403,12 @@ showHiddenMessage = function(id) {
 
 <!-- BEGIN switch_user_logged_in -->
 	<a name="quickreply"></a>
-	{QUICK_REPLY_FORM}
+	<div id="sel-quickreply" class="forum-width">
+		{QUICK_REPLY_FORM}
+	</div>
 <!-- END switch_user_logged_in -->
 
-<form action="{S_JUMPBOX_ACTION}" method="get" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+<form action="{S_JUMPBOX_ACTION}" method="get" onsubmit="if(document.jumpbox.f.value == -1){return false;}" class="forum-width">
 	<fieldset class="jumpbox">
 		<label>{L_JUMP_TO}:</label>
 		{S_JUMPBOX_SELECT}
@@ -415,7 +417,7 @@ showHiddenMessage = function(id) {
 </form>
 
 <!-- BEGIN viewtopic_bottom -->
-<form method="get" action="{S_FORM_MOD_ACTION}">
+<form method="get" action="{S_FORM_MOD_ACTION}" class="forum-width">
 	<fieldset class="quickmod">
 		<input type="hidden" name="t" value="{TOPIC_ID}" />
 
@@ -427,11 +429,11 @@ showHiddenMessage = function(id) {
 	</fieldset>
 </form>
 
-<p class="right">{S_TOPIC_ADMIN}</p>
+<p class="right forum-width">{S_TOPIC_ADMIN}</p>
 <!-- END viewtopic_bottom -->
 
 <!-- BEGIN show_permissions -->
-	<div class="block">
+	<div class="block forum-width">
 		<div class="h3">{L_TABS_PERMISSIONS}</div>
 		{S_AUTH_LIST}
 	</div>

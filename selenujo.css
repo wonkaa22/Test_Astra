@@ -3395,7 +3395,7 @@ form[name="jumpbox"] {
    fixe de .forum-width (1050px) héritée avant son déplacement dans la
    barre de boutons, sinon elle force un retour à la ligne. */
 .pagination-inline {
-  margin-left: auto;
+  margin: 0 0 0 auto;
   width: auto;
   max-width: none;
 }

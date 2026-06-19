@@ -36,7 +36,7 @@
 
       console.log('[selViewforum] cat-block:', catBlock, 'forumbg:', topicsBox);
 
-      if (!catBlock || !topicsBox) {
+      if (!topicsBox) {
         console.log('[selViewforum] abandon : pas une page viewforum.');
         return;
       }
@@ -45,8 +45,10 @@
       var bottomActions = document.querySelector('.topic-actions.bottom');
 
       var newOrder = children.filter(function (el) { return el !== catBlock; });
-      var insertAfter = (bottomActions && newOrder.indexOf(bottomActions) > -1) ? bottomActions : topicsBox;
-      newOrder.splice(newOrder.indexOf(insertAfter) + 1, 0, catBlock);
+      if (catBlock) {
+        var insertAfter = (bottomActions && newOrder.indexOf(bottomActions) > -1) ? bottomActions : topicsBox;
+        newOrder.splice(newOrder.indexOf(insertAfter) + 1, 0, catBlock);
+      }
 
       body.style.display = 'flex';
       body.style.flexDirection = 'column';

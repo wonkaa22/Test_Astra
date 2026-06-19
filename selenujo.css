@@ -3391,8 +3391,14 @@ form[name="jumpbox"] {
    JS) : on s'en passe, il ne doit pas s'afficher comme un bouton vide */
 .pagination > a[onmousedown] { display: none; }
 /* Pagination du haut, repositionnée par JS sur la ligne "Poster un
-   nouveau sujet / Trier / Rechercher", tout à droite */
-.pagination-inline { margin-left: auto; }
+   nouveau sujet / Trier / Rechercher", tout à droite. Annule la largeur
+   fixe de .forum-width (1050px) héritée avant son déplacement dans la
+   barre de boutons, sinon elle force un retour à la ligne. */
+.pagination-inline {
+  margin-left: auto;
+  width: auto;
+  max-width: none;
+}
 .pagination a,
 .pagination strong {
   display: inline-flex;

@@ -3390,6 +3390,9 @@ form[name="jumpbox"] {
 /* Lien caché servant à ouvrir le menu "aller à la page" de FA (table en
    JS) : on s'en passe, il ne doit pas s'afficher comme un bouton vide */
 .pagination > a[onmousedown] { display: none; }
+/* Pagination du haut, repositionnée par JS sur la ligne "Poster un
+   nouveau sujet / Trier / Rechercher", tout à droite */
+.pagination-inline { margin-left: auto; }
 .pagination a,
 .pagination strong {
   display: inline-flex;

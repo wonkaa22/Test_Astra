@@ -143,16 +143,18 @@
          du lien "marquer comme lu" qui reste disponible une seule fois en
          bas, à droite des sujets */
       if (topActions) {
-        var topBar    = topActions.querySelector('.topic-actions-buttons');
-        var subBtns   = document.querySelector('.sub-header-buttons');
-        var postBtn   = subBtns ? subBtns.querySelector('a.button1[href*="mode=newtopic"]') : null;
-        var searchBox = subBtns ? subBtns.querySelector('.search-box') : null;
-        var sortBox   = bottomActions ? bottomActions.querySelector('#sort-box') : null;
+        var topBar     = topActions.querySelector('.topic-actions-buttons');
+        var subBtns    = document.querySelector('.sub-header-buttons');
+        var postBtn    = subBtns ? subBtns.querySelector('a.button1[href*="mode=newtopic"]') : null;
+        var searchBox  = subBtns ? subBtns.querySelector('.search-box') : null;
+        var sortBox    = bottomActions ? bottomActions.querySelector('#sort-box') : null;
+        var topPagination = document.querySelector('.pagination');
         if (topBar) {
           topBar.innerHTML = '';
           if (postBtn) { topBar.appendChild(postBtn); }
           if (sortBox) { topBar.appendChild(sortBox); }
           if (searchBox) { topBar.appendChild(searchBox); }
+          if (topPagination) { topPagination.classList.add('pagination-inline'); topBar.appendChild(topPagination); }
         }
         if (subBtns) { subBtns.remove(); }
       }

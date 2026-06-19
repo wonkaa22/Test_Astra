@@ -142,13 +142,16 @@
          ordre, sur une seule ligne sous la description du forum, à la place
          du lien "marquer comme lu" qui reste disponible une seule fois en
          bas, à droite des sujets */
+      var allPaginations = Array.prototype.slice.call(document.querySelectorAll('.pagination'));
+      var topPagination    = allPaginations[0];
+      var bottomPagination = allPaginations.length > 1 ? allPaginations[allPaginations.length - 1] : null;
+
       if (topActions) {
         var topBar     = topActions.querySelector('.topic-actions-buttons');
         var subBtns    = document.querySelector('.sub-header-buttons');
         var postBtn    = subBtns ? subBtns.querySelector('a.button1[href*="mode=newtopic"]') : null;
         var searchBox  = subBtns ? subBtns.querySelector('.search-box') : null;
         var sortBox    = bottomActions ? bottomActions.querySelector('#sort-box') : null;
-        var topPagination = document.querySelector('.pagination');
         if (topBar) {
           topBar.innerHTML = '';
           if (postBtn) { topBar.appendChild(postBtn); }
@@ -160,10 +163,17 @@
       }
 
       /* Retire le bouton "Poster un nouveau sujet" du bas (déjà présent en
-         haut, sous la description) pour éviter le doublon */
+         haut, sous la description) pour éviter le doublon, et replace la
+         pagination du bas (si distincte de celle du haut) tout à droite de
+         la même ligne que "Surveiller les sujets..." / "Marquer comme lus" */
       if (bottomActions) {
         var bottomPostBtn = bottomActions.querySelector('a.button1[href*="mode=newtopic"]');
         if (bottomPostBtn) { bottomPostBtn.remove(); }
+        var bottomBar = bottomActions.querySelector('.topic-actions-buttons');
+        if (bottomBar && bottomPagination) {
+          bottomPagination.classList.add('pagination-inline');
+          bottomBar.appendChild(bottomPagination);
+        }
       }
 
       /* Retire le menu "Plus !" injecté par insert_plus_menu_new (FA) :

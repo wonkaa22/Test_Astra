@@ -3312,7 +3312,7 @@ form[name="jumpbox"] {
 .site-footer-bar a:hover {
   color: var(--gold);
 }
-.topic-actions-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.topic-actions-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1 1 auto; min-width: 0; }
 .topic-actions a,
 .topic-actions button,
 #sort-btn {

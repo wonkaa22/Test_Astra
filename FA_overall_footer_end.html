@@ -237,20 +237,30 @@
        le template viewtopic_body. Ici on ne gère plus que ce qui dépend du
        sous-template de réponse rapide (avatar du membre connecté et
        compteur de mots), qui n'est pas éditable depuis viewtopic_body.
-       ATTENTION : ne jamais écrire de nom de variable FA entre accolades
-       (ex. QUICK_REPLY_FORM) dans ce fichier, même en commentaire — FA
-       les remplace partout, y compris dans les <script>, ce qui peut
-       injecter du HTML contenant un </script> et casser tout le reste
-       du fichier (texte brut affiché sur la page). */
+       ATTENTION : n'écrivez jamais de nom de variable FA entre accolades
+       dans ce fichier, même en commentaire, et n'écrivez jamais la suite
+       de caractères qui ferme une balise de script (signe inférieur,
+       barre oblique, s c r i p t, signe supérieur) dans un commentaire :
+       FA remplace les variables partout, et le navigateur ferme une
+       balise de script dès qu'il voit cette suite de caractères, même
+       à l'intérieur d'un commentaire JS. Les deux causent le même bug :
+       tout le reste du fichier s'affiche en texte brut sur la page. */
     (function selViewtopicTransform() {
       var qrCheck = document.getElementById('quick_reply') || document.getElementById('sel-topic-posts');
       if (!qrCheck) { return; }
 
-      /* Avatar du membre connecté dans la zone de réponse rapide */
+      /* Avatar du membre connecté dans la zone de réponse rapide : on ne
+         passe en flex que l'avatar + l'éditeur (dans un sous-conteneur
+         créé ici), pas tout le formulaire — sinon les boutons "Envoyer"
+         et "Prévisualisation", plus bas dans le même formulaire,
+         deviendraient eux aussi des éléments flex et remonteraient en
+         haut à côté de la barre d'outils. */
       var qr = document.getElementById('quick_reply');
       if (qr && typeof _userdata !== 'undefined' && _userdata['session_logged_in'] && _userdata['avatar_link']) {
         var sceditorBox = qr.querySelector('.sceditor-container') || qr.querySelector('textarea');
         if (sceditorBox && !qr.querySelector('.sel-qr-avatar')) {
+          var row = document.createElement('div');
+          row.className = 'sel-qr-row';
           var avatarBox = document.createElement('div');
           avatarBox.className = 'sel-qr-avatar';
           var avatarImg = document.createElement('img');
@@ -258,8 +268,21 @@
           avatarImg.alt = '';
           avatarImg.loading = 'lazy';
           avatarBox.appendChild(avatarImg);
-          sceditorBox.parentNode.insertBefore(avatarBox, sceditorBox);
+          sceditorBox.parentNode.insertBefore(row, sceditorBox);
+          row.appendChild(avatarBox);
+          row.appendChild(sceditorBox);
         }
+      }
+
+      /* Remplace "::" par "☽" dans le fil d'Ariane (même logique que sur
+         les pages forum/sous-forum) */
+      var topicPathEl = document.querySelector('.sub-header-path');
+      if (topicPathEl) {
+        Array.prototype.forEach.call(topicPathEl.childNodes, function (node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent = node.textContent.replace(/::/g, '☽');
+          }
+        });
       }
 
       /* Compteur de mots */

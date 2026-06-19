@@ -3127,6 +3127,11 @@ body.chatbox {
 .sub-header-info .page-title { order: 2; margin-top: 4px; }
 .sub-header-info .sub-header-path { order: 1; }
 
+/* Page sujet : bouton "Répondre" sous le titre plutôt qu'à côté */
+.sub-header.sel-topic-header { flex-direction: column; align-items: stretch; }
+.sel-topic-header .sub-header-buttons { margin-top: 10px; }
+.sel-posters-list { display: none; }
+
 .page-title {
   font-family: var(--font-serif);
   font-size: 30px;
@@ -3801,7 +3806,7 @@ dd.lastpost dfn { display: none; }
 }
 
 .post {
-  display: grid;
+  display: grid !important;
   grid-template-columns: 200px 1fr;
   align-items: start;
   background: var(--surface-2);
@@ -3901,37 +3906,21 @@ dd.lastpost dfn { display: none; }
 }
 .postprofile-info .label span { color: var(--text-lo) !important; }
 
-/* Icônes de contact — masquées si vides (FA ne génère pas le lien si non rempli) */
-.postprofile-contact {
-  margin-top: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.postprofile-contact a {
+/* Bouton "envoyer un message privé" — affiché en haut à droite du
+   message (menu-wrap), masqué si l'auteur n'accepte pas les MP */
+.postprofile-pm {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
   background: var(--surface-4);
-  border: 1px solid var(--border);
+  margin-right: auto;
 }
-.postprofile-contact a:hover { border-color: var(--gold-dim); }
-.postprofile-contact img { width: 14px; height: 14px; opacity: 0.85; }
-.postprofile-contact a[href=""],
-.postprofile-contact a:not([href]) { display: none; }
-/* Emplacement réservé pour une icône carrée additionnelle */
-.postprofile-contact-extra {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: var(--surface-4);
-  border: 1px dashed var(--border-mid);
-}
+.postprofile-pm a { display: inline-flex; }
+.postprofile-pm img { width: 14px; height: 14px; opacity: 0.85; }
+.postprofile-pm:empty { display: none; }
 
 /* Colonne principale (droite) */
 .post-head {
@@ -4066,14 +4055,20 @@ ul.profile-icons li.btn-report img {
 }
 
 
-/* ── Zone de réponse rapide ── */
-#quick_reply {
+/* ── Zone de réponse rapide ──
+   #quick_reply reste en flux normal (le formulaire contient aussi les
+   boutons "Prévisualisation"/"Envoyer" plus bas, qu'on ne veut pas voir
+   remonter dans une rangée flex) ; seule .sel-qr-row (créée par JS et ne
+   contenant que l'avatar + l'éditeur) est mise en flex. */
+#quick_reply { width: 100%; }
+.sel-qr-row {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
   align-items: flex-start;
+  width: 100%;
 }
-#quick_reply .sel-qr-avatar {
+.sel-qr-row .sel-qr-avatar {
   width: 70px;
   aspect-ratio: 200 / 320;
   border-radius: 8px;
@@ -4082,11 +4077,15 @@ ul.profile-icons li.btn-report img {
   border: 1px solid var(--border-mid);
   flex-shrink: 0;
 }
-#quick_reply .sel-qr-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-#quick_reply .sceditor-container,
-#quick_reply textarea {
+.sel-qr-row .sel-qr-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sel-qr-row .sceditor-container,
+.sel-qr-row textarea {
   flex: 1;
   min-width: 260px;
+}
+#quick_reply input[type="submit"] {
+  margin-top: 10px;
+  margin-right: 8px;
 }
 
 .sceditor-container {

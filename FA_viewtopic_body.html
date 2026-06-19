@@ -53,13 +53,13 @@ showHiddenMessage = function(id) {
 </script>
 <!-- END switch_push_direct_send -->
 
-<div class="sub-header forum-width">
+<div class="sub-header forum-width sel-topic-header">
 	<div class="sub-header-info">
 		<h1 class="page-title">
 			<a href="{TOPIC_URL}">{TOPIC_TITLE}</a>
 			<!-- BEGIN switch_push_direct_send -->&nbsp;<span id="push-bell" style="color:goldenrod;" title="{switch_push_direct_send.L_PUSH_SEND}" class="ion-android-notifications"></span><!-- END switch_push_direct_send -->
 		</h1>
-        {POSTERS_LIST}
+        <span class="sel-posters-list">{POSTERS_LIST}</span>
 		<div class="sub-header-path">
 			<a class="nav" href="{U_INDEX}"><span>{L_INDEX}</span></a>
 			{NAV_CAT_DESC}
@@ -68,7 +68,7 @@ showHiddenMessage = function(id) {
 
 	<div class="sub-header-buttons">
 		<!-- BEGIN switch_user_authreply -->
-			<a href="{U_POST_REPLY_TOPIC}" {S_POST_REPLY_TOPIC} title="{T_POST_REPLY_TOPIC}" class="ion-{I_POST_REPLY_TOPIC} button1">{L_POST_REPLY_TOPIC}</a>
+			<a href="{U_POST_REPLY_TOPIC}" {S_POST_REPLY_TOPIC} title="{T_POST_REPLY_TOPIC}" class="button1">Répondre</a>
 		<!-- END switch_user_authreply -->
 		<!-- BEGIN switch_user_authnoreply -->
 			<a href="{U_LOGIN_REPLY_TOPIC}" title="{T_LOGIN_REPLY_TOPIC}" class="login-for button1">
@@ -159,28 +159,14 @@ showHiddenMessage = function(id) {
 						<!-- END profile_field -->
 						{postrow.displayed.POSTER_RPG}
 					</dd>
-					<dd class="postprofile-contact">
-						{postrow.displayed.PROFILE_IMG}
-						{postrow.displayed.PM_IMG}
-						{postrow.displayed.EMAIL_IMG}
-						<!-- BEGIN contact_field -->
-						 	{postrow.displayed.contact_field.CONTENT}
-						<!-- END contact_field -->
-						<!-- Emplacement réservé pour une icône carrée additionnelle (Selenujo) -->
-						<span class="postprofile-contact-extra"></span>
-					</dd>
 				</dl>
 			</div>
 
 			<div class="post-head">
 				<div class="menu-wrap">
+					<span class="postprofile-pm">{postrow.displayed.PM_IMG}</span>
 					<div class="post-menu">+</div>
 					<ul class="profile-icons">
-						<li class="btn-thank" title="Remercier">
-							<a href="{postrow.displayed.THANK_URL}">
-								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 14.25C7.79 14.25 7.6 14.18 7.45 14.06C5.96 12.87 4.61 11.76 3.5 10.74C1.62 9.04 0.5 7.38 0.5 5.5C0.5 3.74 1.86 2.38 3.62 2.38C4.7 2.38 5.71 2.92 6.36 3.78L8 5.91L9.64 3.78C10.29 2.92 11.3 2.38 12.38 2.38C14.14 2.38 15.5 3.74 15.5 5.5C15.5 7.38 14.38 9.04 12.5 10.74C11.39 11.76 10.04 12.87 8.55 14.06C8.4 14.18 8.21 14.25 8 14.25Z"/></svg>
-							</a>
-						</li>
 						<li class="btn-quote-multi" title="Citer (multi)">
 							<span onclick="{postrow.displayed.MULTIQUOTE_URL}" id="post_mq{TOPIC_ID}_{postrow.displayed.U_POST_ID}">
 								<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h4v4H4.5C4.5 9 5.5 9.5 6.5 9.5v1.5C4 11 3 9.5 3 7V3zm6 0h4v4h-2.5c0 2 1 2.5 2 2.5v1.5c-2.5 0-3.5-1.5-3.5-4V3z"/></svg>

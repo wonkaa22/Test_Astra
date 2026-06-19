@@ -3650,7 +3650,7 @@ dd.lastpost dfn { display: none; }
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: 320px;
+  width: 340px;
   max-height: 420px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -3695,12 +3695,17 @@ dd.lastpost dfn { display: none; }
 .notif_icon { font-size: 13px; color: var(--gold-dim); }
 
 .notif_content { flex: 1; min-width: 0; overflow: hidden; }
-.notif_text {
+.notif_text,
+.notif_text * {
   font-size: 12.5px;
   color: var(--text-hi);
   line-height: 1.4;
   word-break: break-word;
   overflow-wrap: anywhere;
+  white-space: normal !important;
+  text-overflow: unset !important;
+  overflow: visible !important;
+  max-width: 100% !important;
 }
 .notif_text a,
 .notif_text strong {
@@ -3719,6 +3724,8 @@ dd.lastpost dfn { display: none; }
 
 .notif_close {
   flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
   background: none;
   border: none;
   cursor: pointer;

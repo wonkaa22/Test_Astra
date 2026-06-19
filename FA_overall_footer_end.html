@@ -235,8 +235,13 @@
     /* Page Sujet (viewtopic) : le cadre des posts, la numérotation "#1"/"#2"
        et les icônes like/dislike SVG sont désormais gérés nativement dans
        le template viewtopic_body. Ici on ne gère plus que ce qui dépend du
-       sous-template {QUICK_REPLY_FORM} (avatar du membre connecté et
-       compteur de mots), qui n'est pas éditable depuis viewtopic_body. */
+       sous-template de réponse rapide (avatar du membre connecté et
+       compteur de mots), qui n'est pas éditable depuis viewtopic_body.
+       ATTENTION : ne jamais écrire de nom de variable FA entre accolades
+       (ex. QUICK_REPLY_FORM) dans ce fichier, même en commentaire — FA
+       les remplace partout, y compris dans les <script>, ce qui peut
+       injecter du HTML contenant un </script> et casser tout le reste
+       du fichier (texte brut affiché sur la page). */
     (function selViewtopicTransform() {
       var qrCheck = document.getElementById('quick_reply') || document.getElementById('sel-topic-posts');
       if (!qrCheck) { return; }

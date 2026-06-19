@@ -3801,12 +3801,25 @@ dd.lastpost dfn { display: none; }
 }
 
 .post {
-  display: flex;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: start;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
 }
+/* .postprofile, .post-head, .postbody et .fa_like_div sont 4 enfants
+   directs de .post (pas imbriqués) : la colonne profil occupe toute la
+   hauteur, les trois autres s'empilent dans la colonne de droite. */
+.post > .postprofile { grid-column: 1; grid-row: 1 / -1; }
+.post > .post-head,
+.post > .postbody,
+.post > .fa_like_div { grid-column: 2; }
+
+/* Le titre du sujet est déjà affiché dans le sub-header : pas la peine
+   de le répéter dans chaque post. */
+.post:not(:first-of-type) .topic-title { display: none; }
 
 /* Colonne profil (gauche) */
 .postprofile {
@@ -3963,6 +3976,30 @@ ul.profile-icons li a {
   text-decoration: none;
 }
 ul.profile-icons li a:hover { color: var(--gold); background: var(--surface-3); }
+ul.profile-icons li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--surface-4);
+  color: var(--text-mid);
+  cursor: pointer;
+}
+ul.profile-icons li span:hover { color: var(--gold); background: var(--surface-3); }
+ul.profile-icons svg { width: 13px; height: 13px; flex-shrink: 0; }
+ul.profile-icons li.btn-report a,
+ul.profile-icons li.btn-report img {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--surface-4);
+}
 
 .post-head .topic-title {
   margin: 0;

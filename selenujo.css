@@ -54,26 +54,30 @@
 
 /* Thème clair — activé par JS via :root.light */
 :root.light {
-  --bg:        #FEFAE0;
-  --surface-1: #FAEDCD;
-  --surface-2: #F5E6C0;
-  --surface-3: #EDE0B8;
-  --surface-4: #E9EDC9;
+  --bg:        #EDE6E0;
+  --surface-1: #E1D5CD;
+  --surface-2: #D5C5BD;
+  --surface-3: #C5B3AC;
+  --surface-4: #B7C0B2;
 
-  --text-hi:   rgba(40,30,20,0.9);
-  --text-mid:  rgba(80,60,40,0.7);
-  --text-lo:   rgba(80,60,40,0.45);
-  --text-ghost:rgba(80,60,40,0.2);
+  --text-hi:   rgba(50,38,34,0.9);
+  --text-mid:  rgba(70,55,50,0.7);
+  --text-lo:   rgba(70,55,50,0.45);
+  --text-ghost:rgba(70,55,50,0.2);
 
-  --border:    rgba(150,120,80,0.15);
-  --border-mid:rgba(150,120,80,0.25);
+  --border:    rgba(120,85,75,0.18);
+  --border-mid:rgba(120,85,75,0.28);
 
-  --switcheroo-light:   #FAEDCD;
-  --switcheroo-lighter: #F5E6C0;
-  --switcheroo-grey:    #EDE0B8;
-  --switcheroo-greyer:  #E4D7B0;
-  --switcheroo-text:    rgba(60,45,25,0.8);
-  --switcheroo-border:  1px solid rgba(150,120,80,0.18);
+  --gold:      #B5694F;
+  --gold-dim:  rgba(181,105,79,0.7);
+  --gold-faint:rgba(181,105,79,0.25);
+
+  --switcheroo-light:   #E1D5CD;
+  --switcheroo-lighter: #D5C5BD;
+  --switcheroo-grey:    #C5B3AC;
+  --switcheroo-greyer:  #B7A29A;
+  --switcheroo-text:    rgba(60,45,40,0.8);
+  --switcheroo-border:  1px solid rgba(120,85,75,0.2);
 }
 
 

@@ -62,11 +62,11 @@
 
   --text-hi:   rgba(50,38,34,0.9);
   --text-mid:  rgba(70,55,50,0.7);
-  --text-lo:   rgba(70,55,50,0.45);
-  --text-ghost:rgba(70,55,50,0.2);
+  --text-lo:   rgba(70,55,50,0.6);
+  --text-ghost:rgba(70,55,50,0.35);
 
-  --border:    rgba(120,85,75,0.18);
-  --border-mid:rgba(120,85,75,0.28);
+  --border:    rgba(120,85,75,0.32);
+  --border-mid:rgba(120,85,75,0.45);
 
   --gold:      #B5694F;
   --gold-dim:  rgba(181,105,79,0.7);
@@ -78,6 +78,20 @@
   --switcheroo-greyer:  #B7A29A;
   --switcheroo-text:    rgba(60,45,40,0.8);
   --switcheroo-border:  1px solid rgba(120,85,75,0.2);
+}
+
+/* Couleurs codées en dur pensées pour le thème sombre (gris-bleu clair,
+   doré clair) : trop peu contrastées sur le fond clair, on les fonce
+   pour ce thème uniquement */
+:root.light .stat-pill,
+:root.light dd.posts,
+:root.light dd.views,
+:root.light .stat-line {
+  color: var(--text-mid);
+}
+:root.light .stat-num,
+:root.light .nouveau-name {
+  color: var(--gold);
 }
 
 

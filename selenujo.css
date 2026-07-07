@@ -3823,7 +3823,7 @@ dd.lastpost dfn { display: none; }
 /* L'ancre FA (div#N sans classe) sort du flux de grille pour ne pas
    occuper de cellule et décaler les vrais enfants. */
 .post > div[id]:not([class]) { position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden; }
-.post > .postprofile { grid-column: 1; grid-row: 1 / -1; }
+.post > .postprofile { grid-column: 1; grid-row: 1 / span 10; }
 .post > .post-head,
 .post > .postbody,
 .post > .fa_like_div { grid-column: 2; }

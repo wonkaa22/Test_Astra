@@ -312,29 +312,29 @@
         var btnGroup = document.createElement('span');
         btnGroup.className = 'sel-rank-actions';
 
-        /* Bouton MP : lien /privmsg?mode=post&u=N dans la page */
-        var pmHref = (function () {
-          /* FA injecte le lien MP via PM_IMG — cherche le premier <a> vers privmsg */
-          var all = post.querySelectorAll('a[href*="privmsg"]');
-          return all.length ? all[0].href : null;
-        })();
-        if (pmHref) {
+        /* Bouton MP : extrait depuis .sel-pm-hidden (PM_IMG caché) */
+        var pmA = post.querySelector('.sel-pm-hidden a');
+        if (pmA && pmA.href) {
           var mpBtn = document.createElement('a');
-          mpBtn.href = pmHref;
+          mpBtn.href = pmA.href;
           mpBtn.className = 'sel-rank-btn';
           mpBtn.title = 'Envoyer un message privé';
           mpBtn.textContent = 'MP';
           btnGroup.appendChild(mpBtn);
         }
 
-        /* Boutons Fiche / Relations depuis le bloc contact_field (.sel-cf) */
+        /* Boutons Fiche / Relations : FA rend contact_field.CONTACT_IMG comme
+           <a href="url" title="nom_du_champ">…</a> dans .sel-cf */
         var cfLabels = ['Relations', 'Fiche'];
-        post.querySelectorAll('.sel-cf .sel-cfl').forEach(function (cfLink, i) {
+        post.querySelectorAll('.sel-cf a').forEach(function (cfLink, i) {
           var href = cfLink.getAttribute('href');
           if (!href || href === '' || href === '#') return;
-          /* Le label vient du title ou alt de l'image FA injectée, sinon fallback */
-          var imgEl = cfLink.querySelector('img');
-          var rawLabel = imgEl ? (imgEl.getAttribute('title') || imgEl.getAttribute('alt') || '') : '';
+          var rawLabel = cfLink.getAttribute('title') || '';
+          /* Fallback : alt de l'image ou label ordinal */
+          if (!rawLabel) {
+            var imgEl = cfLink.querySelector('img');
+            rawLabel = imgEl ? (imgEl.getAttribute('alt') || imgEl.getAttribute('title') || '') : '';
+          }
           var lower = rawLabel.toLowerCase();
           var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'
                       : lower.indexOf('elation') !== -1 ? 'Relations'

@@ -4071,7 +4071,7 @@ ul.profile-icons li.btn-report img {
 /* Masquer éléments non utilisés dans le menu des posts */
 .btn-quote-multi, .btn-ip, .post-menu { display: none !important; }
 /* Masquer le bloc contact_field caché utilisé pour extraire les URLs */
-.sel-cf { display: none !important; }
+.sel-cf, .sel-pm-hidden { display: none !important; }
 /* Numéro du post formaté "#1", "#2"... via JS (sel-post-num) */
 .sel-post-num {
   color: var(--gold-dim);

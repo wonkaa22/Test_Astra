@@ -3851,6 +3851,7 @@ dd.lastpost dfn { display: none; }
 .postprofile-avatar {
   width: 100%;
   aspect-ratio: 200 / 320;
+  margin-bottom: 10px;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surface-4);
@@ -4089,8 +4090,10 @@ ul.profile-icons li.btn-report img {
   font-weight: 600;
 }
 
-.postbody { padding: 10px 14px; margin-top: 0 !important; min-height: 0 !important; }
+.post { grid-template-rows: auto 1fr auto; }
+.postbody { padding: 10px 14px; margin-top: 0 !important; min-height: 0 !important; align-self: stretch; display: flex; flex-direction: column; }
 .postbody .content {
+  flex: 1;
   font-size: 14px;
   line-height: 1.7;
   color: var(--text-mid);
@@ -4127,7 +4130,8 @@ ul.profile-icons li.btn-report img {
 .fa_like_div .rep-button svg { width: 14px; height: 14px; flex-shrink: 0; }
 .fa_like_div .fa_like:hover { color: var(--gold); border-color: var(--gold-dim); }
 .fa_like_div .fa_dislike:hover { color: var(--coral); border-color: var(--coral); }
-.fa_like_div .rep-button i { display: none; } /* anciennes icônes Ionicons remplacées par SVG inline via JS */
+.fa_like_div .rep-button i { display: none; }
+.fa_like_div .rep-button > span { display: none; } /* texte masqué — boutons icône seule */
 .fa_like_list,
 .fa_dislike_list {
   width: 100%;

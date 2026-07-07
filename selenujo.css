@@ -3906,7 +3906,8 @@ dd.lastpost dfn { display: none; }
 }
 .sel-rank-actions { display: inline-flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
 .sel-rank-icon {
-  width: 52px; height: 52px;
+  width: 52px;
+  align-self: stretch;
   object-fit: cover;
   border-radius: 7px;
   flex-shrink: 0;

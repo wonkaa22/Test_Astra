@@ -3820,6 +3820,9 @@ dd.lastpost dfn { display: none; }
 /* .postprofile, .post-head, .postbody et .fa_like_div sont 4 enfants
    directs de .post (pas imbriqués) : la colonne profil occupe toute la
    hauteur, les trois autres s'empilent dans la colonne de droite. */
+/* L'ancre FA (div#N sans classe) sort du flux de grille pour ne pas
+   occuper de cellule et décaler les vrais enfants. */
+.post > div[id]:not([class]) { position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden; }
 .post > .postprofile { grid-column: 1; grid-row: 1 / -1; }
 .post > .post-head,
 .post > .postbody,

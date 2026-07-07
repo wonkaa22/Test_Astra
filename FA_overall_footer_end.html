@@ -380,13 +380,41 @@
           }
         } catch (e) { /* silencieux */ }
 
-        /* Wrapper flex : rank card + boutons côte à côte (pas à l'intérieur du card) */
+        /* Cache les champs URL dans l'info box (valeur brute = URL, peu lisible) */
+        post.querySelectorAll('.sel-pf').forEach(function (pf) {
+          var valEl = pf.querySelector('.sel-pf-val');
+          if (!valEl) return;
+          var txt = valEl.textContent.trim();
+          if (/^https?:\/\//.test(txt)) { pf.style.display = 'none'; }
+        });
+
+        /* Icône personnage : champ profil dont le label contient "icone" ou "icon" */
+        var iconImg = null;
+        post.querySelectorAll('.sel-pf').forEach(function (pf) {
+          if (iconImg) return;
+          var lbl = pf.querySelector('.sel-pf-label');
+          if (!lbl) return;
+          if (/icon/i.test(lbl.textContent)) {
+            var img = pf.querySelector('img');
+            if (img) {
+              iconImg = document.createElement('img');
+              iconImg.src = img.getAttribute('src') || '';
+              iconImg.alt = img.getAttribute('alt') || '';
+              iconImg.className = 'sel-rank-icon';
+              iconImg.loading = 'lazy';
+              pf.style.display = 'none';
+            }
+          }
+        });
+
+        /* Wrapper flex : rank card + boutons (colonne) + icône */
         var row = document.createElement('div');
         row.className = 'sel-rank-row';
         rankDiv.parentNode.insertBefore(row, rankDiv);
         row.appendChild(rankDiv);
-        if (btnGroup.children.length) {
-          row.appendChild(btnGroup);
+        if (btnGroup.children.length || iconImg) {
+          if (btnGroup.children.length) { row.appendChild(btnGroup); }
+          if (iconImg) { row.appendChild(iconImg); }
         }
       });
 

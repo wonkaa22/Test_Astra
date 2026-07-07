@@ -3228,15 +3228,18 @@ body.chatbox {
   background: var(--surface-1);
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  padding: 10px 22px;
+  /* padding nul par défaut : visible seulement s'il y a une pagination */
+  padding: 0 22px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
+.topic-actions .pagination { padding: 8px 0; }
 .topic-actions.bottom {
   border-radius: 0 0 18px 18px;
   border-bottom: 1px solid var(--border);
+  padding: 10px 22px;
 }
 
 /* Légende des icônes et bloc modérateurs/permissions : retirés par JS,

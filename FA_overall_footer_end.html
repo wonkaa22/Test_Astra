@@ -323,17 +323,30 @@
           btnGroup.appendChild(mpBtn);
         }
 
-        /* Boutons Fiche / Relations : FA rend contact_field.CONTACT_IMG comme
-           <a href="url" title="nom_du_champ">…</a> dans .sel-cf */
+        /* Boutons Fiche / Relations : deux tentatives
+           1. contact_field.CONTACT_IMG dans .sel-cf (champs de type URL en FA)
+           2. Fallback : profile_field.CONTENT dans .sel-pf-val si URL present */
         var cfLabels = ['Relations', 'Fiche'];
-        post.querySelectorAll('.sel-cf a').forEach(function (cfLink, i) {
+        var cfLinks = Array.prototype.slice.call(post.querySelectorAll('.sel-cf a'));
+        /* Fallback profile_field : cherche les liens dans .sel-pf-val */
+        if (!cfLinks.length) {
+          post.querySelectorAll('.sel-pf').forEach(function (pf) {
+            var linkEl = pf.querySelector('.sel-pf-val a');
+            if (linkEl) cfLinks.push(linkEl);
+          });
+        }
+        cfLinks.forEach(function (cfLink, i) {
           var href = cfLink.getAttribute('href');
           if (!href || href === '' || href === '#') return;
+          /* Label : title du lien, ou alt de l'image, ou label du champ parent */
           var rawLabel = cfLink.getAttribute('title') || '';
-          /* Fallback : alt de l'image ou label ordinal */
           if (!rawLabel) {
             var imgEl = cfLink.querySelector('img');
             rawLabel = imgEl ? (imgEl.getAttribute('alt') || imgEl.getAttribute('title') || '') : '';
+          }
+          if (!rawLabel) {
+            var labelEl = (cfLink.closest('.sel-pf') || {}).querySelector && cfLink.closest('.sel-pf') && cfLink.closest('.sel-pf').querySelector('.sel-pf-label');
+            rawLabel = labelEl ? labelEl.textContent.trim().replace(/:$/, '') : '';
           }
           var lower = rawLabel.toLowerCase();
           var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'

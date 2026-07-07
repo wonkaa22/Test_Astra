@@ -3800,7 +3800,7 @@ dd.lastpost dfn { display: none; }
 #sel-topic-posts {
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 0 0 16px 16px;
   padding: 18px;
   display: flex;
   flex-direction: column;

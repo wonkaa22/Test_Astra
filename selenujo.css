@@ -3885,7 +3885,6 @@ dd.lastpost dfn { display: none; }
   font-style: italic;
   line-height: 1.4;
   padding: 6px 12px;
-  margin: 10px 14px 0;
   background: var(--surface-4);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -3894,8 +3893,18 @@ dd.lastpost dfn { display: none; }
   align-items: center;
 }
 .sel-post-rank:empty { display: none; margin: 0; }
-.sel-post-rank.sel-rank-has-actions { justify-content: space-between; }
-.sel-rank-actions { display: inline-flex; gap: 4px; flex-shrink: 0; margin-left: 8px; }
+/* Wrapper flex : rang à gauche, boutons à droite */
+.sel-rank-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 14px 0;
+}
+.sel-rank-row .sel-post-rank {
+  flex: 1;
+  margin: 0; /* le margin est sur .sel-rank-row désormais */
+}
+.sel-rank-actions { display: inline-flex; gap: 4px; flex-shrink: 0; }
 .sel-rank-btn {
   display: inline-flex;
   align-items: center;
@@ -4057,6 +4066,12 @@ ul.profile-icons li.btn-report img {
 }
 .sel-post-action:hover { color: var(--text-hi); background: rgba(255,255,255,0.06); }
 .sel-post-action svg { width: 13px; height: 13px; }
+/* Masquer boutons d'action sans href (pas la permission) */
+.sel-post-action[href=""], .sel-post-action:not([href]) { display: none !important; }
+/* Masquer éléments non utilisés dans le menu des posts */
+.btn-quote-multi, .btn-ip, .post-menu { display: none !important; }
+/* Masquer le bloc contact_field caché utilisé pour extraire les URLs */
+.sel-cf { display: none !important; }
 /* Numéro du post formaté "#1", "#2"... via JS (sel-post-num) */
 .sel-post-num {
   color: var(--gold-dim);

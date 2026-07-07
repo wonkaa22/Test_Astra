@@ -332,26 +332,37 @@
         var cfLabels = ['Relations', 'Fiche'];
         var cfIdx = 0;
         try {
-          var allCfLinks = post.querySelectorAll('.sel-cf a, .sel-pf-val a');
+          /* Collecte les liens de contact depuis :
+             1. contact_field.CONTACT_IMG rendu dans .sel-cf a
+             2. profile_field.CONTENT dans .sel-pf-val a (si type URL)
+             3. profile_field.CONTENT en texte brut dans .sel-pf-val (si type Texte) */
+          var allCfLinks = [];
+          post.querySelectorAll('.sel-cf a').forEach(function (a) { allCfLinks.push({el: a, href: a.getAttribute('href')}); });
+          post.querySelectorAll('.sel-pf').forEach(function (pf) {
+            var valEl = pf.querySelector('.sel-pf-val');
+            if (!valEl) return;
+            var linkEl = valEl.querySelector('a');
+            if (linkEl && linkEl.getAttribute('href')) { allCfLinks.push({el: linkEl, href: linkEl.getAttribute('href'), pf: pf}); return; }
+            /* Texte brut : l'utilisateur a saisi une URL dans un champ Texte */
+            var rawTxt = valEl.textContent.trim();
+            if (/^https?:\/\//.test(rawTxt)) { allCfLinks.push({el: valEl, href: rawTxt, pf: pf}); }
+          });
           for (var ci = 0; ci < allCfLinks.length; ci++) {
-            var cfLink = allCfLinks[ci];
-            var href = cfLink.getAttribute('href');
+            var cfEntry = allCfLinks[ci];
+            var cfLink = cfEntry.el;
+            var href = cfEntry.href;
             if (!href || href === '' || href === '#') continue;
-            var rawLabel = cfLink.getAttribute('title') || '';
-            if (!rawLabel) {
-              var imgEl = cfLink.querySelector('img');
-              if (imgEl) rawLabel = imgEl.getAttribute('alt') || imgEl.getAttribute('title') || '';
+            /* Label : depuis .sel-pf-label du champ parent si dispo */
+            var rawLabel = '';
+            var pfRef = cfEntry.pf || null;
+            if (pfRef) {
+              var lbl = pfRef.querySelector('.sel-pf-label');
+              if (lbl) rawLabel = lbl.textContent.trim().replace(/\s*:$/, '');
             }
+            if (!rawLabel) rawLabel = (cfLink.getAttribute && cfLink.getAttribute('title')) || '';
             if (!rawLabel) {
-              var pfParent = cfLink.parentNode;
-              while (pfParent && pfParent !== post) {
-                if (pfParent.className && pfParent.className.indexOf('sel-pf') !== -1) break;
-                pfParent = pfParent.parentNode;
-              }
-              if (pfParent && pfParent !== post) {
-                var lbl = pfParent.querySelector('.sel-pf-label');
-                if (lbl) rawLabel = lbl.textContent.trim().replace(/:$/, '');
-              }
+              var imgEl2 = cfLink.querySelector && cfLink.querySelector('img');
+              if (imgEl2) rawLabel = imgEl2.getAttribute('alt') || imgEl2.getAttribute('title') || '';
             }
             var lower = rawLabel.toLowerCase();
             var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'

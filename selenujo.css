@@ -3897,7 +3897,7 @@ dd.lastpost dfn { display: none; }
 
 /* Sous-bloc infos de profil (pronoms, âge, etc.) — cadre arrondi sous l'avatar */
 .postprofile-info {
-  margin-top: 10px;
+  margin-top: 14px;
   padding: 8px 10px;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border);
@@ -4010,7 +4010,31 @@ ul.profile-icons li.btn-report img {
   font-size: 11.5px;
   color: var(--text-lo);
   border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
 }
+/* Icônes citer / modifier / supprimer inline à côté de la date */
+.sel-post-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
+}
+.sel-post-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--text-lo);
+  transition: color 0.15s, background 0.15s;
+  text-decoration: none;
+}
+.sel-post-action:hover { color: var(--text-hi); background: rgba(255,255,255,0.06); }
+.sel-post-action svg { width: 13px; height: 13px; }
 /* Numéro du post formaté "#1", "#2"... via JS (sel-post-num) */
 .sel-post-num {
   color: var(--gold-dim);

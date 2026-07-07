@@ -323,44 +323,47 @@
           btnGroup.appendChild(mpBtn);
         }
 
-        /* Boutons Fiche / Relations : deux tentatives
-           1. contact_field.CONTACT_IMG dans .sel-cf (champs de type URL en FA)
-           2. Fallback : profile_field.CONTENT dans .sel-pf-val si URL present */
+        /* Boutons Fiche / Relations : cherche dans .sel-cf a (contact_field)
+           puis en fallback dans .sel-pf-val a (profile_field URL) */
         var cfLabels = ['Relations', 'Fiche'];
-        var cfLinks = Array.prototype.slice.call(post.querySelectorAll('.sel-cf a'));
-        /* Fallback profile_field : cherche les liens dans .sel-pf-val */
-        if (!cfLinks.length) {
-          post.querySelectorAll('.sel-pf').forEach(function (pf) {
-            var linkEl = pf.querySelector('.sel-pf-val a');
-            if (linkEl) cfLinks.push(linkEl);
-          });
-        }
-        cfLinks.forEach(function (cfLink, i) {
-          var href = cfLink.getAttribute('href');
-          if (!href || href === '' || href === '#') return;
-          /* Label : title du lien, ou alt de l'image, ou label du champ parent */
-          var rawLabel = cfLink.getAttribute('title') || '';
-          if (!rawLabel) {
-            var imgEl = cfLink.querySelector('img');
-            rawLabel = imgEl ? (imgEl.getAttribute('alt') || imgEl.getAttribute('title') || '') : '';
+        var cfIdx = 0;
+        try {
+          var allCfLinks = post.querySelectorAll('.sel-cf a, .sel-pf-val a');
+          for (var ci = 0; ci < allCfLinks.length; ci++) {
+            var cfLink = allCfLinks[ci];
+            var href = cfLink.getAttribute('href');
+            if (!href || href === '' || href === '#') continue;
+            var rawLabel = cfLink.getAttribute('title') || '';
+            if (!rawLabel) {
+              var imgEl = cfLink.querySelector('img');
+              if (imgEl) rawLabel = imgEl.getAttribute('alt') || imgEl.getAttribute('title') || '';
+            }
+            if (!rawLabel) {
+              var pfParent = cfLink.parentNode;
+              while (pfParent && pfParent !== post) {
+                if (pfParent.className && pfParent.className.indexOf('sel-pf') !== -1) break;
+                pfParent = pfParent.parentNode;
+              }
+              if (pfParent && pfParent !== post) {
+                var lbl = pfParent.querySelector('.sel-pf-label');
+                if (lbl) rawLabel = lbl.textContent.trim().replace(/:$/, '');
+              }
+            }
+            var lower = rawLabel.toLowerCase();
+            var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'
+                        : lower.indexOf('elation') !== -1 ? 'Relations'
+                        : cfLabels[cfIdx] || rawLabel || 'Lien';
+            var cfBtn = document.createElement('a');
+            cfBtn.href = href;
+            cfBtn.target = '_blank';
+            cfBtn.rel = 'nofollow noopener';
+            cfBtn.className = 'sel-rank-btn';
+            cfBtn.title = rawLabel || btnText;
+            cfBtn.textContent = btnText;
+            btnGroup.appendChild(cfBtn);
+            cfIdx++;
           }
-          if (!rawLabel) {
-            var labelEl = (cfLink.closest('.sel-pf') || {}).querySelector && cfLink.closest('.sel-pf') && cfLink.closest('.sel-pf').querySelector('.sel-pf-label');
-            rawLabel = labelEl ? labelEl.textContent.trim().replace(/:$/, '') : '';
-          }
-          var lower = rawLabel.toLowerCase();
-          var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'
-                      : lower.indexOf('elation') !== -1 ? 'Relations'
-                      : cfLabels[i] || rawLabel || 'Lien';
-          var btn = document.createElement('a');
-          btn.href = href;
-          btn.target = '_blank';
-          btn.rel = 'nofollow noopener';
-          btn.className = 'sel-rank-btn';
-          btn.title = rawLabel || btnText;
-          btn.textContent = btnText;
-          btnGroup.appendChild(btn);
-        });
+        } catch (e) { /* silencieux */ }
 
         /* Wrapper flex : rank card + boutons côte à côte (pas à l'intérieur du card) */
         var row = document.createElement('div');

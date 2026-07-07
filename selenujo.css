@@ -3894,6 +3894,28 @@ dd.lastpost dfn { display: none; }
   align-items: center;
 }
 .sel-post-rank:empty { display: none; margin: 0; }
+.sel-post-rank.sel-rank-has-actions { justify-content: space-between; }
+.sel-rank-actions { display: inline-flex; gap: 4px; flex-shrink: 0; margin-left: 8px; }
+.sel-rank-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-style: normal;
+  color: var(--text-mid);
+  border: 1px solid var(--border-mid);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.sel-rank-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
+/* Champs de profil : affichage label + valeur inline dans l'info box */
+.sel-pf { display: block; }
+.sel-pf-label { color: var(--text-lo); }
+.sel-pf-label::after { content: ' '; }
+.sel-pf-val a { color: var(--text-mid); text-decoration: none; word-break: break-all; }
+.sel-pf-val a:hover { color: var(--text-hi); }
 
 /* Sous-bloc infos de profil (pronoms, âge, etc.) — cadre arrondi sous l'avatar */
 .postprofile-info {

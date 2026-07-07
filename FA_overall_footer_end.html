@@ -301,6 +301,51 @@
         }
       }
 
+      /* Boutons MP / Fiche / Relations dans la ligne de rang */
+      document.querySelectorAll('#sel-topic-posts .post').forEach(function (post) {
+        var rankDiv = post.querySelector('.sel-post-rank');
+        if (!rankDiv) return;
+
+        var btnGroup = document.createElement('span');
+        btnGroup.className = 'sel-rank-actions';
+
+        /* Bouton MP depuis .postprofile-pm a */
+        var pmA = post.querySelector('.postprofile-pm a');
+        if (pmA) {
+          var mpBtn = document.createElement('a');
+          mpBtn.href = pmA.href;
+          mpBtn.className = 'sel-rank-btn';
+          mpBtn.title = 'Envoyer un message privé';
+          mpBtn.textContent = 'MP';
+          btnGroup.appendChild(mpBtn);
+        }
+
+        /* Boutons Fiche / Relations depuis les champs de profil .sel-pf */
+        post.querySelectorAll('.postprofile-info .sel-pf').forEach(function (pf) {
+          var labelEl = pf.querySelector('.sel-pf-label');
+          var link = pf.querySelector('.sel-pf-val a');
+          if (!link || !link.href || link.href === '#') return;
+          var rawLabel = labelEl ? labelEl.textContent.trim().replace(/:$/, '') : '';
+          var lower = rawLabel.toLowerCase();
+          var btnText = lower.indexOf('fiche') !== -1 ? 'Fiche'
+                      : lower.indexOf('elation') !== -1 ? 'Relations'
+                      : rawLabel || 'Lien';
+          var btn = document.createElement('a');
+          btn.href = link.href;
+          btn.target = '_blank';
+          btn.rel = 'nofollow noopener';
+          btn.className = 'sel-rank-btn';
+          btn.title = rawLabel;
+          btn.textContent = btnText;
+          btnGroup.appendChild(btn);
+        });
+
+        if (btnGroup.children.length) {
+          rankDiv.classList.add('sel-rank-has-actions');
+          rankDiv.appendChild(btnGroup);
+        }
+      });
+
       console.log('[selViewtopic] transform appliquee.');
     })();
 

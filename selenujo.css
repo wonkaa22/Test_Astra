@@ -3924,10 +3924,10 @@ dd.lastpost dfn { display: none; }
 
 /* Colonne principale (droite) */
 .post-head {
-  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  min-height: 0 !important;
 }
 
 .menu-wrap {
@@ -4013,11 +4013,13 @@ ul.profile-icons li.btn-report img {
   font-weight: 600;
 }
 
-.postbody { padding: 14px; }
+.postbody { padding: 14px; margin-top: 0 !important; min-height: 0 !important; }
 .postbody .content {
   font-size: 14px;
   line-height: 1.7;
   color: var(--text-mid);
+  margin-top: 0 !important;
+  min-height: 0 !important;
 }
 .postbody .content img { max-width: 100%; }
 

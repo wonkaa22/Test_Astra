@@ -125,9 +125,8 @@ showHiddenMessage = function(id) {
 			</div>
 
 			<div class="post-head">
-				<div class="sel-post-rank">{postrow.displayed.POSTER_RANK_NEW}{postrow.displayed.RANK_IMAGE}</div>
+				<div class="sel-post-rank">{postrow.displayed.POSTER_RANK_NEW}{postrow.displayed.RANK_IMAGE}<span class="sel-cf" aria-hidden="true"><!-- BEGIN contact_field --><a class="sel-cfl" href="{postrow.displayed.contact_field.CONTACT_URL}">{postrow.displayed.contact_field.CONTACT_IMG}</a><!-- END contact_field --></span></div>
 				<div class="menu-wrap">
-					<span class="postprofile-pm">{postrow.displayed.PM_IMG}</span>
 					<div class="post-menu">+</div>
 					<ul class="profile-icons">
 						<li class="btn-quote-multi" title="Citer (multi)">
@@ -154,16 +153,12 @@ showHiddenMessage = function(id) {
 						<a href="{postrow.displayed.QUOTE_URL}" class="sel-post-action" title="Citer">
 							<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h4v4H4.5C4.5 9 5.5 9.5 6.5 9.5v1.5C4 11 3 9.5 3 7V3zm6 0h4v4h-2.5c0 2 1 2.5 2 2.5v1.5c-2.5 0-3.5-1.5-3.5-4V3z"/></svg>
 						</a>
-						<!-- BEGIN switch_edit -->
-						<a href="{postrow.displayed.switch_edit.EDIT_URL}" class="sel-post-action" title="Modifier">
+						<a href="{postrow.displayed.EDIT_URL}" class="sel-post-action" title="Modifier">
 							<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M11 2l3 3-8 8-3.5.5.5-3.5 8-8z"/></svg>
 						</a>
-						<!-- END switch_edit -->
-						<!-- BEGIN switch_delete -->
-						<a href="{postrow.displayed.switch_delete.DELETE_URL}" class="sel-post-action" title="Supprimer">
+						<a href="{postrow.displayed.DELETE_URL}" class="sel-post-action" title="Supprimer">
 							<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 4h10M6 4V2.5h4V4M4.5 4l.5 9.5h6l.5-9.5"/></svg>
 						</a>
-						<!-- END switch_delete -->
 					</span>
 
 					<!-- BEGIN switch_vote_active -->

@@ -301,7 +301,10 @@
         }
       }
 
-      /* Boutons MP / Fiche / Relations dans la ligne de rang */
+      /* Boutons MP / Fiche / Relations dans la ligne de rang.
+         Le .sel-post-rank et les boutons sont placés côte à côte dans un
+         wrapper .sel-rank-row (flex). Les URLs de fiche/relations viennent
+         du bloc contact_field rendu dans .sel-cf (champs URL de profil). */
       document.querySelectorAll('#sel-topic-posts .post').forEach(function (post) {
         var rankDiv = post.querySelector('.sel-post-rank');
         if (!rankDiv) return;
@@ -309,40 +312,50 @@
         var btnGroup = document.createElement('span');
         btnGroup.className = 'sel-rank-actions';
 
-        /* Bouton MP depuis .postprofile-pm a */
-        var pmA = post.querySelector('.postprofile-pm a');
-        if (pmA) {
+        /* Bouton MP : lien /privmsg?mode=post&u=N dans la page */
+        var pmHref = (function () {
+          /* FA injecte le lien MP via PM_IMG — cherche le premier <a> vers privmsg */
+          var all = post.querySelectorAll('a[href*="privmsg"]');
+          return all.length ? all[0].href : null;
+        })();
+        if (pmHref) {
           var mpBtn = document.createElement('a');
-          mpBtn.href = pmA.href;
+          mpBtn.href = pmHref;
           mpBtn.className = 'sel-rank-btn';
           mpBtn.title = 'Envoyer un message privé';
           mpBtn.textContent = 'MP';
           btnGroup.appendChild(mpBtn);
         }
 
-        /* Boutons Fiche / Relations depuis les champs de profil .sel-pf */
-        post.querySelectorAll('.postprofile-info .sel-pf').forEach(function (pf) {
-          var labelEl = pf.querySelector('.sel-pf-label');
-          var link = pf.querySelector('.sel-pf-val a');
-          if (!link || !link.href || link.href === '#') return;
-          var rawLabel = labelEl ? labelEl.textContent.trim().replace(/:$/, '') : '';
+        /* Boutons Fiche / Relations depuis le bloc contact_field (.sel-cf) */
+        var cfLabels = ['Relations', 'Fiche'];
+        post.querySelectorAll('.sel-cf .sel-cfl').forEach(function (cfLink, i) {
+          var href = cfLink.getAttribute('href');
+          if (!href || href === '' || href === '#') return;
+          /* Le label vient du title ou alt de l'image FA injectée, sinon fallback */
+          var imgEl = cfLink.querySelector('img');
+          var rawLabel = imgEl ? (imgEl.getAttribute('title') || imgEl.getAttribute('alt') || '') : '';
           var lower = rawLabel.toLowerCase();
-          var btnText = lower.indexOf('fiche') !== -1 ? 'Fiche'
+          var btnText = lower.indexOf('fiche') !== -1 || lower.indexOf('perso') !== -1 ? 'Fiche'
                       : lower.indexOf('elation') !== -1 ? 'Relations'
-                      : rawLabel || 'Lien';
+                      : cfLabels[i] || rawLabel || 'Lien';
           var btn = document.createElement('a');
-          btn.href = link.href;
+          btn.href = href;
           btn.target = '_blank';
           btn.rel = 'nofollow noopener';
           btn.className = 'sel-rank-btn';
-          btn.title = rawLabel;
+          btn.title = rawLabel || btnText;
           btn.textContent = btnText;
           btnGroup.appendChild(btn);
         });
 
+        /* Wrapper flex : rank card + boutons côte à côte (pas à l'intérieur du card) */
+        var row = document.createElement('div');
+        row.className = 'sel-rank-row';
+        rankDiv.parentNode.insertBefore(row, rankDiv);
+        row.appendChild(rankDiv);
         if (btnGroup.children.length) {
-          rankDiv.classList.add('sel-rank-has-actions');
-          rankDiv.appendChild(btnGroup);
+          row.appendChild(btnGroup);
         }
       });
 

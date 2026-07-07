@@ -118,11 +118,7 @@ showHiddenMessage = function(id) {
 						</div>
 					</dt>
 					<dd class="postprofile-info">
-						<!-- BEGIN profile_field -->
-							{postrow.displayed.profile_field.LABEL}
-							{postrow.displayed.profile_field.CONTENT}
-							{postrow.displayed.profile_field.SEPARATOR}
-						<!-- END profile_field -->
+						<!-- BEGIN profile_field --><span class="sel-pf"><span class="sel-pf-label">{postrow.displayed.profile_field.LABEL}</span><span class="sel-pf-val">{postrow.displayed.profile_field.CONTENT}</span></span><!-- END profile_field -->
 						{postrow.displayed.POSTER_RPG}
 					</dd>
 				</dl>

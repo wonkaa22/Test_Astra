@@ -101,17 +101,16 @@ showHiddenMessage = function(id) {
 		<div id="p{postrow.displayed.U_POST_ID}" class="post {postrow.displayed.ROW_COUNT}{postrow.displayed.ONLINE_IMG_NEW} post--{postrow.displayed.U_POST_ID} {postrow.displayed.GROUP}"{postrow.displayed.THANK_BGCOLOR} style="{postrow.displayed.DISPLAYABLE_STATE}">
             <div style="position: relative; top: -30px; width: 1px;" id="{postrow.displayed.U_POST_ID}"></div>
 			<div class="postprofile" id="profile{postrow.displayed.U_POST_ID}">
-				<!-- div class="online2"></div-->
 				<dl>
 					<dt>
-						<div class="postprofile-avatar" data-id="{postrow.displayed.POSTER_ID}">
-							{postrow.displayed.POSTER_AVATAR}
-						</div>
 						<div class="postprofile-name">
 							{postrow.displayed.POSTER_NAME}
 						</div>
-						<div class="postprofile-rank">
-							{postrow.displayed.POSTER_RANK_NEW}{postrow.displayed.RANK_IMAGE}
+						<span class="sel-online-status"></span>
+						<div class="postprofile-avatar" data-id="{postrow.displayed.POSTER_ID}">
+							{postrow.displayed.POSTER_AVATAR}
+						</div>
+						<div class="postprofile-awards">
 							<div {postrow.displayed.AWARDS_SHOW} class="dd_award {postrow.displayed.PROFILE_POSITION}">
                                 {postrow.displayed.AWARDS}
 							</div>
@@ -130,6 +129,7 @@ showHiddenMessage = function(id) {
 			</div>
 
 			<div class="post-head">
+				<div class="sel-post-rank">{postrow.displayed.POSTER_RANK_NEW}{postrow.displayed.RANK_IMAGE}</div>
 				<div class="menu-wrap">
 					<span class="postprofile-pm">{postrow.displayed.PM_IMG}</span>
 					<div class="post-menu">+</div>

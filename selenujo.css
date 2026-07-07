@@ -3861,7 +3861,8 @@ dd.lastpost dfn { display: none; }
   display: block;
 }
 
-.postprofile-name { margin-top: 4px; }
+/* Pseudo — en tête de colonne, avant l'avatar */
+.postprofile-name { margin-top: 0; margin-bottom: 4px; }
 .postprofile-name a { text-decoration: none; }
 .postprofile-name strong {
   font-family: var(--font-serif);
@@ -3870,31 +3871,24 @@ dd.lastpost dfn { display: none; }
 }
 .postprofile-name span[class*="usr_grp_clr"] strong { color: inherit !important; }
 
-/* Statut en ligne / hors ligne (injecté par FA) */
-.postprofile .online-status,
-.postprofile dd.profile-online,
-.postprofile dd.profile-offline {
-  font-size: 11px;
-  color: var(--text-lo);
-}
-.postprofile .online-status.online,
-.postprofile dd.profile-online { color: var(--gold); }
+/* Statut en ligne / hors ligne — dérivé de la classe .online sur .post */
+.sel-online-status { display: block; font-size: 10.5px; margin-bottom: 8px; }
+.sel-online-status::before { content: "● Hors ligne"; color: var(--text-lo); }
+.post.online .sel-online-status::before { content: "● En ligne"; color: #4ade80; }
 
-/* "Groupe" — texte simple, sans cadre */
-.postprofile-group {
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
-/* Rang — espace réservé, jamais encadré */
-.postprofile-rank {
+/* Rang — cadre léger dans la colonne de droite (post-head), pleine largeur */
+.sel-post-rank {
   font-size: 12px;
   color: var(--gold-dim);
   font-style: italic;
-  line-height: 1.3;
+  line-height: 1.4;
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--border);
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
+.sel-post-rank:empty { display: none; }
 
 /* Sous-bloc infos de profil (pronoms, âge, etc.) — léger, pas une vraie boîte forte */
 .postprofile-info {

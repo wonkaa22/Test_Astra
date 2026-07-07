@@ -312,11 +312,15 @@
         var btnGroup = document.createElement('span');
         btnGroup.className = 'sel-rank-actions';
 
-        /* Bouton MP : extrait depuis .sel-pm-hidden (PM_IMG caché) */
-        var pmA = post.querySelector('.sel-pm-hidden a');
-        if (pmA && pmA.href) {
+        /* Bouton MP : construit depuis data-id du postprofile-avatar
+           (le lien MP FA est toujours /privmsg?mode=post&u=ID) */
+        var avatarDiv = post.querySelector('.postprofile-avatar[data-id]');
+        var posterId = avatarDiv ? avatarDiv.getAttribute('data-id') : '';
+        /* Ne pas afficher MP si c'est notre propre post */
+        var isOwnPost = (typeof _userdata !== 'undefined' && _userdata['user_id'] && String(_userdata['user_id']) === String(posterId));
+        if (posterId && !isOwnPost) {
           var mpBtn = document.createElement('a');
-          mpBtn.href = pmA.href;
+          mpBtn.href = '/privmsg?mode=post&u=' + posterId;
           mpBtn.className = 'sel-rank-btn';
           mpBtn.title = 'Envoyer un message privé';
           mpBtn.textContent = 'MP';

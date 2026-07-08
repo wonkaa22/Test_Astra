@@ -320,50 +320,39 @@
             counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
           };
 
-          /* Mode source SCEditor : textarea mis à jour directement */
-          textarea.addEventListener('input', function () { setCount(textarea.value); });
-
-          /* Mode WYSIWYG : MutationObserver sur le body de l'iframe SCEditor.
-             On réessaie toutes les 300ms jusqu'à ce que l'iframe soit prête
-             (SCEditor peut s'initialiser après ce script). */
-          var scObserverDone = false;
-          var scAttempts = 0;
-
-          var trySetupSCEditor = function () {
-            if (scObserverDone) return;
-            var scFrame = qr.querySelector('.sceditor-container iframe');
-            if (!scFrame) {
-              scAttempts++;
-              if (scAttempts < 30) setTimeout(trySetupSCEditor, 300);
-              return;
+          var getText = function () {
+            /* Méthode 1 : API SCEditor via jQuery — la plus fiable,
+               retourne le contenu courant sans avoir besoin de l'iframe */
+            if (window.jQuery) {
+              var inst = window.jQuery(textarea).data('sceditor');
+              if (inst && typeof inst.val === 'function') {
+                var tmp = document.createElement('div');
+                tmp.innerHTML = inst.val() || '';
+                return tmp.textContent || tmp.innerText || '';
+              }
             }
-            var doc = scFrame.contentDocument || (scFrame.contentWindow && scFrame.contentWindow.document);
-            if (!doc || !doc.body) {
-              scAttempts++;
-              if (scAttempts < 30) setTimeout(trySetupSCEditor, 300);
-              return;
+            /* Méthode 2 : lecture directe du body de l'iframe SCEditor */
+            var scFrame = document.querySelector('.sceditor-container iframe');
+            if (scFrame) {
+              var doc = scFrame.contentDocument || (scFrame.contentWindow && scFrame.contentWindow.document);
+              if (doc && doc.body) {
+                /* Scrollbar dorée (une seule fois, Chrome + Firefox) */
+                if (!scStyleInjected && doc.head) {
+                  var st = doc.createElement('style');
+                  st.textContent = 'body{scrollbar-width:thin;scrollbar-color:rgba(212,163,115,0.5) transparent}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(212,163,115,0.45);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(212,163,115,0.7)}';
+                  doc.head.appendChild(st);
+                  scStyleInjected = true;
+                }
+                return doc.body.innerText || doc.body.textContent || '';
+              }
             }
-
-            /* Scrollbar dorée : Chrome/Edge (webkit) + Firefox */
-            if (!scStyleInjected && doc.head) {
-              var st = doc.createElement('style');
-              st.textContent = 'body{scrollbar-width:thin;scrollbar-color:rgba(212,163,115,0.5) transparent}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(212,163,115,0.45);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(212,163,115,0.7)}';
-              doc.head.appendChild(st);
-              scStyleInjected = true;
-            }
-
-            /* Compte initial */
-            setCount(doc.body.innerText || doc.body.textContent || '');
-
-            /* MutationObserver : se déclenche à chaque frappe, coller, suppr */
-            var obs = new MutationObserver(function () {
-              setCount(doc.body.innerText || doc.body.textContent || '');
-            });
-            obs.observe(doc.body, { childList: true, subtree: true, characterData: true });
-            scObserverDone = true;
+            /* Méthode 3 : textarea brut (mode source) */
+            return textarea.value || '';
           };
 
-          trySetupSCEditor();
+          /* Polling 300ms : couvre tous les cas (frappe, coller, BBcode) */
+          textarea.addEventListener('input', function () { setCount(textarea.value); });
+          setInterval(function () { setCount(getText()); }, 300);
         }
       }
 

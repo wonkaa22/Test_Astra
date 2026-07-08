@@ -488,8 +488,8 @@
         if (vtIsLoggedIn) {
           permBlock.remove();
         } else {
-          /* Filtre {S_AUTH_LIST} : conserve uniquement les éléments
-             qui contiennent un refus explicite */
+          /* Filtre la liste des permissions : conserve uniquement
+             les éléments qui contiennent un refus explicite */
           Array.prototype.slice.call(permBlock.querySelectorAll('li, p, dd')).forEach(function (el) {
             if (!/ne\s+pouvez?\s+pas|interdit|n.est\s+pas\s+autoris/i.test(el.textContent)) {
               el.remove();

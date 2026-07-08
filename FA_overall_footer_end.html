@@ -272,15 +272,20 @@
           row.appendChild(avatarBox);
           row.appendChild(sceditorBox);
 
-          /* Déplace les boutons Prévisualisation / Envoyer sous l'avatar */
+          /* Déplace les boutons Prévisualisation / Envoyer sous l'avatar,
+             avec un wrapper span portant data-label pour le tooltip CSS */
           var qrBtns = Array.prototype.slice.call(qr.querySelectorAll('input[type="submit"]'));
           if (qrBtns.length) {
             var actionsDiv = document.createElement('div');
             actionsDiv.className = 'sel-qr-actions';
             for (var bi = 0; bi < qrBtns.length; bi++) {
               var btn = qrBtns[bi];
-              btn.title = btn.value || '';
-              actionsDiv.appendChild(btn);
+              var label = btn.value || btn.name || '';
+              var wrap = document.createElement('span');
+              wrap.className = 'sel-qr-btn-wrap';
+              wrap.setAttribute('data-label', label);
+              wrap.appendChild(btn);
+              actionsDiv.appendChild(wrap);
             }
             avatarBox.appendChild(actionsDiv);
           }
@@ -298,24 +303,32 @@
         });
       }
 
-      /* Compteur de mots — polling toutes les 600ms pour couvrir SCEditor */
+      /* Compteur de mots + scrollbar SCEditor */
       if (qr) {
         var textarea = qr.querySelector('textarea[name="message"]') || qr.querySelector('textarea');
         if (textarea) {
           var counter = document.createElement('div');
           counter.className = 'sel-word-counter';
+          var scStyleInjected = false;
           var updateCounter = function () {
             var text = textarea.value;
             var scFrame = qr.querySelector('.sceditor-container iframe');
             if (scFrame && scFrame.contentDocument && scFrame.contentDocument.body) {
               text = scFrame.contentDocument.body.innerText || '';
+              /* Injecte la scrollbar dorée dans l'iframe SCEditor (une seule fois) */
+              if (!scStyleInjected && scFrame.contentDocument.head) {
+                var scStyle = scFrame.contentDocument.createElement('style');
+                scStyle.textContent = '::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(212,163,115,0.45);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(212,163,115,0.7)}';
+                scFrame.contentDocument.head.appendChild(scStyle);
+                scStyleInjected = true;
+              }
             }
             var parts = text.trim().split(/\s+/);
             var nb = (text.trim() === '') ? 0 : parts.length;
             counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
           };
           textarea.addEventListener('input', updateCounter);
-          setInterval(updateCounter, 600);
+          setInterval(updateCounter, 150);
           updateCounter();
           qr.appendChild(counter);
         }

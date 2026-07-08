@@ -4161,6 +4161,28 @@ ul.profile-icons li.btn-report img {
 #quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
 /* Boutons icône Prévisualisation / Envoyer — déplacés sous l'avatar par JS */
 .sel-qr-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px 0 2px; }
+/* Wrapper pour le tooltip CSS au survol */
+.sel-qr-btn-wrap { position: relative; display: block; }
+.sel-qr-btn-wrap::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 7px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: var(--surface-4);
+  color: var(--text-hi);
+  font-size: 11px;
+  font-family: var(--font-ui);
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border-mid);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.sel-qr-btn-wrap:hover::after { opacity: 1; }
 .sel-qr-actions input[type="submit"] {
   font-size: 0 !important;
   color: transparent !important;
@@ -4227,18 +4249,23 @@ ul.profile-icons li.btn-report img {
   border-bottom: 1px solid var(--border) !important;
   border-radius: 10px 10px 0 0 !important;
 }
-/* Toolbar : masque tous les boutons sauf les 8 retenus */
+/* Toolbar : masque tous les boutons sauf les 8 retenus.
+   Chaque règle de réaffichage doit avoir une spécificité >= la règle de masquage
+   (0,2,0) donc on préfixe systématiquement avec .sceditor-toolbar. */
 .sceditor-toolbar .sceditor-button { display: none !important; }
-.sceditor-button-bold,
-.sceditor-button-italic,
-.sceditor-button-underline,
-.sceditor-button-strike,
-.sceditor-button-member,
-.sceditor-button-emoticon,
-.sceditor-button-image,
-.sceditor-button-source { display: inline-block !important; }
-/* Retire la séparation visuelle des groupes vides */
-.sceditor-group { border-right: none !important; margin: 0 !important; padding: 0 2px !important; }
+.sceditor-toolbar .sceditor-button-bold,
+.sceditor-toolbar .sceditor-button-italic,
+.sceditor-toolbar .sceditor-button-underline,
+.sceditor-toolbar .sceditor-button-strike,
+.sceditor-toolbar .sceditor-button-member,
+.sceditor-toolbar .sceditor-button-mention,
+.sceditor-toolbar .sceditor-button-emoticon,
+.sceditor-toolbar .sceditor-button-image,
+.sceditor-toolbar .sceditor-button-source { display: inline-block !important; }
+/* Masque les séparateurs de groupes qui deviendraient orphelins */
+.sceditor-toolbar .sceditor-group { display: contents; }
+.sceditor-toolbar .sceditor-group::before,
+.sceditor-toolbar .sceditor-group::after { display: none; }
 .sceditor-button div {
   filter: invert(0.7) brightness(1.4);
   opacity: 0.85;

@@ -271,6 +271,19 @@
           sceditorBox.parentNode.insertBefore(row, sceditorBox);
           row.appendChild(avatarBox);
           row.appendChild(sceditorBox);
+
+          /* Déplace les boutons Prévisualisation / Envoyer sous l'avatar */
+          var qrBtns = Array.prototype.slice.call(qr.querySelectorAll('input[type="submit"]'));
+          if (qrBtns.length) {
+            var actionsDiv = document.createElement('div');
+            actionsDiv.className = 'sel-qr-actions';
+            for (var bi = 0; bi < qrBtns.length; bi++) {
+              var btn = qrBtns[bi];
+              btn.title = btn.value || '';
+              actionsDiv.appendChild(btn);
+            }
+            avatarBox.appendChild(actionsDiv);
+          }
         }
       }
 

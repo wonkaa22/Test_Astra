@@ -4457,8 +4457,9 @@ a.sel-post-num-link:hover { color: var(--gold); }
   margin-left: auto;
   margin-right: auto;
 }
-/* Colonne profil — copie exacte du .postprofile réel */
-.sel-preview-postprofile {
+
+/* Colonne profil — même structure visuelle que .postprofile */
+.sel-preview-col-profile {
   width: 170px;
   flex-shrink: 0;
   background: var(--surface-3);
@@ -4469,90 +4470,87 @@ a.sel-post-num-link:hover { color: var(--gold); }
   align-items: flex-start;
   gap: 6px;
 }
+/* Réutilise .postprofile-name de la CSS réelle */
+.sel-preview-col-profile .postprofile-name { margin: 0; width: 100%; }
 .sel-preview-uname {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 16px;
   color: var(--text-hi);
   word-break: break-word;
-  min-height: 1.2em;
 }
-.sel-preview-avatar {
-  width: 100%;
-  aspect-ratio: 200 / 320;
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--surface-4);
-  border: 1px solid var(--border-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.sel-preview-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.sel-preview-avatar:not(:has(img))::after { content: '☽'; font-size: 32px; color: var(--text-ghost); }
-.sel-preview-rank {
-  font-size: 12px;
-  color: var(--gold-dim);
-  font-style: italic;
-  padding: 4px 10px;
-  background: var(--surface-4);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
+/* Réutilise .sel-online-status et .postprofile-avatar */
+.sel-preview-col-profile .sel-online-status { margin: 0; }
+.sel-preview-col-profile .postprofile-avatar { width: 100%; margin-bottom: 0; }
+/* Réutilise .sel-post-rank */
+.sel-preview-col-profile .sel-post-rank { width: 100%; box-sizing: border-box; min-height: unset; }
+/* Placeholder profil */
 .sel-preview-data-hint {
   font-family: var(--font-ui);
   font-size: 11px;
   color: var(--text-ghost);
   font-style: italic;
   text-align: center;
-  padding: 6px;
+  padding: 6px 8px;
   border: 1px dashed var(--border-mid);
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
   line-height: 1.5;
 }
-/* Colonne droite : meta-header + contenu */
-.sel-preview-rightcol {
+
+/* Colonne droite */
+.sel-preview-col-right {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
-.sel-preview-meta {
+
+/* Ligne rang + boutons d'action */
+.sel-preview-toprow {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px;
+  padding: 8px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
 }
-.sel-preview-postnum {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-lo);
-  text-decoration: none;
-}
-.sel-preview-postdate {
-  font-family: var(--font-ui);
-  font-size: 12px;
+.sel-preview-rank-bar {
+  flex: 1;
+  font-size: 11px;
   color: var(--text-ghost);
   font-style: italic;
-  flex: 1;
+  padding: 4px 10px;
+  border: 1px dashed var(--border-mid);
+  border-radius: 8px;
 }
-.sel-preview-icon-mock {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px; height: 24px;
-  border-radius: 6px;
+.sel-preview-action-btns { display: flex; flex-direction: column; gap: 3px; }
+.sel-preview-action-btn {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  padding: 2px 8px;
   background: var(--surface-4);
+  border-radius: 4px;
   color: var(--text-lo);
+  white-space: nowrap;
+  cursor: default;
 }
-.sel-preview-icon-mock svg { width: 12px; height: 12px; }
-/* Contenu du message */
+
+/* Méta : #0 | date */
+.sel-preview-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 12px;
+}
+.sel-preview-postnum { color: var(--text-lo); font-weight: 700; }
+.sel-preview-sep { color: var(--border-mid); }
+.sel-preview-postdate { color: var(--text-ghost); font-style: italic; }
+
+/* Corps du message */
 .sel-preview-content {
   flex: 1;
   padding: 16px 20px;
@@ -4560,6 +4558,39 @@ a.sel-post-num-link:hover { color: var(--gold); }
   font-size: 14px;
   line-height: 1.7;
 }
+
+/* Barre likes mock */
+.sel-preview-likes {
+  padding: 7px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-ghost);
+  font-family: var(--font-ui);
+  background: var(--surface-2);
+}
+
+/* ── Sections collapsibles ──────────────────────────────────────────────────── */
+.h3.forum-hideable.forum-width { cursor: pointer; user-select: none; }
+.sel-collapse-arrow { font-size: 10px; color: var(--text-lo); pointer-events: none; }
+.panel.sel-collapsed { display: none !important; }
+
+/* ── Revue du sujet : avatar + nom + date seulement ────────────────────────── */
+.sel-post-page .topic-review .postbody,
+.sel-post-page .topic-review .postprofile-info,
+.sel-post-page .topic-review .sel-post-rank,
+.sel-post-page .topic-review .sel-rank-row,
+.sel-post-page .topic-review .postprofile-pm,
+.sel-post-page .topic-review .sel-pf,
+.sel-post-page .topic-review .sel-online-status,
+.sel-post-page .topic-review .fa_like_div { display: none !important; }
+
+.sel-post-page .topic-review .postprofile { width: 130px; }
+.sel-post-page .topic-review .postprofile-avatar { max-height: 120px; aspect-ratio: auto; }
+.sel-post-page .topic-review .postprofile-name { margin-bottom: 0; }
+.sel-post-page .topic-review .post-head { padding: 10px 14px 10px; }
+.sel-post-page .topic-review .menu-wrap,
+.sel-post-page .topic-review .post-menu { display: none !important; }
+.sel-post-page .topic-review ul.profile-icons { display: none !important; }
 
 /* Bloc permissions visiteur : style sobre */
 .block.forum-width {

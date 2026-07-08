@@ -714,6 +714,37 @@
   populatePreview();
   setTimeout(populatePreview, 600);
 
+  /* Sections collapsibles (Options + Dés) */
+  var h3Els = document.querySelectorAll('.h3.forum-hideable.forum-width');
+  Array.prototype.forEach.call(h3Els, function (h3) {
+    var panel = h3.nextElementSibling;
+    if (!panel || !panel.classList.contains('panel')) { return; }
+
+    /* Flèche */
+    var arrow = document.createElement('span');
+    arrow.className = 'sel-collapse-arrow';
+    h3.appendChild(arrow);
+    h3.style.cursor = 'pointer';
+
+    var txt = (h3.textContent || '').toLowerCase();
+    var isDice = /d[eé]|lancer|dice/i.test(txt);
+
+    var doCollapse = function () {
+      panel.classList.add('sel-collapsed');
+      arrow.textContent = ' ▶';
+    };
+    var doExpand = function () {
+      panel.classList.remove('sel-collapsed');
+      arrow.textContent = ' ▼';
+    };
+
+    if (isDice) { doCollapse(); } else { doExpand(); }
+
+    h3.addEventListener('click', function () {
+      if (panel.classList.contains('sel-collapsed')) { doExpand(); } else { doCollapse(); }
+    });
+  });
+
   /* Compteur de mots */
   var textarea = document.getElementById('text_editor_textarea') || document.querySelector('#postingbox textarea[name="message"]');
   if (textarea) {

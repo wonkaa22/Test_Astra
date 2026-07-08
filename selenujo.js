@@ -596,8 +596,11 @@
 
   document.body.classList.add('sel-post-page');
 
-  /* Breadcrumb ☽ */
-  var pathEl = document.querySelector('.sub-header-path');
+  /* Breadcrumb ☽ — essaie plusieurs sélecteurs FA */
+  var pathEl = document.querySelector('.sub-header-path') ||
+               document.querySelector('.sub-header nav') ||
+               document.querySelector('.navigation') ||
+               document.querySelector('nav[class*="breadcrumb"]');
   if (pathEl) {
     Array.prototype.forEach.call(pathEl.childNodes, function (node) {
       if (node.nodeType === Node.TEXT_NODE) {
@@ -605,8 +608,81 @@
       }
     });
   }
+  /* Fallback : cherche n'importe quel élément contenant '::' dans .sub-header */
+  if (!pathEl) {
+    var subHeader = document.querySelector('.sub-header, .sub-header-inner');
+    if (subHeader) {
+      (function replaceInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          node.textContent = node.textContent.replace(/::/g, '☽');
+        } else {
+          Array.prototype.forEach.call(node.childNodes, replaceInNode);
+        }
+      })(subHeader);
+    }
+  }
 
-  /* Compteur de mots (même logique que sur viewtopic) */
+  /* Smileys : masquer le panneau et ajouter un bouton dans la barre d'outils */
+  var smileyBox = document.getElementById('smiley-box');
+  if (smileyBox) {
+    var injectSmileyBtn = function () {
+      var toolbar = document.querySelector('.sceditor-toolbar');
+      if (!toolbar) { return false; }
+      if (toolbar.querySelector('.sel-smiley-btn')) { return true; } /* déjà injecté */
+
+      var group = document.createElement('div');
+      group.className = 'sceditor-group';
+      var btn = document.createElement('a');
+      btn.className = 'sceditor-button sel-smiley-btn';
+      btn.setAttribute('unselectable', 'on');
+      btn.title = 'Smileys';
+      var inner = document.createElement('div');
+      inner.setAttribute('unselectable', 'on');
+      btn.appendChild(inner);
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        smileyBox.classList.toggle('sel-open');
+      });
+      /* Fermer si clic en dehors */
+      document.addEventListener('click', function (e) {
+        if (!smileyBox.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+          smileyBox.classList.remove('sel-open');
+        }
+      });
+      group.appendChild(btn);
+      toolbar.appendChild(group);
+      return true;
+    };
+    var smileyInterval = setInterval(function () {
+      if (injectSmileyBtn()) { clearInterval(smileyInterval); }
+    }, 100);
+  }
+
+  /* Prévisualisation : peupler le bloc profil */
+  var populatePreview = function () {
+    var preview = document.getElementById('preview');
+    if (!preview) { return; }
+    var avatarEl  = preview.querySelector('.sel-preview-avatar');
+    var unameEl   = preview.querySelector('.sel-preview-uname');
+    if (unameEl && typeof _userdata !== 'undefined' && _userdata['username']) {
+      unameEl.textContent = _userdata['username'];
+    }
+    if (avatarEl && !avatarEl.querySelector('img')) {
+      /* Cherche l'avatar du membre connecté dans le switcheroo / nav */
+      var navImg = document.querySelector('#switcheroo img, .sel-nav-pill img');
+      if (navImg && navImg.src && navImg.src.indexOf('blank') === -1) {
+        var img = document.createElement('img');
+        img.src = navImg.src;
+        img.alt = '';
+        avatarEl.appendChild(img);
+      }
+    }
+  };
+  populatePreview();
+  /* Ré-essaie après délai au cas où le preview se charge après le JS */
+  setTimeout(populatePreview, 500);
+
+  /* Compteur de mots */
   var textarea = document.getElementById('text_editor_textarea') || document.querySelector('#postingbox textarea[name="message"]');
   if (textarea) {
     var counter = document.createElement('div');

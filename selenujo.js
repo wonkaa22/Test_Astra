@@ -589,3 +589,54 @@
     });
   }, 1500);
 })();
+
+/* ── Page d'envoi de message (/post) ────────────────────────────────────── */
+(function selPostingPageTransform() {
+  if (!document.getElementById('postingbox')) { return; }
+
+  document.body.classList.add('sel-post-page');
+
+  /* Breadcrumb ☽ */
+  var pathEl = document.querySelector('.sub-header-path');
+  if (pathEl) {
+    Array.prototype.forEach.call(pathEl.childNodes, function (node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent = node.textContent.replace(/::/g, '☽');
+      }
+    });
+  }
+
+  /* Compteur de mots (même logique que sur viewtopic) */
+  var textarea = document.getElementById('text_editor_textarea') || document.querySelector('#postingbox textarea[name="message"]');
+  if (textarea) {
+    var counter = document.createElement('div');
+    counter.className = 'sel-word-counter';
+    counter.textContent = '0 mots';
+    var actionsEl = document.querySelector('.sel-post-actions');
+    if (actionsEl) {
+      actionsEl.insertBefore(counter, actionsEl.firstChild);
+    } else {
+      var scCont = document.querySelector('#postingbox .sceditor-container');
+      if (scCont && scCont.parentNode) { scCont.parentNode.insertBefore(counter, scCont.nextSibling); }
+    }
+
+    var setCount = function (text) {
+      var t = (text || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      var nb = t ? t.split(' ').length : 0;
+      counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
+    };
+    var getText = function () {
+      if (window.jQuery) {
+        var inst = window.jQuery(textarea).data('sceditor');
+        if (inst && typeof inst.val === 'function') {
+          var tmp = document.createElement('div');
+          tmp.innerHTML = inst.val() || '';
+          return tmp.textContent || tmp.innerText || '';
+        }
+      }
+      return textarea.value || '';
+    };
+    textarea.addEventListener('input', function () { setCount(textarea.value); });
+    setInterval(function () { setCount(getText()); }, 300);
+  }
+})();

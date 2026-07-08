@@ -622,13 +622,17 @@
     }
   }
 
-  /* Smileys : masquer le panneau et ajouter un bouton dans la barre d'outils */
+  /* Smileys : popup absolu positionné sous le bouton toolbar */
   var smileyBox = document.getElementById('smiley-box');
   if (smileyBox) {
+    /* Déplacer dans <body> pour positionnement absolu libre */
+    document.body.appendChild(smileyBox);
+    smileyBox.className = 'sel-smiley-popup';
+
     var injectSmileyBtn = function () {
       var toolbar = document.querySelector('.sceditor-toolbar');
       if (!toolbar) { return false; }
-      if (toolbar.querySelector('.sel-smiley-btn')) { return true; } /* déjà injecté */
+      if (toolbar.querySelector('.sel-smiley-btn')) { return true; }
 
       var group = document.createElement('div');
       group.className = 'sceditor-group';
@@ -639,48 +643,76 @@
       var inner = document.createElement('div');
       inner.setAttribute('unselectable', 'on');
       btn.appendChild(inner);
+
       btn.addEventListener('click', function (e) {
         e.preventDefault();
-        smileyBox.classList.toggle('sel-open');
+        e.stopPropagation();
+        var isOpen = smileyBox.classList.toggle('sel-open');
+        if (isOpen) {
+          var rect = btn.getBoundingClientRect();
+          var editorEl = document.querySelector('#postingbox .sceditor-container') || document.getElementById('postingbox');
+          var editorW  = editorEl ? editorEl.offsetWidth : 600;
+          smileyBox.style.top   = (rect.bottom + window.scrollY + 4) + 'px';
+          smileyBox.style.left  = rect.left + 'px';
+          smileyBox.style.width = Math.max(280, Math.floor(editorW * 0.5)) + 'px';
+        }
       });
-      /* Fermer si clic en dehors */
+
       document.addEventListener('click', function (e) {
         if (!smileyBox.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
           smileyBox.classList.remove('sel-open');
         }
       });
+
       group.appendChild(btn);
       toolbar.appendChild(group);
       return true;
     };
+
     var smileyInterval = setInterval(function () {
       if (injectSmileyBtn()) { clearInterval(smileyInterval); }
     }, 100);
   }
 
-  /* Prévisualisation : peupler le bloc profil */
+  /* Prévisualisation : peupler avatar + pseudo */
   var populatePreview = function () {
     var preview = document.getElementById('preview');
     if (!preview) { return; }
-    var avatarEl  = preview.querySelector('.sel-preview-avatar');
-    var unameEl   = preview.querySelector('.sel-preview-uname');
-    if (unameEl && typeof _userdata !== 'undefined' && _userdata['username']) {
-      unameEl.textContent = _userdata['username'];
-    }
-    if (avatarEl && !avatarEl.querySelector('img')) {
-      /* Cherche l'avatar du membre connecté dans le switcheroo / nav */
-      var navImg = document.querySelector('#switcheroo img, .sel-nav-pill img');
-      if (navImg && navImg.src && navImg.src.indexOf('blank') === -1) {
+
+    var avatarEl = preview.querySelector('.sel-preview-avatar');
+    var unameEl  = preview.querySelector('.sel-preview-uname');
+    var username = (typeof _userdata !== 'undefined') ? (_userdata['username'] || '') : '';
+
+    if (unameEl && username) { unameEl.textContent = username; }
+
+    if (avatarEl && !avatarEl.querySelector('img') && username) {
+      var avatarSrc = '';
+
+      /* 1. Chercher dans les posts de "Revue du sujet" */
+      var reviewPosts = document.querySelectorAll('.topic-review .post, #topic_review .post');
+      for (var rpi = 0; rpi < reviewPosts.length; rpi++) {
+        var nameEl = reviewPosts[rpi].querySelector('.postprofile-name strong');
+        if (nameEl && nameEl.textContent.trim() === username) {
+          var ai = reviewPosts[rpi].querySelector('.postprofile-avatar img');
+          if (ai) { avatarSrc = ai.src; break; }
+        }
+      }
+
+      /* 2. Fallback : champs _userdata */
+      if (!avatarSrc && typeof _userdata !== 'undefined') {
+        avatarSrc = _userdata['user_avatar'] || _userdata['avatar_full'] || _userdata['avatar'] || '';
+      }
+
+      if (avatarSrc) {
         var img = document.createElement('img');
-        img.src = navImg.src;
+        img.src = avatarSrc;
         img.alt = '';
         avatarEl.appendChild(img);
       }
     }
   };
   populatePreview();
-  /* Ré-essaie après délai au cas où le preview se charge après le JS */
-  setTimeout(populatePreview, 500);
+  setTimeout(populatePreview, 600);
 
   /* Compteur de mots */
   var textarea = document.getElementById('text_editor_textarea') || document.querySelector('#postingbox textarea[name="message"]');

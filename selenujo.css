@@ -4357,18 +4357,20 @@ a.sel-post-num-link:hover { color: var(--gold); }
 .sel-post-page .sceditor-toolbar .sceditor-button { display: inline-flex !important; align-items: center; justify-content: center; }
 .sel-post-page .sceditor-toolbar .sceditor-group { display: contents !important; }
 
-/* Panneau smileys FA — caché par défaut, toggle via bouton toolbar */
-.sel-post-page #smiley-box {
+/* Popup smileys FA — absolu, positionné par JS sous le bouton toolbar */
+.sel-smiley-popup {
   display: none;
-  margin: 6px 0 8px;
+  position: absolute;
+  z-index: 9999;
   background: var(--surface-3);
   border: 1px solid var(--border-mid);
   border-radius: 10px;
   padding: 10px;
   max-height: 280px;
   overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
-.sel-post-page #smiley-box.sel-open { display: block; }
+.sel-smiley-popup.sel-open { display: block; }
 
 /* Bouton smiley injecté dans la toolbar SCEditor */
 .sel-smiley-btn div {
@@ -4443,10 +4445,10 @@ a.sel-post-num-link:hover { color: var(--gold); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200%2C207%2C224%2C0.7)'%3E%3Cpath d='M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.293l1.646-1.647a.5.5 0 0 1 .708.708l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5a.5.5 0 1 1 .708-.708L7.5 5.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z'/%3E%3C/svg%3E") !important;
 }
 
-/* Prévisualisation — imite un vrai post */
+/* ── Prévisualisation : imite un vrai post ──────────────────────────────────── */
 .sel-preview-post {
   display: flex;
-  background: var(--surface-2);
+  background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -4455,44 +4457,48 @@ a.sel-post-num-link:hover { color: var(--gold); }
   margin-left: auto;
   margin-right: auto;
 }
-/* Colonne profil (avatar + nom + données) */
-.sel-preview-profile {
-  width: 190px;
+/* Colonne profil — copie exacte du .postprofile réel */
+.sel-preview-postprofile {
+  width: 170px;
   flex-shrink: 0;
   background: var(--surface-3);
   border-right: 1px solid var(--border);
-  padding: 20px 14px;
+  padding: 14px 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 6px;
+}
+.sel-preview-uname {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--text-hi);
+  word-break: break-word;
+  min-height: 1.2em;
 }
 .sel-preview-avatar {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  background: var(--surface-4);
-  border: 2px solid var(--border-mid);
+  width: 100%;
+  aspect-ratio: 200 / 320;
+  border-radius: 8px;
   overflow: hidden;
-  flex-shrink: 0;
+  background: var(--surface-4);
+  border: 1px solid var(--border-mid);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .sel-preview-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* placeholder si pas d'image */
-.sel-preview-avatar:not(:has(img))::after {
-  content: '☽';
-  font-size: 28px;
-  color: var(--text-ghost);
-}
-.sel-preview-uname {
-  font-family: var(--font-title);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-hi);
-  text-align: center;
-  min-height: 1em;
+.sel-preview-avatar:not(:has(img))::after { content: '☽'; font-size: 32px; color: var(--text-ghost); }
+.sel-preview-rank {
+  font-size: 12px;
+  color: var(--gold-dim);
+  font-style: italic;
+  padding: 4px 10px;
+  background: var(--surface-4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .sel-preview-data-hint {
   font-family: var(--font-ui);
@@ -4500,17 +4506,56 @@ a.sel-post-num-link:hover { color: var(--gold); }
   color: var(--text-ghost);
   font-style: italic;
   text-align: center;
-  padding: 8px;
+  padding: 6px;
   border: 1px dashed var(--border-mid);
   border-radius: 6px;
   width: 100%;
-  margin-top: 4px;
+  box-sizing: border-box;
   line-height: 1.5;
 }
-/* Colonne contenu du message */
+/* Colonne droite : meta-header + contenu */
+.sel-preview-rightcol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.sel-preview-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.sel-preview-postnum {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-lo);
+  text-decoration: none;
+}
+.sel-preview-postdate {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-ghost);
+  font-style: italic;
+  flex: 1;
+}
+.sel-preview-icon-mock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: var(--surface-4);
+  color: var(--text-lo);
+}
+.sel-preview-icon-mock svg { width: 12px; height: 12px; }
+/* Contenu du message */
 .sel-preview-content {
   flex: 1;
-  padding: 20px 24px;
+  padding: 16px 20px;
   color: var(--text-mid);
   font-size: 14px;
   line-height: 1.7;

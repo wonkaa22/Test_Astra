@@ -4357,13 +4357,34 @@ a.sel-post-num-link:hover { color: var(--gold); }
 .sel-post-page .sceditor-toolbar .sceditor-button { display: inline-flex !important; align-items: center; justify-content: center; }
 .sel-post-page .sceditor-toolbar .sceditor-group { display: contents !important; }
 
+/* Panneau smileys FA — caché par défaut, toggle via bouton toolbar */
+.sel-post-page #smiley-box {
+  display: none;
+  margin: 6px 0 8px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.sel-post-page #smiley-box.sel-open { display: block; }
+
+/* Bouton smiley injecté dans la toolbar SCEditor */
+.sel-smiley-btn div {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200%2C207%2C224%2C0.75)'%3E%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z'/%3E%3C/svg%3E") !important;
+  background-size: 15px 15px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
 /* Zone d'actions (compteur + boutons) */
 .sel-post-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  padding: 10px 0 4px;
+  padding: 10px 12px 4px 0;
 }
 .sel-post-actions .sel-word-counter {
   margin-right: auto;
@@ -4422,7 +4443,7 @@ a.sel-post-num-link:hover { color: var(--gold); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200%2C207%2C224%2C0.7)'%3E%3Cpath d='M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.293l1.646-1.647a.5.5 0 0 1 .708.708l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5a.5.5 0 1 1 .708-.708L7.5 5.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z'/%3E%3C/svg%3E") !important;
 }
 
-/* Prévisualisation — structure "faux post" */
+/* Prévisualisation — imite un vrai post */
 .sel-preview-post {
   display: flex;
   background: var(--surface-2);
@@ -4434,28 +4455,59 @@ a.sel-post-num-link:hover { color: var(--gold); }
   margin-left: auto;
   margin-right: auto;
 }
-.sel-preview-inner { display: flex; width: 100%; }
-.sel-preview-sidebar {
-  width: 200px;
+/* Colonne profil (avatar + nom + données) */
+.sel-preview-profile {
+  width: 190px;
   flex-shrink: 0;
   background: var(--surface-3);
   border-right: 1px solid var(--border);
-  padding: 20px 12px;
+  padding: 20px 14px;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.sel-preview-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--surface-4);
+  border: 2px solid var(--border-mid);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
-.sel-preview-placeholder {
+.sel-preview-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* placeholder si pas d'image */
+.sel-preview-avatar:not(:has(img))::after {
+  content: '☽';
+  font-size: 28px;
+  color: var(--text-ghost);
+}
+.sel-preview-uname {
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-hi);
+  text-align: center;
+  min-height: 1em;
+}
+.sel-preview-data-hint {
+  font-family: var(--font-ui);
+  font-size: 11px;
   color: var(--text-ghost);
   font-style: italic;
-  font-size: 12px;
-  font-family: var(--font-ui);
   text-align: center;
-  padding: 12px 8px;
+  padding: 8px;
   border: 1px dashed var(--border-mid);
-  border-radius: 8px;
+  border-radius: 6px;
   width: 100%;
+  margin-top: 4px;
+  line-height: 1.5;
 }
+/* Colonne contenu du message */
 .sel-preview-content {
   flex: 1;
   padding: 20px 24px;

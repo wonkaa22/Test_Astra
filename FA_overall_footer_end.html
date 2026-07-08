@@ -500,36 +500,52 @@
         }
       }
 
-      /* 3. Outils de modération (fieldset.quickmod) → icônes en ligne.
-            Présent uniquement si l'utilisateur a des droits de mod/admin. */
+      /* 3 + 4. Fusion outils de modération : fieldset.quickmod (select FA)
+            + p.right.forum-width (S_TOPIC_ADMIN, liens déjà iconifiés FA)
+            → une seule barre centrée avec label "Modération" à gauche */
+      var svgFor = function (label) {
+        var t = (label || '').toLowerCase();
+        if (/verrou/.test(t) && !/deverrou/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>';
+        if (/deverrou|ouvrir/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/></svg>';
+        if (/suppr|delet/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>';
+        if (/depla|move/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L10.293 7.5H4.5z"/></svg>';
+        if (/epin|stick|annonce/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354z"/></svg>';
+        if (/fus|merg/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/></svg>';
+        return '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="2"/><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>';
+      };
+
+      var modCombined = null;
+      var modBtns = document.createElement('div');
+      modBtns.className = 'sel-mod-buttons';
+      var seenTitles = {};
+
+      /* Source A : S_TOPIC_ADMIN — liens déjà présents avec icônes FA */
+      var topicAdminP = document.querySelector('p.right.forum-width');
+      if (topicAdminP) {
+        Array.prototype.slice.call(topicAdminP.querySelectorAll('a, button')).forEach(function (link) {
+          var lbl = (link.title || link.getAttribute('aria-label') || link.textContent || '').trim();
+          var key = lbl.toLowerCase().replace(/\s+/g, '').substring(0, 12);
+          if (key && seenTitles[key]) return;
+          if (key) seenTitles[key] = true;
+          link.className = 'sel-mod-btn';
+          if (lbl) link.title = lbl;
+          modBtns.appendChild(link);
+        });
+        topicAdminP.remove();
+      }
+
+      /* Source B : fieldset.quickmod — select converti en boutons SVG */
       var quickmodFs = document.querySelector('fieldset.quickmod');
       if (quickmodFs) {
         var modForm2 = quickmodFs.closest('form');
         var modSel = quickmodFs.querySelector('select');
         if (modForm2 && modSel) {
-          var svgFor = function (label) {
-            var t = label.toLowerCase();
-            /* Verrouiller */
-            if (/verrou/.test(t) && !/deverrou/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>';
-            /* Déverrouiller */
-            if (/deverrou|ouvrir/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/></svg>';
-            /* Supprimer */
-            if (/suppr|delet/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>';
-            /* Déplacer */
-            if (/depla|move/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L10.293 7.5H4.5z"/></svg>';
-            /* Épingler / Annonce */
-            if (/epin|stick|annonce/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354z"/></svg>';
-            /* Fusionner */
-            if (/fus|merg/.test(t)) return '<svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/></svg>';
-            /* Générique */
-            return '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="2"/><circle cx="8" cy="3" r="1.5"/><circle cx="8" cy="13" r="1.5"/></svg>';
-          };
-
-          var modBar2 = document.createElement('div');
-          modBar2.className = 'sel-mod-bar';
           Array.prototype.forEach.call(modSel.options, function (opt) {
             if (!opt.value) return;
             var lbl = (opt.text || '').trim();
+            var key = lbl.toLowerCase().replace(/\s+/g, '').substring(0, 12);
+            if (key && seenTitles[key]) return;
+            if (key) seenTitles[key] = true;
             var btn2 = document.createElement('button');
             btn2.type = 'button';
             btn2.className = 'sel-mod-btn';
@@ -539,24 +555,27 @@
               modSel.value = opt.value;
               modForm2.submit();
             });
-            modBar2.appendChild(btn2);
+            modBtns.appendChild(btn2);
           });
-
-          if (modBar2.children.length) {
-            modForm2.parentNode.insertBefore(modBar2, modForm2);
-            modForm2.style.display = 'none';
-          }
+          modForm2.remove();
         }
       }
 
-      /* 4. S_TOPIC_ADMIN (p.right) : liens admin déjà iconifiés par FA —
-            on les met en ligne et on leur applique le même style que sel-mod-btn */
-      var topicAdminP = document.querySelector('p.right.forum-width');
-      if (topicAdminP) {
-        if (!topicAdminP.textContent.trim() && !topicAdminP.querySelector('a, button')) {
-          topicAdminP.remove();
+      /* Construit la barre combinée si elle contient au moins un bouton */
+      if (modBtns.children.length) {
+        modCombined = document.createElement('div');
+        modCombined.className = 'sel-mod-combined forum-width';
+        var modLbl = document.createElement('span');
+        modLbl.className = 'sel-mod-label';
+        modLbl.textContent = 'Modération';
+        modCombined.appendChild(modLbl);
+        modCombined.appendChild(modBtns);
+        /* Insère la barre avant le bloc permissions (ou en fin de page si absent) */
+        var afterQr = document.getElementById('sel-quickreply') || document.getElementById('quick_reply');
+        if (afterQr && afterQr.parentNode) {
+          afterQr.parentNode.insertBefore(modCombined, afterQr.nextSibling);
         } else {
-          topicAdminP.classList.add('sel-topic-admin');
+          document.body.appendChild(modCombined);
         }
       }
 

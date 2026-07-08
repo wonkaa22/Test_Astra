@@ -4296,16 +4296,31 @@ ul.profile-icons li.btn-report img {
 
 /* ── Bas de page viewtopic ── */
 
-/* Jumpbox et fieldset.jumpbox : cachés via JS, mais au cas où */
+/* Jumpbox : cachée via JS, sécurité CSS en plus */
 fieldset.jumpbox { display: none !important; }
 
-/* Outils de modération : barre d'icônes */
-.sel-mod-bar {
+/* Barre de modération fusionnée */
+.sel-mod-combined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 0 6px;
+  margin: 0 auto;
+}
+.sel-mod-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+}
+.sel-mod-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
-  padding: 8px 0;
 }
 .sel-mod-btn {
   width: 32px;
@@ -4318,39 +4333,19 @@ fieldset.jumpbox { display: none !important; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
+  text-decoration: none;
   transition: background 0.15s, color 0.15s;
-  position: relative;
 }
 .sel-mod-btn svg { width: 15px; height: 15px; pointer-events: none; }
 .sel-mod-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
-/* Tooltip natif via title — les navigateurs le gèrent nativement */
-
-/* S_TOPIC_ADMIN (liens admin déjà iconifiés par FA) */
-.sel-topic-admin {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 4px 0;
-}
-.sel-topic-admin a, .sel-topic-admin button {
-  width: 32px;
-  height: 32px;
-  border-radius: 7px;
-  border: 1px solid var(--border-mid);
-  background: var(--surface-4);
-  color: var(--text-mid);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-}
-.sel-topic-admin a:hover, .sel-topic-admin button:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
 
 /* Bloc permissions visiteur : style sobre */
-.block.forum-width { background: transparent !important; border: none !important; box-shadow: none !important; }
+.block.forum-width {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 .block.forum-width .h3 { display: none; }
 .block.forum-width li, .block.forum-width p {
   font-size: 12px;

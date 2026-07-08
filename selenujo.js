@@ -404,13 +404,10 @@
   }
 
   /* Lien vers le panneau d'administration (si admin) :
-     FA injecte un lien "/admin" dans la navbar pour les admins */
-  var isAdmin = false;
-  var allPageLinks = document.querySelectorAll('a');
-  for (var ali = 0; ali < allPageLinks.length; ali++) {
-    var alHref = allPageLinks[ali].getAttribute('href') || '';
-    if (/\/admin(\/|$|\?|#|\.)/i.test(alHref) || alHref === window.location.origin + '/admin') { isAdmin = true; break; }
-  }
+     p.right.forum-width (S_TOPIC_ADMIN) ne s'affiche que pour les mods/admins,
+     donc sa présence initiale dans le DOM est un indicateur fiable du statut admin.
+     On a déjà capturé topicAdminP plus haut — s'il existait, l'utilisateur est admin. */
+  var isAdmin = !!topicAdminP;
 
   if (modBtns.children.length || isAdmin) {
     modCombined = document.createElement('div');
@@ -468,11 +465,12 @@
     legalBar.appendChild(el);
   });
   /* Lien admin en fin de barre légale */
+  /* Admin détecté par présence du lien /admin dans la navbar */
   var footerIsAdmin = false;
   var allPageLinks2 = document.querySelectorAll('a');
   for (var ali2 = 0; ali2 < allPageLinks2.length; ali2++) {
     var alHref2 = allPageLinks2[ali2].getAttribute('href') || '';
-    if (/^\/admin(\/|$|\?|#|\.)/i.test(alHref2)) { footerIsAdmin = true; break; }
+    if (/\/admin(\/|$|\?|#|\.)/i.test(alHref2) || alHref2 === window.location.origin + '/admin') { footerIsAdmin = true; break; }
   }
   if (footerIsAdmin) {
     legalBar.appendChild(document.createTextNode(' | '));

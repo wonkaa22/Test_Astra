@@ -4147,14 +4147,40 @@ ul.profile-icons li.btn-report img {
 
 
 /* ── Zone de réponse rapide ── */
-#sel-quickreply { margin-bottom: 22px; }
-#quick_reply { width: 100%; }
+#sel-quickreply { margin-top: 10px; margin-bottom: 22px; }
 /* Masque le titre "Réponse rapide" généré par FA */
 #sel-quickreply > .h3,
 #sel-quickreply > br { display: none !important; }
+/* Cadre englobant le formulaire de réponse */
+#quick_reply {
+  width: 100%;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+}
 /* Force la largeur complète de l'éditeur (FA impose width:50% en inline) */
 #textarea_content { width: 100% !important; text-align: left !important; margin: 0 !important; }
 #quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
+/* Boutons Prévisualisation / Envoyer dans le cadre */
+#quick_reply input[type="submit"] {
+  margin-top: 10px;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface-4);
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+#quick_reply input[type="submit"]:hover { background: var(--surface-3); color: var(--text-hi); }
+#quick_reply input[name="post"] { background: var(--gold); color: var(--surface-2); border-color: transparent; }
+#quick_reply input[name="post"]:hover { opacity: 0.85; color: var(--surface-2); }
 .sel-qr-row {
   display: flex;
   flex-wrap: wrap;
@@ -4177,11 +4203,6 @@ ul.profile-icons li.btn-report img {
   flex: 1;
   min-width: 260px;
 }
-#quick_reply input[type="submit"] {
-  margin-top: 10px;
-  margin-right: 8px;
-}
-
 .sceditor-container {
   background: var(--surface-2) !important;
   border: 1px solid var(--border) !important;

@@ -4346,6 +4346,124 @@ fieldset.jumpbox { display: none !important; }
 a.sel-post-num-link { color: inherit; text-decoration: none; }
 a.sel-post-num-link:hover { color: var(--gold); }
 
+/* ── Page d'envoi de message (/post) ──────────────────────────────────────── */
+
+/* Largeur uniforme des blocs */
+.sel-post-page .panel,
+.sel-post-page .h3.forum-hideable { max-width: 1050px; margin-left: auto; margin-right: auto; }
+.sel-post-page h1.page-title { max-width: 1050px; margin: 0 auto 12px; }
+
+/* Barre d'outils : montrer TOUS les boutons sur la page de posting */
+.sel-post-page .sceditor-toolbar .sceditor-button { display: inline-flex !important; align-items: center; justify-content: center; }
+.sel-post-page .sceditor-toolbar .sceditor-group { display: contents !important; }
+
+/* Zone d'actions (compteur + boutons) */
+.sel-post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 0 4px;
+}
+.sel-post-actions .sel-word-counter {
+  margin-right: auto;
+  font-size: 11px;
+  color: var(--text-lo);
+  font-family: var(--font-ui);
+}
+
+/* Wrappers boutons avec tooltip en haut */
+.sel-post-btn-wrap { position: relative; display: inline-block; }
+.sel-post-btn-wrap::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  right: 0;
+  white-space: nowrap;
+  background: var(--surface-4);
+  color: var(--text-hi);
+  font-size: 11px;
+  font-family: var(--font-ui);
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border-mid);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.sel-post-btn-wrap:hover::after { opacity: 1; }
+
+/* Boutons submit → icônes 40×40 */
+.sel-post-btn {
+  font-size: 0 !important;
+  color: transparent !important;
+  width: 40px !important; height: 40px !important; padding: 0 !important;
+  border-radius: 9px !important;
+  border: 1px solid var(--border-mid) !important;
+  background-color: var(--surface-4) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 18px 18px !important;
+  cursor: pointer !important;
+  /* Prévisualiser : œil */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200%2C207%2C224%2C0.7)'%3E%3Cpath d='M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z'/%3E%3Cpath d='M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z'/%3E%3C/svg%3E") !important;
+}
+.sel-post-btn:hover { opacity: 0.75 !important; }
+/* Envoyer : avion doré */
+.sel-post-btn-send {
+  background-color: var(--gold) !important;
+  border-color: transparent !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(10%2C13%2C20%2C0.9)'%3E%3Cpath d='M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z'/%3E%3C/svg%3E") !important;
+}
+.sel-post-btn-send:hover { opacity: 0.85 !important; }
+/* Brouillon : disquette */
+.sel-post-btn-draft {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200%2C207%2C224%2C0.7)'%3E%3Cpath d='M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.293l1.646-1.647a.5.5 0 0 1 .708.708l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5a.5.5 0 1 1 .708-.708L7.5 5.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z'/%3E%3C/svg%3E") !important;
+}
+
+/* Prévisualisation — structure "faux post" */
+.sel-preview-post {
+  display: flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sel-preview-inner { display: flex; width: 100%; }
+.sel-preview-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--surface-3);
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.sel-preview-placeholder {
+  color: var(--text-ghost);
+  font-style: italic;
+  font-size: 12px;
+  font-family: var(--font-ui);
+  text-align: center;
+  padding: 12px 8px;
+  border: 1px dashed var(--border-mid);
+  border-radius: 8px;
+  width: 100%;
+}
+.sel-preview-content {
+  flex: 1;
+  padding: 20px 24px;
+  color: var(--text-mid);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 /* Bloc permissions visiteur : style sobre */
 .block.forum-width {
   background: transparent !important;

@@ -3237,7 +3237,8 @@ body.chatbox {
 }
 .topic-actions .pagination { padding: 8px 0; }
 .topic-actions.bottom {
-  border-radius: 0 0 18px 18px;
+  border-radius: 0 0 16px 16px;
+  border-top: none;
   border-bottom: 1px solid var(--border);
   padding: 10px 22px;
 }
@@ -3796,16 +3797,18 @@ dd.lastpost dfn { display: none; }
    SUJET (viewtopic) — page de discussion
    ═══════════════════════════════════════ */
 
-/* Cadre unique englobant tous les posts */
+/* Cadre unique englobant tous les posts — pas de bord/arrondi en bas
+   car .topic-actions.bottom se colle dessous pour former un bloc continu */
 #sel-topic-posts {
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 0 0 16px 16px;
+  border-bottom: none;
+  border-radius: 0;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 0;
 }
 
 .post {
@@ -4143,12 +4146,15 @@ ul.profile-icons li.btn-report img {
 }
 
 
-/* ── Zone de réponse rapide ──
-   #quick_reply reste en flux normal (le formulaire contient aussi les
-   boutons "Prévisualisation"/"Envoyer" plus bas, qu'on ne veut pas voir
-   remonter dans une rangée flex) ; seule .sel-qr-row (créée par JS et ne
-   contenant que l'avatar + l'éditeur) est mise en flex. */
+/* ── Zone de réponse rapide ── */
+#sel-quickreply { margin-bottom: 22px; }
 #quick_reply { width: 100%; }
+/* Masque le titre "Réponse rapide" généré par FA */
+#quick_reply .h3,
+#quick_reply h2,
+#quick_reply .form-title,
+#quick_reply .title,
+a[name="quickreply"] { display: none !important; }
 .sel-qr-row {
   display: flex;
   flex-wrap: wrap;

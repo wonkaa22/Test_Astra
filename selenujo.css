@@ -3259,7 +3259,7 @@ form[name="jumpbox"] {
    (© phpBB, statistiques, contact...), regroupés au lieu d'être éclatés
    dans le flux brut de body. */
 .site-footer {
-  margin-top: 32px;
+  margin-top: 56px;
   background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -3930,8 +3930,8 @@ dd.lastpost dfn { display: none; }
 }
 .sel-rank-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
 /* Champs de profil : affichage label + valeur inline dans l'info box */
-.sel-pf { display: block; }
-.sel-pf-label { color: var(--text-lo); }
+.sel-pf { display: block; padding: 0 8px; }
+.sel-pf-label { color: var(--text-lo); font-weight: 600; }
 .sel-pf-label::after { content: ' '; }
 .sel-pf-val a { color: var(--text-mid); text-decoration: none; word-break: break-all; }
 .sel-pf-val a:hover { color: var(--text-hi); }
@@ -4343,6 +4343,8 @@ fieldset.jumpbox { display: none !important; }
 .sel-admin-btn:hover { background: var(--gold-faint); color: var(--gold); }
 .sel-footer-admin { color: var(--gold-dim); }
 .sel-footer-admin:hover { color: var(--gold); }
+a.sel-post-num-link { color: inherit; text-decoration: none; }
+a.sel-post-num-link:hover { color: var(--gold); }
 
 /* Bloc permissions visiteur : style sobre */
 .block.forum-width {

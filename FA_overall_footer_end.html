@@ -310,23 +310,36 @@
           var counter = document.createElement('div');
           counter.className = 'sel-word-counter';
           var scStyleInjected = false;
-          var updateCounter = function () {
-            var text = textarea.value;
+
+          var getEditorText = function () {
             var scFrame = qr.querySelector('.sceditor-container iframe');
-            if (scFrame && scFrame.contentDocument && scFrame.contentDocument.body) {
-              text = scFrame.contentDocument.body.innerText || '';
-              /* Injecte la scrollbar dorée dans l'iframe SCEditor (une seule fois) */
-              if (!scStyleInjected && scFrame.contentDocument.head) {
-                var scStyle = scFrame.contentDocument.createElement('style');
-                scStyle.textContent = '::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(212,163,115,0.45);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(212,163,115,0.7)}';
-                scFrame.contentDocument.head.appendChild(scStyle);
-                scStyleInjected = true;
+            if (scFrame) {
+              var doc = scFrame.contentDocument || (scFrame.contentWindow && scFrame.contentWindow.document);
+              if (doc && doc.body) {
+                /* Scrollbar dorée (une seule fois, couvre Chrome ET Firefox) */
+                if (!scStyleInjected && doc.head) {
+                  var scStyle = doc.createElement('style');
+                  scStyle.textContent = 'body{scrollbar-width:thin;scrollbar-color:rgba(212,163,115,0.5) transparent}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(212,163,115,0.45);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:rgba(212,163,115,0.7)}';
+                  doc.head.appendChild(scStyle);
+                  scStyleInjected = true;
+                }
+                /* Cherche un élément contenteditable dans l'iframe,
+                   sinon lit directement le body */
+                var editable = doc.body.querySelector('[contenteditable]') || doc.body;
+                return editable.innerText || editable.textContent || '';
               }
             }
+            /* Fallback : textarea (mode source SCEditor) */
+            return textarea.value || '';
+          };
+
+          var updateCounter = function () {
+            var text = getEditorText();
             var parts = text.trim().split(/\s+/);
             var nb = (text.trim() === '') ? 0 : parts.length;
             counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
           };
+
           textarea.addEventListener('input', updateCounter);
           setInterval(updateCounter, 150);
           updateCounter();

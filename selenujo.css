@@ -4250,8 +4250,7 @@ ul.profile-icons li.btn-report img {
   border-radius: 10px 10px 0 0 !important;
 }
 /* Toolbar : masque tous les boutons sauf les 8 retenus.
-   Chaque règle de réaffichage doit avoir une spécificité >= la règle de masquage
-   (0,2,0) donc on préfixe systématiquement avec .sceditor-toolbar. */
+   Spécificité 0,2,0 sur le masquage → on préfixe chaque règle de réaffichage. */
 .sceditor-toolbar .sceditor-button { display: none !important; }
 .sceditor-toolbar .sceditor-button-bold,
 .sceditor-toolbar .sceditor-button-italic,
@@ -4261,11 +4260,21 @@ ul.profile-icons li.btn-report img {
 .sceditor-toolbar .sceditor-button-mention,
 .sceditor-toolbar .sceditor-button-emoticon,
 .sceditor-toolbar .sceditor-button-image,
-.sceditor-toolbar .sceditor-button-source { display: inline-block !important; }
-/* Masque les séparateurs de groupes qui deviendraient orphelins */
-.sceditor-toolbar .sceditor-group { display: contents; }
-.sceditor-toolbar .sceditor-group::before,
-.sceditor-toolbar .sceditor-group::after { display: none; }
+.sceditor-toolbar .sceditor-button-source { display: inline-flex !important; align-items: center; justify-content: center; }
+/* Groupes : on les rend transparents pour ne pas afficher les séparateurs vides */
+.sceditor-toolbar .sceditor-group { display: contents !important; }
+/* Reset fond blanc potentiel sur certains boutons + espacement uniforme */
+.sceditor-toolbar .sceditor-button {
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0 3px !important;
+  padding: 5px !important;
+  border-radius: 6px;
+  width: auto !important;
+  height: auto !important;
+}
+.sceditor-toolbar .sceditor-button:hover { background-color: rgba(255,255,255,0.07) !important; }
+.sceditor-toolbar { padding: 5px 8px !important; display: flex !important; flex-wrap: wrap; align-items: center; gap: 0; }
 .sceditor-button div {
   filter: invert(0.7) brightness(1.4);
   opacity: 0.85;

@@ -119,10 +119,6 @@ html::before {
   inset: 0;
   z-index: -1;
   background-color: var(--bg);
-  background-image: url('https://i.postimg.cc/nH27qcbS/Test1.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 html.light::before {
@@ -3237,7 +3233,8 @@ body.chatbox {
 }
 .topic-actions .pagination { padding: 8px 0; }
 .topic-actions.bottom {
-  border-radius: 0 0 18px 18px;
+  border-radius: 0 0 16px 16px;
+  border-top: none;
   border-bottom: 1px solid var(--border);
   padding: 10px 22px;
 }
@@ -3796,16 +3793,18 @@ dd.lastpost dfn { display: none; }
    SUJET (viewtopic) — page de discussion
    ═══════════════════════════════════════ */
 
-/* Cadre unique englobant tous les posts */
+/* Cadre unique englobant tous les posts — pas de bord/arrondi en bas
+   car .topic-actions.bottom se colle dessous pour former un bloc continu */
 #sel-topic-posts {
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 0 0 16px 16px;
+  border-bottom: none;
+  border-radius: 0;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 0;
 }
 
 .post {
@@ -3851,6 +3850,7 @@ dd.lastpost dfn { display: none; }
 .postprofile-avatar {
   width: 100%;
   aspect-ratio: 200 / 320;
+  margin-bottom: 10px;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surface-4);
@@ -3904,7 +3904,17 @@ dd.lastpost dfn { display: none; }
   flex: 1;
   margin: 0; /* le margin est sur .sel-rank-row désormais */
 }
-.sel-rank-actions { display: inline-flex; gap: 4px; flex-shrink: 0; }
+.sel-rank-actions { display: inline-flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+.sel-rank-icon {
+  width: auto;
+  height: 100%;
+  max-height: 68px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 7px;
+  flex-shrink: 0;
+  display: block;
+}
 .sel-rank-btn {
   display: inline-flex;
   align-items: center;
@@ -4079,8 +4089,10 @@ ul.profile-icons li.btn-report img {
   font-weight: 600;
 }
 
-.postbody { padding: 10px 14px; margin-top: 0 !important; min-height: 0 !important; }
+.post { grid-template-rows: auto 1fr auto; }
+.postbody { padding: 10px 14px; margin-top: 0 !important; min-height: 0 !important; align-self: stretch; display: flex; flex-direction: column; }
 .postbody .content {
+  flex: 1;
   font-size: 14px;
   line-height: 1.7;
   color: var(--text-mid);
@@ -4097,12 +4109,14 @@ ul.profile-icons li.btn-report img {
 .fa_like_div {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 10px;
   padding: 8px 14px 14px;
   margin-top: auto;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .fa_like_div .rep-button {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -4117,22 +4131,86 @@ ul.profile-icons li.btn-report img {
 .fa_like_div .rep-button svg { width: 14px; height: 14px; flex-shrink: 0; }
 .fa_like_div .fa_like:hover { color: var(--gold); border-color: var(--gold-dim); }
 .fa_like_div .fa_dislike:hover { color: var(--coral); border-color: var(--coral); }
-.fa_like_div .rep-button i { display: none; } /* anciennes icônes Ionicons remplacées par SVG inline via JS */
+.fa_like_div .rep-button i { display: none; }
+.fa_like_div .rep-button .sel-like-label { display: none; } /* libellé texte masqué — icône + compteur seuls */
 .fa_like_list,
 .fa_dislike_list {
-  width: 100%;
+  flex: 1;
   font-size: 11.5px;
   color: var(--text-lo);
-  padding: 0 14px;
+  padding: 0 6px;
 }
 
 
-/* ── Zone de réponse rapide ──
-   #quick_reply reste en flux normal (le formulaire contient aussi les
-   boutons "Prévisualisation"/"Envoyer" plus bas, qu'on ne veut pas voir
-   remonter dans une rangée flex) ; seule .sel-qr-row (créée par JS et ne
-   contenant que l'avatar + l'éditeur) est mise en flex. */
-#quick_reply { width: 100%; }
+/* ── Zone de réponse rapide ── */
+#sel-quickreply { margin-top: 10px; margin-bottom: 22px; }
+/* Masque le titre "Réponse rapide" généré par FA */
+#sel-quickreply > .h3,
+#sel-quickreply > br { display: none !important; }
+/* Cadre englobant le formulaire de réponse */
+#quick_reply {
+  width: 100%;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+}
+/* Force la largeur complète de l'éditeur (FA impose width:50% en inline) */
+#textarea_content { width: 100% !important; text-align: left !important; margin: 0 !important; }
+#quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
+/* Boutons icône Prévisualisation / Envoyer — déplacés sous l'avatar par JS */
+.sel-qr-actions { display: flex; flex-direction: row; gap: 6px; padding: 8px 0 2px; flex-wrap: wrap; }
+/* Wrapper pour le tooltip CSS au survol */
+.sel-qr-btn-wrap { position: relative; display: block; }
+.sel-qr-btn-wrap::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 7px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: var(--surface-4);
+  color: var(--text-hi);
+  font-size: 11px;
+  font-family: var(--font-ui);
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border-mid);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.sel-qr-btn-wrap:hover::after { opacity: 1; }
+.sel-qr-actions input[type="submit"] {
+  font-size: 0 !important;
+  color: transparent !important;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 7px;
+  border: 1px solid var(--border-mid);
+  background-color: var(--surface-4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s, background-color 0.15s;
+  /* icône œil (prévisualisation) par défaut — remplacée par l'icône envoi ci-dessous */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(200,207,224,0.7)'%3E%3Cpath d='M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13 13 0 0 1 1.822-2.943C4.204 3.757 5.981 2.5 8 2.5c2.019 0 3.796 1.257 5.005 2.557A13 13 0 0 1 14.828 8a13.025 13.025 0 0 1-1.823 2.943C11.796 12.243 10.019 13.5 8 13.5c-2.02 0-3.796-1.257-5.005-2.557A13.024 13.024 0 0 1 1.172 8z'/%3E%3Cpath d='M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z'/%3E%3C/svg%3E");
+}
+.sel-qr-actions input[type="submit"]:hover { opacity: 0.75; }
+/* Bouton Envoyer : ciblé par name="post" ou name="submit" (selon la version FA) */
+.sel-qr-actions input[name="post"],
+.sel-qr-actions input[name="submit"] {
+  background-color: var(--gold);
+  border-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgba(15,18,32,0.9)'%3E%3Cpath d='M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11z'/%3E%3C/svg%3E");
+}
+.sel-qr-actions input[name="post"]:hover,
+.sel-qr-actions input[name="submit"]:hover { opacity: 0.85; }
 .sel-qr-row {
   display: flex;
   flex-wrap: wrap;
@@ -4142,24 +4220,25 @@ ul.profile-icons li.btn-report img {
 }
 .sel-qr-row .sel-qr-avatar {
   width: 70px;
-  aspect-ratio: 200 / 320;
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--surface-4);
-  border: 1px solid var(--border-mid);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.sel-qr-row .sel-qr-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sel-qr-row .sel-qr-avatar img {
+  width: 100%;
+  aspect-ratio: 200 / 320;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface-4);
+}
 .sel-qr-row .sceditor-container,
 .sel-qr-row textarea {
   flex: 1;
   min-width: 260px;
 }
-#quick_reply input[type="submit"] {
-  margin-top: 10px;
-  margin-right: 8px;
-}
-
 .sceditor-container {
   background: var(--surface-2) !important;
   border: 1px solid var(--border) !important;
@@ -4170,6 +4249,32 @@ ul.profile-icons li.btn-report img {
   border-bottom: 1px solid var(--border) !important;
   border-radius: 10px 10px 0 0 !important;
 }
+/* Toolbar : masque tous les boutons sauf les 8 retenus.
+   Spécificité 0,2,0 sur le masquage → on préfixe chaque règle de réaffichage. */
+.sceditor-toolbar .sceditor-button { display: none !important; }
+.sceditor-toolbar .sceditor-button-bold,
+.sceditor-toolbar .sceditor-button-italic,
+.sceditor-toolbar .sceditor-button-underline,
+.sceditor-toolbar .sceditor-button-strike,
+.sceditor-toolbar .sceditor-button-member,
+.sceditor-toolbar .sceditor-button-mention,
+.sceditor-toolbar .sceditor-button-emoticon,
+.sceditor-toolbar .sceditor-button-image,
+.sceditor-toolbar .sceditor-button-source { display: inline-flex !important; align-items: center; justify-content: center; }
+/* Groupes : on les rend transparents pour ne pas afficher les séparateurs vides */
+.sceditor-toolbar .sceditor-group { display: contents !important; }
+/* Reset fond blanc potentiel sur certains boutons + espacement uniforme */
+.sceditor-toolbar .sceditor-button {
+  background-color: transparent !important;
+  border: none !important;
+  margin: 0 3px !important;
+  padding: 5px !important;
+  border-radius: 6px;
+  width: auto !important;
+  height: auto !important;
+}
+.sceditor-toolbar .sceditor-button:hover { background-color: rgba(255,255,255,0.07) !important; }
+.sceditor-toolbar { padding: 5px 8px !important; display: flex !important; flex-wrap: wrap; align-items: center; gap: 0; }
 .sceditor-button div {
   filter: invert(0.7) brightness(1.4);
   opacity: 0.85;
@@ -4188,3 +4293,67 @@ ul.profile-icons li.btn-report img {
   color: var(--text-lo);
   margin-top: 4px;
 }
+
+/* ── Bas de page viewtopic ── */
+
+/* Jumpbox : cachée via JS, sécurité CSS en plus */
+fieldset.jumpbox { display: none !important; }
+
+/* Barre de modération fusionnée */
+.sel-mod-combined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 0 6px;
+  margin: 0 auto;
+}
+.sel-mod-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+}
+.sel-mod-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.sel-mod-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  border: 1px solid var(--border-mid);
+  background: var(--surface-4);
+  color: var(--text-mid);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.sel-mod-btn svg { width: 15px; height: 15px; pointer-events: none; }
+.sel-mod-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
+.sel-admin-btn { border-color: var(--gold-faint); color: var(--gold-dim); }
+.sel-admin-btn:hover { background: var(--gold-faint); color: var(--gold); }
+.sel-footer-admin { color: var(--gold-dim); }
+.sel-footer-admin:hover { color: var(--gold); }
+
+/* Bloc permissions visiteur : style sobre */
+.block.forum-width {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.block.forum-width .h3 { display: none; }
+.block.forum-width li, .block.forum-width p {
+  font-size: 12px;
+  color: var(--text-lo);
+  padding: 2px 0;
+}
+.block.forum-width li::before { content: '✕ '; color: var(--coral); }

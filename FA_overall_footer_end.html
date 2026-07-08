@@ -293,14 +293,12 @@
           counter.className = 'sel-word-counter';
           var updateCounter = function () {
             var text = textarea.value;
-            try {
-              var scFrame = qr.querySelector('.sceditor-container iframe');
-              if (scFrame && scFrame.contentDocument && scFrame.contentDocument.body) {
-                text = scFrame.contentDocument.body.innerText || '';
-              }
-            } catch (e2) {}
+            var scFrame = qr.querySelector('.sceditor-container iframe');
+            if (scFrame && scFrame.contentDocument && scFrame.contentDocument.body) {
+              text = scFrame.contentDocument.body.innerText || '';
+            }
             var parts = text.trim().split(/\s+/);
-            var nb = (parts.length === 1 && parts[0] === '') ? 0 : parts.length;
+            var nb = (text.trim() === '') ? 0 : parts.length;
             counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
           };
           textarea.addEventListener('input', updateCounter);

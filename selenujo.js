@@ -403,9 +403,14 @@
     if (modForm2) { modForm2.remove(); } else { quickmodFs.remove(); }
   }
 
-  /* Lien vers le panneau d'administration (si admin) */
-  var adminLink = document.querySelector('a[href*="/admin/index"]') || document.querySelector('#nav-profile a[href*="/admin"]');
-  var isAdmin = !!adminLink;
+  /* Lien vers le panneau d'administration (si admin) :
+     FA injecte un lien "/admin" dans la navbar pour les admins */
+  var isAdmin = false;
+  var allPageLinks = document.querySelectorAll('a');
+  for (var ali = 0; ali < allPageLinks.length; ali++) {
+    var alHref = allPageLinks[ali].getAttribute('href') || '';
+    if (/^\/admin(\/|$|\?|#|\.)/i.test(alHref)) { isAdmin = true; break; }
+  }
 
   if (modBtns.children.length || isAdmin) {
     modCombined = document.createElement('div');
@@ -463,8 +468,13 @@
     legalBar.appendChild(el);
   });
   /* Lien admin en fin de barre légale */
-  var footerAdminLink = document.querySelector('a[href*="/admin/index"]') || document.querySelector('#nav-profile a[href*="/admin"]');
-  if (footerAdminLink) {
+  var footerIsAdmin = false;
+  var allPageLinks2 = document.querySelectorAll('a');
+  for (var ali2 = 0; ali2 < allPageLinks2.length; ali2++) {
+    var alHref2 = allPageLinks2[ali2].getAttribute('href') || '';
+    if (/^\/admin(\/|$|\?|#|\.)/i.test(alHref2)) { footerIsAdmin = true; break; }
+  }
+  if (footerIsAdmin) {
     legalBar.appendChild(document.createTextNode(' | '));
     var footerAdminA = document.createElement('a');
     footerAdminA.href = '/admin/index.forum';

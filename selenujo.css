@@ -4150,11 +4150,11 @@ ul.profile-icons li.btn-report img {
 #sel-quickreply { margin-bottom: 22px; }
 #quick_reply { width: 100%; }
 /* Masque le titre "Réponse rapide" généré par FA */
-#quick_reply .h3,
-#quick_reply h2,
-#quick_reply .form-title,
-#quick_reply .title,
-a[name="quickreply"] { display: none !important; }
+#sel-quickreply > .h3,
+#sel-quickreply > br { display: none !important; }
+/* Force la largeur complète de l'éditeur (FA impose width:50% en inline) */
+#textarea_content { width: 100% !important; text-align: left !important; margin: 0 !important; }
+#quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
 .sel-qr-row {
   display: flex;
   flex-wrap: wrap;

@@ -246,9 +246,56 @@
     }
   }
 
+  /* 2. Cache le titre dans le premier post (déjà affiché dans le h2 de la page) */
+  var firstPost = document.querySelector('#sel-topic-posts .post');
+  if (firstPost) {
+    var postSubject = firstPost.querySelector('.post-subject, h3.post-subject, .topic-title');
+    if (postSubject) { postSubject.style.display = 'none'; }
+  }
+
+  /* 3. Lien permalink sur les numéros de réponse (#1, #2…) */
+  document.querySelectorAll('#sel-topic-posts .post').forEach(function (post) {
+    var numEl = post.querySelector('.post-number, .post-header .post-num, [class*="post-num"]');
+    if (!numEl) {
+      /* Fallback : cherche un élément dont le texte est "#N" */
+      var allSpans = post.querySelectorAll('.post-header span, .post-header a, .post-info span');
+      for (var si = 0; si < allSpans.length; si++) {
+        if (/^#\d+$/.test((allSpans[si].textContent || '').trim())) { numEl = allSpans[si]; break; }
+      }
+    }
+    if (!numEl) return;
+    /* Le lien permalink est souvent un <a> avec href contenant "#p" dans le même header */
+    var permaA = post.querySelector('.post-header a[href*="#p"], a.permalink, a[title*="ien"], a[href*="post_id"]');
+    if (!permaA) {
+      /* Tente de trouver le post_id depuis l'id de l'élément post lui-même */
+      var postId = post.id ? post.id.replace(/\D/g, '') : '';
+      if (postId) {
+        var newA = document.createElement('a');
+        newA.href = '#p' + postId;
+        newA.textContent = numEl.textContent;
+        newA.className = numEl.className + ' sel-post-num-link';
+        numEl.parentNode.replaceChild(newA, numEl);
+      }
+      return;
+    }
+    if (numEl.tagName !== 'A') {
+      var wrapA = document.createElement('a');
+      wrapA.href = permaA.href;
+      wrapA.textContent = numEl.textContent;
+      wrapA.className = 'sel-post-num-link';
+      numEl.parentNode.replaceChild(wrapA, numEl);
+    }
+  });
+
   document.querySelectorAll('#sel-topic-posts .post').forEach(function (post) {
     var rankDiv = post.querySelector('.sel-post-rank');
     if (!rankDiv) return;
+
+    /* 4. Cache le rang si le bloc est vide */
+    if (!rankDiv.textContent.trim() && !rankDiv.querySelector('img')) {
+      rankDiv.style.display = 'none';
+      return;
+    }
 
     var btnGroup = document.createElement('span');
     btnGroup.className = 'sel-rank-actions';

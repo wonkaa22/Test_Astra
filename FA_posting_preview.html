@@ -1,43 +1,40 @@
 <div id="preview" class="sel-preview-post">
 
-	<!-- Colonne gauche : profil (réutilise les classes CSS du vrai post) -->
+	<!-- Colonne gauche : profil -->
 	<div class="sel-preview-col-profile">
 		<div class="postprofile-name">
 			<strong class="sel-preview-uname"></strong>
 		</div>
 		<span class="sel-online-status"></span>
 		<div class="postprofile-avatar sel-preview-avatar"></div>
-		<div class="sel-post-rank sel-preview-rank">—</div>
 		<div class="sel-preview-data-hint">Contenu du profil</div>
 	</div>
 
 	<!-- Colonne droite -->
 	<div class="sel-preview-col-right">
 
-		<!-- Ligne rang + boutons d'action -->
-		<div class="sel-preview-toprow">
-			<div class="sel-preview-rank-bar">Espace éventuel pour un rang</div>
-			<div class="sel-preview-action-btns">
-				<span class="sel-preview-action-btn">Envoyer un message</span>
-				<span class="sel-preview-action-btn">Voir la fiche</span>
-				<span class="sel-preview-action-btn">Voir les relations</span>
-			</div>
-		</div>
-
-		<!-- Méta : numéro + date -->
+		<!-- Méta : numéro, date, icônes d'action -->
 		<div class="sel-preview-meta">
 			<span class="sel-preview-postnum">#0</span>
 			<span class="sel-preview-sep">|</span>
 			<span class="sel-preview-postdate">date et heure du post</span>
+			<ul class="profile-icons sel-preview-icons">
+				<li title="Envoyer un message"><a class="sel-preview-icon-link">
+					<svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/></svg>
+				</a></li>
+				<li title="Voir la fiche"><a class="sel-preview-icon-link">
+					<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.029 10 8 10c-2.029 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
+				</a></li>
+				<li title="Voir les relations"><a class="sel-preview-icon-link">
+					<svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3Zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5Zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0ZM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5Z"/></svg>
+				</a></li>
+			</ul>
 		</div>
 
 		<!-- Corps du message -->
 		<div class="sel-preview-content">
 			{MESSAGE_NEW}
 		</div>
-
-		<!-- Ligne réactions mock -->
-		<div class="sel-preview-likes">♥ Espace pour les réactions</div>
 
 	</div>
 </div>

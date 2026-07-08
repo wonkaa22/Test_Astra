@@ -596,29 +596,32 @@
 
   document.body.classList.add('sel-post-page');
 
-  /* Breadcrumb ☽ — essaie plusieurs sélecteurs FA */
-  var pathEl = document.querySelector('.sub-header-path') ||
-               document.querySelector('.sub-header nav') ||
-               document.querySelector('.navigation') ||
-               document.querySelector('nav[class*="breadcrumb"]');
-  if (pathEl) {
-    Array.prototype.forEach.call(pathEl.childNodes, function (node) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.textContent = node.textContent.replace(/::/g, '☽');
-      }
-    });
-  }
-  /* Fallback : cherche n'importe quel élément contenant '::' dans .sub-header */
-  if (!pathEl) {
-    var subHeader = document.querySelector('.sub-header, .sub-header-inner');
-    if (subHeader) {
-      (function replaceInNode(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-          node.textContent = node.textContent.replace(/::/g, '☽');
-        } else {
-          Array.prototype.forEach.call(node.childNodes, replaceInNode);
+  /* Breadcrumb construit depuis document.title (FA met la hiérarchie avec ::) */
+  var bcNav = document.getElementById('sel-posting-breadcrumb');
+  if (bcNav) {
+    var titleText = document.title || '';
+    var bcParts   = titleText.split('::').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (bcParts.length > 1) {
+      /* FA order : "Action :: Topic :: Forum :: Site" → on affiche de droite à gauche */
+      bcParts.reverse();
+      bcParts.forEach(function (part, i) {
+        if (i > 0) {
+          var sep = document.createElement('span');
+          sep.className = 'sel-bc-sep';
+          sep.textContent = ' ☽ ';
+          bcNav.appendChild(sep);
         }
-      })(subHeader);
+        var span = document.createElement('span');
+        span.className = (i === bcParts.length - 1) ? 'sel-bc-current' : 'sel-bc-part';
+        span.textContent = part;
+        bcNav.appendChild(span);
+      });
+    } else {
+      /* Fallback : juste le nom du site */
+      var siteSpan = document.createElement('span');
+      siteSpan.className = 'sel-bc-part';
+      siteSpan.textContent = window.location.hostname.replace('www.', '').split('.')[0];
+      bcNav.appendChild(siteSpan);
     }
   }
 
@@ -685,29 +688,34 @@
 
     if (unameEl && username) { unameEl.textContent = username; }
 
-    if (avatarEl && !avatarEl.querySelector('img') && username) {
+    if (avatarEl && !avatarEl.querySelector('img')) {
       var avatarSrc = '';
 
-      /* 1. Chercher dans les posts de "Revue du sujet" */
-      var reviewPosts = document.querySelectorAll('.topic-review .post, #topic_review .post');
-      for (var rpi = 0; rpi < reviewPosts.length; rpi++) {
-        var nameEl = reviewPosts[rpi].querySelector('.postprofile-name strong');
-        if (nameEl && nameEl.textContent.trim() === username) {
-          var ai = reviewPosts[rpi].querySelector('.postprofile-avatar img');
-          if (ai) { avatarSrc = ai.src; break; }
+      /* 1. Champs _userdata (chemin relatif ou URL absolue) */
+      if (typeof _userdata !== 'undefined') {
+        var ua = _userdata['user_avatar'] || _userdata['avatar_full'] || _userdata['avatar'] || '';
+        if (ua) {
+          avatarSrc = /^https?:\/\//.test(ua) ? ua : window.location.origin + '/' + ua.replace(/^\//, '');
         }
       }
 
-      /* 2. Fallback : champs _userdata */
-      if (!avatarSrc && typeof _userdata !== 'undefined') {
-        avatarSrc = _userdata['user_avatar'] || _userdata['avatar_full'] || _userdata['avatar'] || '';
+      /* 2. Chercher dans n'importe quel post visible sur la page */
+      if (!avatarSrc && username) {
+        var allPostNames = document.querySelectorAll('.postprofile-name strong');
+        for (var pni = 0; pni < allPostNames.length; pni++) {
+          if (allPostNames[pni].textContent.trim() === username) {
+            var postEl  = allPostNames[pni].closest('.post');
+            var avatImg = postEl && postEl.querySelector('.postprofile-avatar img');
+            if (avatImg) { avatarSrc = avatImg.src; break; }
+          }
+        }
       }
 
       if (avatarSrc) {
-        var img = document.createElement('img');
-        img.src = avatarSrc;
-        img.alt = '';
-        avatarEl.appendChild(img);
+        var avImg = document.createElement('img');
+        avImg.src = avatarSrc;
+        avImg.alt = '';
+        avatarEl.appendChild(avImg);
       }
     }
   };
@@ -744,6 +752,20 @@
       if (panel.classList.contains('sel-collapsed')) { doExpand(); } else { doCollapse(); }
     });
   });
+
+  /* Revue du sujet : trouver l'élément post-form, centrer + simplifier */
+  var postForm = document.querySelector('form[name="post"]');
+  if (postForm) {
+    var reviewEl = postForm.nextElementSibling;
+    while (reviewEl) {
+      /* Sauter les divs cachés (find_username, etc.) */
+      if (reviewEl.tagName === 'DIV' && reviewEl.style.display !== 'none' && reviewEl.id !== 'find_username' && reviewEl.id !== 'group_pm_explain') {
+        reviewEl.classList.add('forum-width', 'sel-post-topic-review');
+        break;
+      }
+      reviewEl = reviewEl.nextElementSibling;
+    }
+  }
 
   /* Compteur de mots */
   var textarea = document.getElementById('text_editor_textarea') || document.querySelector('#postingbox textarea[name="message"]');

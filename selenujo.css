@@ -4348,10 +4348,46 @@ a.sel-post-num-link:hover { color: var(--gold); }
 
 /* ── Page d'envoi de message (/post) ──────────────────────────────────────── */
 
+/* Breadcrumb */
+.sel-posting-breadcrumb {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-lo);
+  margin-bottom: 8px;
+  padding: 0;
+}
+.sel-bc-sep { color: var(--gold-dim); }
+.sel-bc-part { color: var(--text-lo); }
+.sel-bc-current { color: var(--text-mid); }
+
 /* Largeur uniforme des blocs */
 .sel-post-page .panel,
 .sel-post-page .h3.forum-hideable { max-width: 1050px; margin-left: auto; margin-right: auto; }
-.sel-post-page h1.page-title { max-width: 1050px; margin: 0 auto 12px; }
+.sel-post-page h1.page-title { max-width: 1050px; margin: 0 auto 8px; }
+
+/* Supprimer les cadres blancs FA sur cette page */
+.sel-post-page .panel.row3 {
+  background: var(--surface-2) !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+.sel-post-page .panel.row3 .inner { background: transparent !important; }
+.sel-post-page .panel.row3 .corners-top,
+.sel-post-page .panel.row3 .corners-bottom,
+.sel-post-page #postingbox .corners-top,
+.sel-post-page #postingbox .corners-bottom { display: none !important; }
+.sel-post-page .panel.row3 fieldset {
+  border: none !important;
+  padding: 4px 0 !important;
+  margin: 0 !important;
+}
+.sel-post-page #postingbox {
+  background: var(--surface-2) !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+.sel-post-page #postingbox .inner { background: transparent !important; }
+.sel-post-page #postingbox .h3 { border-bottom: 1px solid var(--border); margin-bottom: 10px; }
 
 /* Barre d'outils : montrer TOUS les boutons sur la page de posting */
 .sel-post-page .sceditor-toolbar .sceditor-button { display: inline-flex !important; align-items: center; justify-content: center; }
@@ -4559,38 +4595,50 @@ a.sel-post-num-link:hover { color: var(--gold); }
   line-height: 1.7;
 }
 
-/* Barre likes mock */
-.sel-preview-likes {
-  padding: 7px 14px;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text-ghost);
-  font-family: var(--font-ui);
-  background: var(--surface-2);
+/* Icônes d'action dans le méta de prévisualisation */
+.sel-preview-icons { margin: 0; padding: 0; margin-left: auto; }
+.sel-preview-icons li { list-style: none; }
+.sel-preview-icon-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important; height: 24px !important;
+  border-radius: 6px !important;
+  background: var(--surface-4) !important;
+  color: var(--text-mid) !important;
+  cursor: default !important;
+  pointer-events: none !important;
 }
+.sel-preview-icon-link svg { width: 12px; height: 12px; }
 
 /* ── Sections collapsibles ──────────────────────────────────────────────────── */
 .h3.forum-hideable.forum-width { cursor: pointer; user-select: none; }
 .sel-collapse-arrow { font-size: 10px; color: var(--text-lo); pointer-events: none; }
 .panel.sel-collapsed { display: none !important; }
 
-/* ── Revue du sujet : avatar + nom + date seulement ────────────────────────── */
-.sel-post-page .topic-review .postbody,
-.sel-post-page .topic-review .postprofile-info,
-.sel-post-page .topic-review .sel-post-rank,
-.sel-post-page .topic-review .sel-rank-row,
-.sel-post-page .topic-review .postprofile-pm,
-.sel-post-page .topic-review .sel-pf,
-.sel-post-page .topic-review .sel-online-status,
-.sel-post-page .topic-review .fa_like_div { display: none !important; }
+/* ── Revue du sujet : centrage + avatar + nom + date seulement ──────────────── */
+.sel-post-topic-review { max-width: 1050px !important; margin-left: auto !important; margin-right: auto !important; }
 
-.sel-post-page .topic-review .postprofile { width: 130px; }
-.sel-post-page .topic-review .postprofile-avatar { max-height: 120px; aspect-ratio: auto; }
-.sel-post-page .topic-review .postprofile-name { margin-bottom: 0; }
-.sel-post-page .topic-review .post-head { padding: 10px 14px 10px; }
-.sel-post-page .topic-review .menu-wrap,
-.sel-post-page .topic-review .post-menu { display: none !important; }
-.sel-post-page .topic-review ul.profile-icons { display: none !important; }
+/* Masquer tout sauf profil et entête de post */
+.sel-post-topic-review .postbody,
+.sel-post-topic-review .postprofile-info,
+.sel-post-topic-review .sel-post-rank,
+.sel-post-topic-review .sel-rank-row,
+.sel-post-topic-review .postprofile-pm,
+.sel-post-topic-review .sel-pf,
+.sel-post-topic-review .sel-online-status,
+.sel-post-topic-review .fa_like_div,
+.sel-post-topic-review .menu-wrap,
+.sel-post-topic-review .post-menu,
+.sel-post-topic-review ul.profile-icons { display: none !important; }
+
+/* Profil simplifié */
+.sel-post-topic-review .postprofile { width: 120px !important; }
+.sel-post-topic-review .postprofile-avatar { max-height: 100px !important; aspect-ratio: auto !important; }
+.sel-post-topic-review .postprofile-name { margin-bottom: 0 !important; }
+
+/* Colonne droite : juste l'entête */
+.sel-post-topic-review .post-head { padding: 10px 14px !important; }
 
 /* Bloc permissions visiteur : style sobre */
 .block.forum-width {

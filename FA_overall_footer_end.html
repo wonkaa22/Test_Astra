@@ -285,73 +285,30 @@
         });
       }
 
-      /* Compteur de mots — avec polling pour couvrir SCEditor en mode visuel */
-      try {
-        if (qr) {
-          var textarea = qr.querySelector('textarea[name="message"]') || qr.querySelector('textarea');
-          if (textarea) {
-            var counter = document.createElement('div');
-            counter.className = 'sel-word-counter';
-            var updateCounter = function () {
-              var text = '';
-              try {
-                var frame = qr.querySelector('.sceditor-container iframe');
-                if (frame && frame.contentDocument && frame.contentDocument.body) {
-                  text = frame.contentDocument.body.innerText || '';
-                } else {
-                  text = textarea.value;
-                }
-              } catch (ex) { text = textarea.value; }
-              var words = text.trim().split(/\s+/).filter(Boolean);
-              counter.textContent = words.length + ' mot' + (words.length === 1 ? '' : 's');
-            };
-            textarea.addEventListener('input', updateCounter);
-            setTimeout(function () {
-              try {
-                var frame = qr.querySelector('.sceditor-container iframe');
-                if (frame && frame.contentDocument && frame.contentDocument.body) {
-                  frame.contentDocument.body.addEventListener('input', updateCounter);
-                  frame.contentDocument.body.addEventListener('keyup', updateCounter);
-                }
-              } catch (ex2) {}
-            }, 900);
-            setInterval(updateCounter, 600);
-            updateCounter();
-            qr.appendChild(counter);
-          }
+      /* Compteur de mots — polling toutes les 600ms pour couvrir SCEditor */
+      if (qr) {
+        var textarea = qr.querySelector('textarea[name="message"]') || qr.querySelector('textarea');
+        if (textarea) {
+          var counter = document.createElement('div');
+          counter.className = 'sel-word-counter';
+          var updateCounter = function () {
+            var text = textarea.value;
+            try {
+              var scFrame = qr.querySelector('.sceditor-container iframe');
+              if (scFrame && scFrame.contentDocument && scFrame.contentDocument.body) {
+                text = scFrame.contentDocument.body.innerText || '';
+              }
+            } catch (e2) {}
+            var parts = text.trim().split(/\s+/);
+            var nb = (parts.length === 1 && parts[0] === '') ? 0 : parts.length;
+            counter.textContent = nb + ' mot' + (nb === 1 ? '' : 's');
+          };
+          textarea.addEventListener('input', updateCounter);
+          setInterval(updateCounter, 600);
+          updateCounter();
+          qr.appendChild(counter);
         }
-      } catch (eCounter) {}
-
-      /* Boutons Prévisualisation / Envoyer : remplacés par des icônes */
-      try {
-        if (qr) {
-          var submitBtns = Array.prototype.slice.call(qr.querySelectorAll('input[type="submit"]'));
-          var previewSvg = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8a13 13 0 0 1-1.66 2.043C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/><' + '/svg>';
-          var sendSvg = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11zM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493z"/><' + '/svg>';
-          var iconDefs2 = { preview: { label: 'Prévisualisation', cls: 'sel-qr-icon-btn--preview', svg: previewSvg }, post: { label: 'Envoyer', cls: 'sel-qr-icon-btn--post', svg: sendSvg } };
-          var iconRow2 = document.createElement('div');
-          iconRow2.className = 'sel-qr-actions';
-          var inserted2 = false;
-          for (var si = 0; si < submitBtns.length; si++) {
-            var inp = submitBtns[si];
-            var def = iconDefs2[inp.getAttribute('name') || ''];
-            if (!def) continue;
-            inp.style.cssText = 'position:absolute;opacity:0;pointer-events:none;width:0;height:0;overflow:hidden;';
-            var iconBtn = document.createElement('button');
-            iconBtn.type = 'button';
-            iconBtn.className = 'sel-qr-icon-btn ' + def.cls;
-            iconBtn.title = def.label;
-            iconBtn.setAttribute('aria-label', def.label);
-            iconBtn.innerHTML = def.svg;
-            (function (original) { iconBtn.addEventListener('click', function () { original.click(); }); })(inp);
-            iconRow2.appendChild(iconBtn);
-            if (!inserted2 && inp.parentNode) {
-              inp.parentNode.insertBefore(iconRow2, inp);
-              inserted2 = true;
-            }
-          }
-        }
-      } catch (eIcons) {}
+      }
 
       /* Boutons MP / Fiche / Relations dans la ligne de rang.
          Le .sel-post-rank et les boutons sont placés côte à côte dans un

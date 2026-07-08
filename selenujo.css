@@ -4163,24 +4163,20 @@ ul.profile-icons li.btn-report img {
 /* Force la largeur complète de l'éditeur (FA impose width:50% en inline) */
 #textarea_content { width: 100% !important; text-align: left !important; margin: 0 !important; }
 #quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
-/* Boutons Prévisualisation / Envoyer dans le cadre */
-#quick_reply input[type="submit"] {
-  margin-top: 10px;
-  margin-right: 8px;
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 7px;
-  font-size: 12px;
-  border: 1px solid var(--border-mid);
-  background: var(--surface-4);
-  color: var(--text-mid);
-  cursor: pointer;
+/* Boutons icône Prévisualisation / Envoyer (remplacent les input[submit] via JS) */
+.sel-qr-actions { display: flex; gap: 6px; padding: 10px 0 2px; }
+.sel-qr-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 7px; border: 1px solid var(--border-mid);
+  background: var(--surface-4); color: var(--text-mid);
+  cursor: pointer; flex-shrink: 0;
   transition: background 0.15s, color 0.15s;
 }
-#quick_reply input[type="submit"]:hover { background: var(--surface-3); color: var(--text-hi); }
-#quick_reply input[name="post"] { background: var(--gold); color: var(--surface-2); border-color: transparent; }
-#quick_reply input[name="post"]:hover { opacity: 0.85; color: var(--surface-2); }
+.sel-qr-icon-btn svg { width: 15px; height: 15px; pointer-events: none; }
+.sel-qr-icon-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
+.sel-qr-icon-btn--post { background: var(--gold); color: var(--surface-2); border-color: transparent; }
+.sel-qr-icon-btn--post:hover { opacity: 0.85; }
 .sel-qr-row {
   display: flex;
   flex-wrap: wrap;
@@ -4213,6 +4209,18 @@ ul.profile-icons li.btn-report img {
   border-bottom: 1px solid var(--border) !important;
   border-radius: 10px 10px 0 0 !important;
 }
+/* Toolbar : masque tous les boutons sauf les 8 retenus */
+.sceditor-toolbar .sceditor-button { display: none !important; }
+.sceditor-button-bold,
+.sceditor-button-italic,
+.sceditor-button-underline,
+.sceditor-button-strike,
+.sceditor-button-member,
+.sceditor-button-emoticon,
+.sceditor-button-image,
+.sceditor-button-source { display: inline-block !important; }
+/* Retire la séparation visuelle des groupes vides */
+.sceditor-group { border-right: none !important; margin: 0 !important; padding: 0 2px !important; }
 .sceditor-button div {
   filter: invert(0.7) brightness(1.4);
   opacity: 0.85;

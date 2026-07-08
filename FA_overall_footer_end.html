@@ -285,20 +285,81 @@
         });
       }
 
-      /* Compteur de mots */
+      /* Compteur de mots — lit depuis l'iframe SCEditor en mode visuel
+         ou depuis la textarea en mode source */
       if (qr) {
         var textarea = qr.querySelector('textarea[name="message"]') || qr.querySelector('textarea');
         if (textarea) {
           var counter = document.createElement('div');
           counter.className = 'sel-word-counter';
+          var getScFrame = function () {
+            return qr.querySelector('.sceditor-container iframe') || null;
+          };
           var updateCounter = function () {
-            var words = textarea.value.trim().split(/\s+/).filter(Boolean);
+            var text = '';
+            try {
+              var frame = getScFrame();
+              if (frame && frame.contentDocument && frame.contentDocument.body) {
+                text = frame.contentDocument.body.innerText || '';
+              } else {
+                text = textarea.value;
+              }
+            } catch (e) { text = textarea.value; }
+            var words = text.trim().split(/\s+/).filter(Boolean);
             counter.textContent = words.length + ' mot' + (words.length === 1 ? '' : 's');
           };
+          /* Attache les events sur la textarea (mode source) */
           textarea.addEventListener('input', updateCounter);
+          /* Attache sur l'iframe SCEditor une fois disponible */
+          var attachScFrame = function () {
+            try {
+              var frame = getScFrame();
+              if (frame && frame.contentDocument && frame.contentDocument.body) {
+                frame.contentDocument.body.addEventListener('input', updateCounter);
+                frame.contentDocument.body.addEventListener('keyup', updateCounter);
+              }
+            } catch (e) {}
+          };
+          setTimeout(attachScFrame, 900);
+          /* Polling de secours toutes les 600ms (couvre le basculement visuel/source) */
+          setInterval(updateCounter, 600);
           updateCounter();
           qr.appendChild(counter);
         }
+      }
+
+      /* Boutons Prévisualisation / Envoyer → icônes avec tooltip */
+      if (qr) {
+        var submitBtns = qr.querySelectorAll('input[type="submit"]');
+        var iconDefs = [
+          { name: 'preview', label: 'Prévisualisation', cls: 'sel-qr-icon-btn--preview',
+            svg: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8a13 13 0 0 1-1.66 2.043C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/></svg>' },
+          { name: 'post', label: 'Envoyer', cls: 'sel-qr-icon-btn--post',
+            svg: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11zM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493z"/></svg>' }
+        ];
+        var iconRow = document.createElement('div');
+        iconRow.className = 'sel-qr-actions';
+        var firstInserted = false;
+        submitBtns.forEach(function (inp) {
+          var def = null;
+          for (var d = 0; d < iconDefs.length; d++) {
+            if (inp.getAttribute('name') === iconDefs[d].name) { def = iconDefs[d]; break; }
+          }
+          if (!def) return;
+          inp.style.cssText = 'position:absolute;opacity:0;pointer-events:none;width:0;height:0;overflow:hidden;';
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'sel-qr-icon-btn ' + def.cls;
+          btn.title = def.label;
+          btn.setAttribute('aria-label', def.label);
+          btn.innerHTML = def.svg;
+          (function (orig) { btn.addEventListener('click', function () { orig.click(); }); })(inp);
+          iconRow.appendChild(btn);
+          if (!firstInserted) {
+            inp.parentNode.insertBefore(iconRow, inp);
+            firstInserted = true;
+          }
+        });
       }
 
       /* Boutons MP / Fiche / Relations dans la ligne de rang.

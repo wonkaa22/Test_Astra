@@ -4133,7 +4133,7 @@ ul.profile-icons li.btn-report img {
 .fa_like_div .fa_like:hover { color: var(--gold); border-color: var(--gold-dim); }
 .fa_like_div .fa_dislike:hover { color: var(--coral); border-color: var(--coral); }
 .fa_like_div .rep-button i { display: none; }
-.fa_like_div .rep-button > span { display: none; } /* texte masqué — boutons icône seule */
+.fa_like_div .rep-button .sel-like-label { display: none; } /* libellé texte masqué — icône + compteur seuls */
 .fa_like_list,
 .fa_dislike_list {
   flex: 1;

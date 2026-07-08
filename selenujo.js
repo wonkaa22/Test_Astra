@@ -395,40 +395,34 @@
     topicAdminP.remove();
   }
 
+  /* Retire le formulaire quickmod (select FA) sans le convertir en icônes
+     car S_TOPIC_ADMIN fournit déjà les mêmes actions sous forme de liens */
   var quickmodFs = document.querySelector('fieldset.quickmod');
   if (quickmodFs) {
     var modForm2 = quickmodFs.closest('form');
-    var modSel = quickmodFs.querySelector('select');
-    if (modForm2 && modSel) {
-      Array.prototype.forEach.call(modSel.options, function (opt) {
-        if (!opt.value) return;
-        var lbl = (opt.text || '').trim();
-        var key = lbl.toLowerCase().replace(/\s+/g, '').substring(0, 12);
-        if (key && seenTitles[key]) return;
-        if (key) seenTitles[key] = true;
-        var btn2 = document.createElement('button');
-        btn2.type = 'button';
-        btn2.className = 'sel-mod-btn';
-        btn2.title = lbl;
-        btn2.innerHTML = svgFor(lbl);
-        btn2.addEventListener('click', function () {
-          modSel.value = opt.value;
-          modForm2.submit();
-        });
-        modBtns.appendChild(btn2);
-      });
-      modForm2.remove();
-    }
+    if (modForm2) { modForm2.remove(); } else { quickmodFs.remove(); }
   }
 
-  if (modBtns.children.length) {
+  /* Lien vers le panneau d'administration (si admin) */
+  var adminLink = document.querySelector('a[href*="/admin/index"]') || document.querySelector('#nav-profile a[href*="/admin"]');
+  var isAdmin = !!adminLink;
+
+  if (modBtns.children.length || isAdmin) {
     modCombined = document.createElement('div');
     modCombined.className = 'sel-mod-combined forum-width';
     var modLbl = document.createElement('span');
     modLbl.className = 'sel-mod-label';
     modLbl.textContent = 'Modération';
     modCombined.appendChild(modLbl);
-    modCombined.appendChild(modBtns);
+    if (modBtns.children.length) { modCombined.appendChild(modBtns); }
+    if (isAdmin) {
+      var adminBtn = document.createElement('a');
+      adminBtn.href = '/admin/index.forum';
+      adminBtn.className = 'sel-mod-btn sel-admin-btn';
+      adminBtn.title = 'Panneau d\'administration';
+      adminBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>';
+      modCombined.appendChild(adminBtn);
+    }
     var afterQr = document.getElementById('sel-quickreply') || document.getElementById('quick_reply');
     if (afterQr && afterQr.parentNode) {
       afterQr.parentNode.insertBefore(modCombined, afterQr.nextSibling);
@@ -468,6 +462,16 @@
     if (idx > 0) { legalBar.appendChild(document.createTextNode(' | ')); }
     legalBar.appendChild(el);
   });
+  /* Lien admin en fin de barre légale */
+  var footerAdminLink = document.querySelector('a[href*="/admin/index"]') || document.querySelector('#nav-profile a[href*="/admin"]');
+  if (footerAdminLink) {
+    legalBar.appendChild(document.createTextNode(' | '));
+    var footerAdminA = document.createElement('a');
+    footerAdminA.href = '/admin/index.forum';
+    footerAdminA.textContent = 'Administration';
+    footerAdminA.className = 'sel-footer-admin';
+    legalBar.appendChild(footerAdminA);
+  }
   if (!legalBar.childNodes.length) { return; }
 
   var footer = document.createElement('footer');

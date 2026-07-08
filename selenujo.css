@@ -4160,7 +4160,7 @@ ul.profile-icons li.btn-report img {
 #textarea_content { width: 100% !important; text-align: left !important; margin: 0 !important; }
 #quick_reply > div[style*="text-align:center"] { text-align: left !important; margin: 0 !important; }
 /* Boutons icône Prévisualisation / Envoyer — déplacés sous l'avatar par JS */
-.sel-qr-actions { display: flex; flex-direction: column; gap: 6px; padding: 8px 0 2px; }
+.sel-qr-actions { display: flex; flex-direction: row; gap: 6px; padding: 8px 0 2px; flex-wrap: wrap; }
 /* Wrapper pour le tooltip CSS au survol */
 .sel-qr-btn-wrap { position: relative; display: block; }
 .sel-qr-btn-wrap::after {
@@ -4339,6 +4339,10 @@ fieldset.jumpbox { display: none !important; }
 }
 .sel-mod-btn svg { width: 15px; height: 15px; pointer-events: none; }
 .sel-mod-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-hi); }
+.sel-admin-btn { border-color: var(--gold-faint); color: var(--gold-dim); }
+.sel-admin-btn:hover { background: var(--gold-faint); color: var(--gold); }
+.sel-footer-admin { color: var(--gold-dim); }
+.sel-footer-admin:hover { color: var(--gold); }
 
 /* Bloc permissions visiteur : style sobre */
 .block.forum-width {

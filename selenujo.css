@@ -4664,6 +4664,7 @@ a.sel-post-num-link:hover { color: var(--gold); }
 :root {
   --sel-sidebar-w: 320px;
   --sel-sidebar-gutter: 48px;
+  --sel-content-gap: 16px;
   --accent-a: var(--gold);
   --accent-b: #6fcf97;
   --accent-b-dim: rgba(111,207,151,0.65);
@@ -4694,7 +4695,7 @@ a.sel-post-num-link:hover { color: var(--gold); }
 .sel-home-shell { position: relative; }
 
 .sel-home-main {
-  margin-left: calc(var(--sel-sidebar-w) + var(--sel-sidebar-gutter) * 2);
+  margin-left: calc(var(--sel-sidebar-w) + var(--sel-sidebar-gutter) + var(--sel-content-gap));
   margin-right: var(--sel-sidebar-gutter);
   padding: var(--sel-sidebar-gutter) 0 40px;
   min-width: 0;

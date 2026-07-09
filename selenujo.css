@@ -4691,6 +4691,45 @@ a.sel-post-num-link:hover { color: var(--gold); }
   z-index: 2;
 }
 
+/* Cadre "à coins" : angles épais en dégradé, sans trait continu entre eux
+   (juste les angles visibles, pas de ligne pleine sur les bords). */
+.sel-corner-frame { position: relative; }
+.sel-corner-frame > .sel-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 3;
+}
+.sel-corner-frame > .sel-corner-tl {
+  top: -2.5px;
+  left: -2.5px;
+  border-top: 2.5px solid var(--accent-a);
+  border-left: 2.5px solid var(--accent-a);
+  border-top-left-radius: 12px;
+}
+.sel-corner-frame > .sel-corner-tr {
+  top: -2.5px;
+  right: -2.5px;
+  border-top: 2.5px solid var(--accent-b);
+  border-right: 2.5px solid var(--accent-b);
+  border-top-right-radius: 12px;
+}
+.sel-corner-frame > .sel-corner-bl {
+  bottom: -2.5px;
+  left: -2.5px;
+  border-bottom: 2.5px solid var(--accent-a);
+  border-left: 2.5px solid var(--accent-a);
+  border-bottom-left-radius: 12px;
+}
+.sel-corner-frame > .sel-corner-br {
+  bottom: -2.5px;
+  right: -2.5px;
+  border-bottom: 2.5px solid var(--accent-b);
+  border-right: 2.5px solid var(--accent-b);
+  border-bottom-right-radius: 12px;
+}
+
 /* ── Coquille générale ── */
 .sel-home-shell { position: relative; }
 
@@ -4977,7 +5016,6 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 .sel-home-widget {
   background: var(--surface-2);
   border-radius: 14px;
-  border: 1px solid var(--border);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -4999,7 +5037,6 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   min-width: 0;
   background: var(--surface-2);
   border-radius: 12px;
-  border: 1px solid var(--border);
   padding: 10px 12px;
 }
 .sel-home-mini-label {

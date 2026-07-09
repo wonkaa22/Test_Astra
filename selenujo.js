@@ -836,10 +836,19 @@
     return uname;
   }
   /* Nom du COMPTE FA réellement connecté (pas le personnage actif dans le
-     switcheroo, qui peut différer si on utilise un multi-compte) — utilisé
-     pour l'en-tête de la colonne, qui porte les actions du compte
-     (déconnexion, profil...). {USERNAME} est injecté par overall_header. */
+     switcheroo, qui peut différer si on utilise un gestionnaire de
+     multi-comptes) — utilisé pour l'en-tête de la colonne, qui porte les
+     actions du compte (déconnexion, profil...).
+     {USERNAME} s'est révélé vide dans ce contexte de template FA ; on
+     utilise donc en priorité _userdata, la variable JS globale que FA
+     injecte lui-même avec les infos de session (déjà utilisée comme
+     repli dans selFindActiveName). */
   function selGetAccountUsername() {
+    try {
+      if (typeof _userdata !== 'undefined' && _userdata && _userdata['username']) {
+        return String(_userdata['username']);
+      }
+    } catch (ex) { /* ignore */ }
     var el = document.getElementById('sel-session-username');
     var t = el ? el.textContent.trim() : '';
     return t || selFindActiveName();

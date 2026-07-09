@@ -35,13 +35,197 @@
 
 {CHATBOX_TOP}
 
+<!-- Cette page a sa propre colonne de navigation fixe : on masque la
+     navbar globale (#sel-navbar, injectée par overall_header) uniquement ici. -->
+<style type="text/css">#sel-navbar{display:none !important;}</style>
+
+<!-- ═══════════════════════════════════════
+     COLONNE FIXE (accueil uniquement)
+     ═══════════════════════════════════════ -->
+<div class="sel-home-shell">
+  <div class="sel-home-scrim" id="selHomeScrim"></div>
+
+  <button class="sel-home-ov-btn sel-home-ov-theme" id="selHomeThemeBtn" type="button" aria-label="Changer de thème" onclick="selToggle(this)">&#127769;</button>
+  <button class="sel-home-ov-btn sel-home-ov-collapse" id="selHomeCollapseBtn" type="button" aria-label="Replier la colonne">&#8250;</button>
+
+  <aside class="sel-home-sidebar sel-grad-frame" id="selHomeSidebar">
+    <div class="sel-home-sidebar-inner">
+
+      <!-- En-tête : invité -->
+      <div class="sel-home-head" id="selHomeHeadGuest">
+        <a class="sel-home-pill-btn" id="selHomeLogin" href="#">Connexion</a>
+        <a class="sel-home-pill-btn" id="selHomeRegister" href="#">Inscription</a>
+      </div>
+      <!-- En-tête : connecté·e (masqué par défaut, révélé par JS) -->
+      <div class="sel-home-head sel-home-head-user" id="selHomeHeadUser" style="display:none;">
+        <div class="sel-home-charname" id="selHomeCharName">Personnage</div>
+        <a class="sel-home-pill-btn" id="selHomeProfile" href="#">Profil</a>
+      </div>
+
+      <div class="sel-home-banner" style="background-image:url('https://cdnb.artstation.com/p/assets/images/images/069/670/221/4k/rebecca-hu-scav104-bg-a022-levis-surreal-dreamscape-v04-rh.jpg?1700690801');"></div>
+
+      <nav class="sel-home-navgroup" id="selHomeNavA">
+        <div class="sel-home-navrow" id="selHomeNavARow">
+          <a class="sel-home-navlink" href="/">Accueil</a>
+          <a class="sel-home-navlink" href="{U_SEARCH}">Recherche</a>
+          <a class="sel-home-navlink" href="{U_MEMBERLIST}">Membres</a>
+        </div>
+        <button class="sel-home-navtoggle" data-target="selHomeNavARow" type="button" aria-label="Replier">&#8743;</button>
+      </nav>
+      <nav class="sel-home-navgroup" id="selHomeNavB">
+        <div class="sel-home-navrow" id="selHomeNavBRow">
+          <a class="sel-home-navlink" href="https://astraluna.forumactif.com/h7-guidebook-v7" target="_blank" rel="noopener">Guidebook</a>
+          <a class="sel-home-navlink" href="#">Liens utiles</a>
+        </div>
+        <button class="sel-home-navtoggle" data-target="selHomeNavBRow" type="button" aria-label="Replier">&#8744;</button>
+      </nav>
+
+      <div class="sel-home-scrollnav">
+        <button id="selHomeScrollTop" type="button" aria-label="Haut de page">&#10094;</button>
+        <button id="selHomeScrollBottom" type="button" aria-label="Bas de page">&#10094;</button>
+      </div>
+
+      <!-- Switcheroo (déplacé ici en JS quand connecté·e) -->
+      <div class="sel-home-switcheroo-slot" id="selHomeSwitcherooSlot"></div>
+
+      <!-- Plugin météo — à intégrer tel quel plus tard, dimensions à respecter -->
+      <div class="sel-home-widget sel-home-weather">
+        <div class="sel-home-widget-label">Plugin météo</div>
+      </div>
+
+      <!-- Phase lunaire (widget existant, replacé ici en attendant mieux) -->
+      <div class="sel-home-widget sel-home-moonphase">
+        <div id="sel-moon-phase"></div>
+      </div>
+
+      <!-- Préliens attendus / Recherche RPs — remplis manuellement -->
+      <div class="sel-home-mini-row">
+        <div class="sel-home-mini-box">
+          <div class="sel-home-mini-label">Préliens attendus</div>
+          <ul class="sel-home-mini-list">
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+          </ul>
+        </div>
+        <div class="sel-home-mini-box sel-home-mini-box--alt">
+          <div class="sel-home-mini-label">Recherche RPs</div>
+          <ul class="sel-home-mini-list">
+            <li>Lorem ipsum dolor sit amet.</li>
+            <li>Lorem ipsum dolor sit amet.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Votes (renverront vers les sites de vote plus tard) -->
+      <div class="sel-home-votes">
+        <a class="sel-home-vote-btn" href="/">1</a>
+        <a class="sel-home-vote-btn" href="/">2</a>
+        <a class="sel-home-vote-btn" href="/">3</a>
+      </div>
+
+    </div>
+  </aside>
+
+  <button class="sel-home-reopen" id="selHomeReopenBtn" type="button" aria-label="Ouvrir la colonne">&#8250;</button>
+
+  <script type="text/javascript">
+  //<![CDATA[
+  (function() {
+    function faHref(part) {
+      var a = document.querySelector('#sel-fa-nav a[href*="' + part + '"]');
+      return a ? a.getAttribute('href') : '#';
+    }
+    function selFindActiveName() {
+      var uiWords = ['anonymous', 'associer', 'ajouter', 'personnage', 'compte', 'connect'];
+      function isUi(t) {
+        var l = t.toLowerCase();
+        for (var i = 0; i < uiWords.length; i++) { if (l.indexOf(uiWords[i]) !== -1) { return true; } }
+        return false;
+      }
+      var uname = '';
+      var sw = document.getElementById('switcheroo');
+      if (sw) {
+        var walker = document.createTreeWalker(sw, 4, null, false);
+        var nd;
+        while ((nd = walker.nextNode())) {
+          var tv = nd.nodeValue.trim();
+          if (tv.length > 2 && !isUi(tv)) { uname = tv; break; }
+        }
+      }
+      if (!uname) {
+        try {
+          var ud = (typeof _userdata !== 'undefined') ? _userdata : null;
+          if (ud && ud['username'] && !isUi(String(ud['username']))) { uname = String(ud['username']); }
+        } catch (ex) { uname = ''; }
+      }
+      return uname;
+    }
+    function selHomeSidebarState() {
+      var loggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
+      var guestEl = document.getElementById('selHomeHeadGuest');
+      var userEl = document.getElementById('selHomeHeadUser');
+      if (!loggedIn) {
+        guestEl.style.display = '';
+        userEl.style.display = 'none';
+        document.getElementById('selHomeLogin').setAttribute('href', faHref('login'));
+        document.getElementById('selHomeRegister').setAttribute('href', faHref('register'));
+        return;
+      }
+      guestEl.style.display = 'none';
+      userEl.style.display = '';
+      document.getElementById('selHomeProfile').setAttribute('href', faHref('profile'));
+      var name = selFindActiveName();
+      if (name) { document.getElementById('selHomeCharName').textContent = name; }
+      var sw = document.getElementById('switcheroo');
+      var slot = document.getElementById('selHomeSwitcherooSlot');
+      if (sw && slot && sw.parentNode !== slot) {
+        slot.appendChild(sw);
+        sw.style.display = '';
+      }
+    }
+    function selHomeCollapseToggle() {
+      document.documentElement.classList.toggle('sel-sidebar-collapsed');
+    }
+    function selHomeBindOnce() {
+      document.getElementById('selHomeCollapseBtn').addEventListener('click', selHomeCollapseToggle);
+      document.getElementById('selHomeReopenBtn').addEventListener('click', selHomeCollapseToggle);
+      document.getElementById('selHomeScrim').addEventListener('click', function() {
+        document.documentElement.classList.remove('sel-sidebar-collapsed');
+      });
+      document.querySelectorAll('.sel-home-navtoggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var row = document.getElementById(btn.getAttribute('data-target'));
+          if (row) { row.classList.toggle('is-collapsed'); }
+        });
+      });
+      document.getElementById('selHomeScrollTop').addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      document.getElementById('selHomeScrollBottom').addEventListener('click', function() {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      });
+      if (window.matchMedia && window.matchMedia('(max-width: 1049px)').matches) {
+        document.documentElement.classList.add('sel-sidebar-collapsed');
+      }
+    }
+    selHomeBindOnce();
+    selHomeSidebarState();
+    window.addEventListener('load', selHomeSidebarState);
+    setTimeout(selHomeSidebarState, 800);
+  })();
+  //]]>
+  </script>
+
+  <div class="sel-home-main" id="selHomeMain">
+
 <!-- ═══════════════════════════════════════
      ENCADRÉ D'ACCUEIL
      ═══════════════════════════════════════ -->
 <div class="forum-width sel-accueil-wrap">
 
   <!-- Bannière -->
-  <div class="sel-banner">— illustration du forum —</div>
+  <div class="sel-banner sel-grad-frame" style="background-image:url('https://cdnb.artstation.com/p/assets/images/images/069/670/221/4k/rebecca-hu-scav104-bg-a022-levis-surreal-dreamscape-v04-rh.jpg?1700690801');">— illustration du forum —</div>
 
   <!-- Bloc principal -->
   <div class="sel-main-block">
@@ -68,55 +252,57 @@
     </div>
 
     <!-- Colonne droite -->
-    <div class="sel-col-right">
+    <div class="sel-col-right sel-col-right--home">
 
-      <!-- Prédéfinis -->
-      <div class="sel-widget sel-w-predefinis">
-        <div class="sel-widget-label">Prédéfinis</div>
-        <div class="sel-predef-grid">
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
-          <div class="sel-predef-item"><div class="sel-predef-overlay"><span>À compléter</span></div></div>
+      <!-- Staff + Prédéfinis, empilés -->
+      <div class="sel-w-staff-col">
+        <div class="sel-widget sel-w-staff sel-grad-frame">
+          <div class="sel-widget-label">Staff du forum</div>
+          <div class="sel-staff-grid">
+            <div class="sel-home-staff-card" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795');"><div class="sel-home-staff-card-tint"></div><div class="sel-home-staff-card-name">Humain</div></div>
+            <div class="sel-home-staff-card" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795');"><div class="sel-home-staff-card-tint"></div><div class="sel-home-staff-card-name">Humain</div></div>
+            <div class="sel-home-staff-card" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795');"><div class="sel-home-staff-card-tint"></div><div class="sel-home-staff-card-name">Humain</div></div>
+          </div>
+        </div>
+        <div class="sel-widget sel-w-predefinis sel-grad-frame">
+          <div class="sel-widget-label">Prédéfinis</div>
+          <div class="sel-predef-grid">
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 1, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 2, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 3, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 4, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 5, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 6, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 7, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 8, blabla</span></div></div>
+            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 9, blabla</span></div></div>
+          </div>
         </div>
       </div>
 
-      <!-- Préliens -->
-      <div class="sel-widget sel-w-preliens">
-        <div class="sel-widget-label">Préliens recherchés</div>
-        <div class="sel-prelien-scroll">
-          <div class="sel-prelien-row"><span class="sel-prelien-name">À compléter</span><span class="sel-prelien-info">—</span></div>
-          <div class="sel-prelien-row"><span class="sel-prelien-name">À compléter</span><span class="sel-prelien-info">—</span></div>
-          <div class="sel-prelien-row"><span class="sel-prelien-name">À compléter</span><span class="sel-prelien-info">—</span></div>
-        </div>
+      <!-- Derniers messages (déjà généré par le module FA, on garde tel quel) -->
+      <div class="sel-widget sel-w-lastposts sel-grad-frame">
+        <div class="sel-widget-label">Derniers messages</div>
+        <!-- BEGIN giefmod_index1 -->{giefmod_index1.MODVAR}<!-- END giefmod_index1 -->
       </div>
 
-      <!-- Carousel "En ce moment" -->
-      <div class="sel-widget sel-w-carousel">
-        <div class="sel-widget-label">En ce moment</div>
+      <!-- Carousel "En ce moment" — contrôles superposés sur l'image -->
+      <div class="sel-widget sel-w-carousel sel-grad-frame">
         <div class="sel-carousel-body">
-          <div class="sel-slide active" style="background:linear-gradient(135deg,#1a2540,#2d1a28);">
-            <div class="sel-slide-label">Événement RP</div>
-            <div class="sel-slide-title">À compléter</div>
-            <div class="sel-slide-desc">Description de l'événement en cours.</div>
+          <div class="sel-slide active" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795'); background-size:cover; background-position:center;">
+            <div class="sel-slide-date">Date</div>
+            <div class="sel-slide-title">Titre de l'événement<br>sur deux lignes</div>
           </div>
-          <div class="sel-slide" style="background:linear-gradient(135deg,#1a3028,#2d2810);">
-            <div class="sel-slide-label">Bilan</div>
-            <div class="sel-slide-title">À compléter</div>
-            <div class="sel-slide-desc">Résumé du dernier cycle.</div>
+          <div class="sel-slide" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795'); background-size:cover; background-position:center;">
+            <div class="sel-slide-date">Date</div>
+            <div class="sel-slide-title">Titre de l'événement<br>sur deux lignes</div>
           </div>
-          <div class="sel-slide" style="background:linear-gradient(135deg,#28201a,#401a1a);">
-            <div class="sel-slide-label">Annonce</div>
-            <div class="sel-slide-title">À compléter</div>
-            <div class="sel-slide-desc">Dernière annonce du staff.</div>
+          <div class="sel-slide" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795'); background-size:cover; background-position:center;">
+            <div class="sel-slide-date">Date</div>
+            <div class="sel-slide-title">Titre de l'événement<br>sur deux lignes</div>
           </div>
         </div>
-        <div class="sel-carousel-nav">
+        <div class="sel-carousel-nav sel-carousel-nav--overlay">
           <button class="sel-carousel-arrow" id="sel-prev">&#8592;</button>
           <div class="sel-carousel-dots">
             <span class="sel-dot active" data-i="0"></span>
@@ -125,29 +311,6 @@
           </div>
           <button class="sel-carousel-arrow" id="sel-next">&#8594;</button>
         </div>
-      </div>
-
-      <!-- Staff + image déco -->
-      <div class="sel-w-staff-col">
-        <div class="sel-widget sel-w-staff">
-          <div class="sel-widget-label">Staff</div>
-          <div class="sel-staff-grid">
-            <div class="sel-staff-item"><div class="sel-staff-bg" style="background:linear-gradient(135deg,#2d3a52,#1a2235);"></div><div class="sel-staff-bar">Prénom<div class="sel-staff-role">Admin</div></div></div>
-            <div class="sel-staff-item"><div class="sel-staff-bg" style="background:linear-gradient(135deg,#3a2d52,#1a1a35);"></div><div class="sel-staff-bar">Prénom<div class="sel-staff-role">Modo</div></div></div>
-            <div class="sel-staff-item"><div class="sel-staff-bg" style="background:linear-gradient(135deg,#522d2d,#351a1a);"></div><div class="sel-staff-bar">Prénom<div class="sel-staff-role">Modo</div></div></div>
-          </div>
-        </div>
-        <div class="sel-widget sel-w-staff-image">image décorative</div>
-      </div>
-
-      <!-- Derniers messages (placeholder plugin) -->
-      <div class="sel-widget sel-w-lastposts">
-        <!-- BEGIN giefmod_index1 -->{giefmod_index1.MODVAR}<!-- END giefmod_index1 -->
-      </div>
-
-      <!-- Phase lunaire — widget complet face cachée -->
-      <div class="sel-widget sel-w-moon">
-        <div id="sel-moon-phase"></div>
       </div>
 
     </div>
@@ -580,19 +743,6 @@ setTimeout(selFormatDates, 2000);
      BARRE SOUS-ACCUEIL : votes + tagline + partenaires
      ═══════════════════════════════════════ -->
 <div class="forum-width sel-subbar">
-
-  <!-- Votes (A/B/C) -->
-  <div class="sel-subbar-votes">
-    <a class="sel-vote-slot" href="#" title="Vote A" target="_blank" rel="noopener">
-      <img src="" alt="A"/>
-    </a>
-    <a class="sel-vote-slot" href="#" title="Vote B" target="_blank" rel="noopener">
-      <img src="" alt="B"/>
-    </a>
-    <a class="sel-vote-slot" href="#" title="Vote C" target="_blank" rel="noopener">
-      <img src="" alt="C"/>
-    </a>
-  </div>
 
   <!-- Tagline centrale -->
   <p class="sel-subbar-tagline">— nation lunaire ind&#233;pendante, fond&#233;e en 1887 —</p>
@@ -1268,5 +1418,8 @@ selHorsRpTransform();
   });
 })();
 </script>
+
+  </div><!-- /sel-home-main -->
+</div><!-- /sel-home-shell -->
 
 {AUTO_DST}

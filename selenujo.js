@@ -835,6 +835,15 @@
     }
     return uname;
   }
+  /* Nom du COMPTE FA réellement connecté (pas le personnage actif dans le
+     switcheroo, qui peut différer si on utilise un multi-compte) — utilisé
+     pour l'en-tête de la colonne, qui porte les actions du compte
+     (déconnexion, profil...). {USERNAME} est injecté par overall_header. */
+  function selGetAccountUsername() {
+    var el = document.getElementById('sel-session-username');
+    var t = el ? el.textContent.trim() : '';
+    return t || selFindActiveName();
+  }
   /* setAttribute défensif : si l'id n'existe pas (ex. template FA pas à
      jour), on ignore plutôt que de planter et de couper le reste du
      script (tout ce qui suit selHomeSidebar() dans ce fichier). */
@@ -861,7 +870,7 @@
     setHref('selHomeEditProfile', editHref);
     setHref('selHomeViewProfile', editHref.split('?')[0]);
     setHref('selHomeNewTopics', '/search?search_id=newposts');
-    var name = selFindActiveName();
+    var name = selGetAccountUsername();
     var nameEl = document.getElementById('selHomeCharName');
     if (name && nameEl) { nameEl.textContent = name; }
     var sw = document.getElementById('switcheroo');
@@ -871,11 +880,22 @@
       sw.style.display = '';
     }
     var iconRow = document.getElementById('selHomeIconRow');
+    if (iconRow) { iconRow.style.display = ''; }
     var notifBtn = document.getElementById('notiffi_button');
     if (iconRow && notifBtn && notifBtn.parentNode !== iconRow) {
       iconRow.insertBefore(notifBtn, iconRow.firstChild);
     }
-    setHref('selHomeMessages', faHref('privmsg'));
+    var pmLink = document.getElementById('selHomeMessages');
+    var pmA = document.querySelector('#sel-fa-nav a[href*="privmsg"]');
+    if (pmLink && pmA) {
+      pmLink.style.display = '';
+      pmLink.setAttribute('href', pmA.getAttribute('href'));
+      var badge = document.getElementById('selHomeMessagesBadge');
+      if (badge) {
+        var m = ((pmA.textContent || '') + ' ' + (pmA.getAttribute('title') || '')).match(/\d+/);
+        badge.textContent = m ? m[0] : '';
+      }
+    }
   }
   function selHomeCollapseToggle() {
     document.documentElement.classList.toggle('sel-sidebar-collapsed');

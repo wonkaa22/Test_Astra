@@ -93,12 +93,16 @@
         </div>
       </div>
 
-      <!-- Switcheroo (déplacé ici en JS quand connecté·e) + notifications/messages -->
-      <div class="sel-home-switcheroo-row">
-        <div class="sel-home-switcheroo-slot" id="selHomeSwitcherooSlot"></div>
-        <div class="sel-home-icon-row" id="selHomeIconRow">
-          <a class="sel-home-icon-btn" id="selHomeMessages" href="#" aria-label="Messages">&#9993;</a>
-        </div>
+      <!-- Switcheroo (déplacé ici en JS quand connecté·e) -->
+      <div class="sel-home-switcheroo-slot" id="selHomeSwitcherooSlot"></div>
+
+      <!-- Notifications + messages — masqués par défaut, révélés en JS
+           uniquement pour les comptes connectés -->
+      <div class="sel-home-icon-row" id="selHomeIconRow" style="display:none;">
+        <a class="sel-home-icon-btn" id="selHomeMessages" href="#" aria-label="Messages" style="display:none;">
+          <span class="sel-home-icon-glyph">&#9993;</span>
+          <span class="sel-home-icon-badge" id="selHomeMessagesBadge"></span>
+        </a>
       </div>
 
       <!-- Phase lunaire -->

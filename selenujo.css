@@ -4652,4 +4652,429 @@ a.sel-post-num-link:hover { color: var(--gold); }
   color: var(--text-lo);
   padding: 2px 0;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   13. PAGE D'ACCUEIL — NOUVELLE MAQUETTE (colonne fixe + contenu défilant)
+   Tout ce qui suit est scopé à FA_index_body.html (préfixe .sel-home-)
+   et vient APRÈS les règles existantes pour gagner la cascade sans
+   avoir besoin de !important partout.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --sel-sidebar-w: 320px;
+  --sel-sidebar-gutter: 32px;
+  --accent-a: var(--gold);
+  --accent-b: #6fcf97;
+  --accent-b-dim: rgba(111,207,151,0.65);
+}
+:root.light {
+  --accent-a: var(--gold);
+  --accent-b: #4f9e6f;
+  --accent-b-dim: rgba(79,158,111,0.6);
+}
+
+/* Cadre à bordure dégradée (orange → vert) — utilitaire réutilisable */
+.sel-grad-frame { position: relative; }
+.sel-grad-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Coquille générale ── */
+.sel-home-shell { position: relative; }
+
+.sel-home-main {
+  margin-left: calc(var(--sel-sidebar-w) + var(--sel-sidebar-gutter) * 2);
+  padding: var(--sel-sidebar-gutter) 24px 40px;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
+}
+
+/* ── Colonne fixe ── */
+.sel-home-sidebar {
+  position: fixed;
+  top: var(--sel-sidebar-gutter);
+  left: var(--sel-sidebar-gutter);
+  width: var(--sel-sidebar-w);
+  height: calc(100vh - var(--sel-sidebar-gutter) * 2);
+  background: var(--surface-1);
+  border-radius: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.sel-home-sidebar-inner {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-faint) transparent;
+  padding: 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sel-home-sidebar-inner::-webkit-scrollbar { width: 4px; }
+.sel-home-sidebar-inner::-webkit-scrollbar-thumb { background: var(--gold-faint); border-radius: 4px; }
+
+/* Boutons qui chevauchent le bord de la colonne (moitié dedans, moitié dehors).
+   Position: fixed et non enfants de la colonne, car .sel-home-sidebar a
+   overflow:hidden (nécessaire pour arrondir le scroll interne) qui les
+   aurait rognés s'ils débordaient de sa boîte. */
+.sel-home-ov-btn {
+  position: fixed;
+  left: calc(var(--sel-sidebar-gutter) - 18px);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  color: var(--text-hi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 45;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s;
+}
+.sel-home-ov-btn:hover { background: var(--surface-4); border-color: var(--gold-faint); }
+.sel-home-ov-theme { top: calc(var(--sel-sidebar-gutter) + 14px); }
+.sel-home-ov-collapse { top: calc(var(--sel-sidebar-gutter) + 56px); }
+html.sel-sidebar-collapsed .sel-home-ov-collapse { transform: rotate(180deg); }
+html.sel-sidebar-collapsed .sel-home-ov-theme,
+html.sel-sidebar-collapsed .sel-home-ov-collapse { opacity: 0; pointer-events: none; }
+
+/* Réouverture quand la colonne est repliée */
+.sel-home-reopen {
+  position: fixed;
+  top: var(--sel-sidebar-gutter);
+  left: var(--sel-sidebar-gutter);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  color: var(--text-hi);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+html.sel-sidebar-collapsed .sel-home-reopen { display: flex; }
+html.sel-sidebar-collapsed .sel-home-sidebar { transform: translateX(calc(-100% - var(--sel-sidebar-gutter) - 24px)); }
+html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
+
+/* En-tête colonne : invité */
+.sel-home-head { display: flex; align-items: center; gap: 8px; padding-right: 4px; flex-wrap: wrap; }
+.sel-home-head-user { justify-content: space-between; }
+.sel-home-pill-btn {
+  display: inline-block;
+  padding: 7px 15px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-mid);
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sel-home-pill-btn:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
+.sel-home-charname {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-hi);
+  line-height: 1.25;
+  min-width: 0;
+}
+
+/* Petite bannière décorative de la colonne */
+.sel-home-banner {
+  width: 100%;
+  height: 108px;
+  border-radius: 14px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Groupes de navigation repliables */
+.sel-home-navgroup { flex-shrink: 0; }
+.sel-home-navrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  overflow: hidden;
+  max-height: 200px;
+  transition: max-height 0.3s ease, opacity 0.25s ease, margin 0.3s ease;
+}
+.sel-home-navrow.is-collapsed { max-height: 0; opacity: 0; margin: 0; }
+.sel-home-navlink {
+  padding: 7px 13px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-mid);
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sel-home-navlink:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
+.sel-home-navtoggle {
+  display: none;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--text-ghost);
+  font-size: 10px;
+  padding: 4px 0 0;
+  cursor: pointer;
+}
+.sel-home-navtoggle:hover { color: var(--gold-dim); }
+
+/* Aller tout en haut / tout en bas — chevrons empilés à la verticale */
+.sel-home-scrollnav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+.sel-home-scrollnav button {
+  width: 28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-ghost);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.sel-home-scrollnav button:hover { color: var(--gold-dim); }
+#selHomeScrollTop { transform: rotate(90deg); }
+#selHomeScrollBottom { transform: rotate(-90deg); }
+
+/* Emplacement du switcheroo déplacé dans la colonne */
+.sel-home-switcheroo-slot { flex-shrink: 0; }
+.sel-home-switcheroo-slot:empty { display: none; }
+.sel-home-switcheroo-slot .switcheroo { display: block !important; }
+.sel-home-switcheroo-slot .switcheroo__squircles { flex-wrap: wrap; }
+
+/* Widgets génériques de la colonne (météo, phase lunaire) */
+.sel-home-widget {
+  background: var(--surface-2);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sel-home-weather {
+  flex: 1;
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sel-home-widget-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+.sel-home-weather .sel-home-widget-label { padding: 10px 12px; }
+.sel-home-moonphase { min-height: 150px; }
+.sel-home-moonphase #sel-moon-phase { height: 100%; }
+
+/* Préliens attendus / Recherche RPs — deux cadres côte à côte */
+.sel-home-mini-row { display: flex; gap: 10px; flex-shrink: 0; }
+.sel-home-mini-box {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-2);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+}
+.sel-home-mini-label {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.sel-home-mini-box--alt .sel-home-mini-label { text-align: right; }
+.sel-home-mini-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.sel-home-mini-list li {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-mid);
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+/* Boutons de vote 1/2/3 */
+.sel-home-votes { display: flex; justify-content: center; gap: 10px; flex-shrink: 0; padding-top: 2px; }
+.sel-home-vote-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  color: var(--text-mid);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sel-home-vote-btn:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
+
+/* ── Bannière principale + carte Bienvenue : bordure dégradée ── */
+.sel-home-main .sel-banner { background-size: cover; background-position: center; color: transparent; }
+.sel-home-main .sel-main-block.sel-grad-frame,
+.sel-home-main .sel-banner.sel-grad-frame,
+.sel-home-sidebar.sel-grad-frame { border-radius: 18px; }
+.sel-home-sidebar.sel-grad-frame { border-radius: 20px; }
+
+/* ── Carte Bienvenue : colonne droite recomposée (staff+prédéfinis / derniers messages / carrousel) ── */
+.sel-col-right--home {
+  display: grid;
+  grid-template-columns: 200px 1fr 230px;
+  grid-template-rows: 1fr;
+  gap: 10px;
+  min-height: 0;
+  max-height: 580px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.sel-col-right--home .sel-w-staff-col { grid-column: 1; grid-row: 1; align-self: start; }
+.sel-col-right--home .sel-w-staff-col .sel-w-predefinis { grid-column: unset; grid-row: unset; display: flex; flex-direction: column; }
+.sel-col-right--home .sel-w-lastposts { grid-column: 2; grid-row: 1; max-height: none; }
+.sel-col-right--home .sel-w-carousel { grid-column: 3; grid-row: 1; }
+
+/* Staff — cadre à transparence contenant juste le nom */
+.sel-home-staff-card {
+  flex: 1;
+  max-width: 110px;
+  aspect-ratio: 4/3;
+  border-radius: 9px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+.sel-home-staff-card-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,13,20,0.05) 40%, rgba(10,13,20,0.75) 100%);
+}
+.sel-home-staff-card-name {
+  position: relative;
+  z-index: 1;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* Carrousel "En ce moment" — contrôles superposés en bas à gauche de l'image */
+.sel-col-right--home .sel-w-carousel { display: flex; flex-direction: column; }
+.sel-col-right--home .sel-carousel-body { flex: 1; }
+.sel-carousel-nav--overlay {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  border-top: none;
+  padding: 0;
+  background: rgba(10,13,20,0.45);
+  border-radius: 99px;
+  backdrop-filter: blur(2px);
+}
+.sel-carousel-nav--overlay .sel-carousel-arrow { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); }
+.sel-carousel-nav--overlay .sel-carousel-arrow:hover { background: rgba(255,255,255,0.2); }
+.sel-slide-date { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.sel-col-right--home .sel-slide {
+  padding-bottom: 54px;
+  background-color: var(--surface-4);
+}
+.sel-col-right--home .sel-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(10,13,20,0.75) 100%);
+  pointer-events: none;
+}
+.sel-col-right--home .sel-slide-date,
+.sel-col-right--home .sel-slide-title { position: relative; z-index: 1; }
+
+/* ── Responsive : colonne en tiroir sous 1049px ──
+   .sel-sidebar-collapsed garde toujours le même sens (colonne masquée),
+   qu'on soit en bureau (colonne repliée à la demande) ou en mobile
+   (tiroir fermé par défaut, ouvert quand la classe est retirée). Le
+   masquage/affichage de .sel-home-sidebar lui-même est déjà géré par la
+   règle générale plus haut (hors media query) — ici on ajuste juste ce
+   qui doit différer à cette largeur : la colonne devient un tiroir qui
+   ne pousse plus le contenu, et un voile derrière elle permet de la
+   refermer en cliquant à côté. */
+@media (max-width: 1049px) {
+  .sel-home-main,
+  html.sel-sidebar-collapsed .sel-home-main { margin-left: 0; padding: 18px 16px 40px; }
+  .sel-home-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 39;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  html:not(.sel-sidebar-collapsed) .sel-home-scrim { opacity: 1; pointer-events: auto; }
+  .sel-col-right--home { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; max-height: none; }
+  .sel-col-right--home .sel-w-staff-col { grid-column: 1; grid-row: 1; }
+  .sel-col-right--home .sel-w-carousel { grid-column: 2; grid-row: 1; }
+  .sel-col-right--home .sel-w-lastposts { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (max-width: 599px) {
+  :root { --sel-sidebar-w: 86vw; }
+  .sel-home-mini-row { flex-direction: column; }
+  .sel-col-right--home { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+  .sel-col-right--home .sel-w-carousel { grid-column: 1; grid-row: 2; }
+  .sel-col-right--home .sel-w-lastposts { grid-column: 1; grid-row: 3; }
+}
 .block.forum-width li::before { content: '✕ '; color: var(--coral); }

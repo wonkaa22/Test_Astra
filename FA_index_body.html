@@ -58,42 +58,50 @@
       </div>
       <!-- En-tête : connecté·e (masqué par défaut, révélé par JS) -->
       <div class="sel-home-head sel-home-head-user" id="selHomeHeadUser" style="display:none;">
-        <div class="sel-home-charname" id="selHomeCharName">Personnage</div>
-        <a class="sel-home-pill-btn" id="selHomeProfile" href="#">Profil</a>
+        <div class="sel-home-head-user-row">
+          <div class="sel-home-charname" id="selHomeCharName">Personnage</div>
+          <a class="sel-home-pill-btn" id="selHomeLogout" href="#">Déconnexion</a>
+        </div>
+        <div class="sel-home-account-links">
+          <a href="#" id="selHomeViewProfile">Voir le profil</a>
+          <a href="#" id="selHomeEditProfile">Éditer le profil</a>
+          <a href="#" id="selHomeNewTopics">Voir les nouveaux sujets</a>
+        </div>
       </div>
 
       <div class="sel-home-banner" style="background-image:url('https://cdnb.artstation.com/p/assets/images/images/069/670/221/4k/rebecca-hu-scav104-bg-a022-levis-surreal-dreamscape-v04-rh.jpg?1700690801');"></div>
 
-      <nav class="sel-home-navgroup" id="selHomeNavA">
-        <div class="sel-home-navrow" id="selHomeNavARow">
-          <a class="sel-home-navlink" href="/">Accueil</a>
-          <a class="sel-home-navlink" href="{U_SEARCH}">Recherche</a>
-          <a class="sel-home-navlink" href="{U_MEMBERLIST}">Membres</a>
+      <div class="sel-home-navwrap">
+        <nav class="sel-home-navgroup" id="selHomeNavA">
+          <div class="sel-home-navrow" id="selHomeNavARow">
+            <a class="sel-home-navlink" href="/">Accueil</a>
+            <a class="sel-home-navlink" href="{U_SEARCH}">Recherche</a>
+            <a class="sel-home-navlink" href="{U_MEMBERLIST}">Membres</a>
+          </div>
+          <button class="sel-home-navtoggle" data-target="selHomeNavARow" type="button" aria-label="Replier">&#8743;</button>
+        </nav>
+        <nav class="sel-home-navgroup" id="selHomeNavB">
+          <div class="sel-home-navrow" id="selHomeNavBRow">
+            <a class="sel-home-navlink" href="https://astraluna.forumactif.com/h7-guidebook-v7" target="_blank" rel="noopener">Guidebook</a>
+            <a class="sel-home-navlink" href="#">Liens utiles</a>
+          </div>
+          <button class="sel-home-navtoggle" data-target="selHomeNavBRow" type="button" aria-label="Replier">&#8744;</button>
+        </nav>
+        <div class="sel-home-scrollnav">
+          <button id="selHomeScrollTop" type="button" aria-label="Haut de page">&#10094;</button>
+          <button id="selHomeScrollBottom" type="button" aria-label="Bas de page">&#10094;</button>
         </div>
-        <button class="sel-home-navtoggle" data-target="selHomeNavARow" type="button" aria-label="Replier">&#8743;</button>
-      </nav>
-      <nav class="sel-home-navgroup" id="selHomeNavB">
-        <div class="sel-home-navrow" id="selHomeNavBRow">
-          <a class="sel-home-navlink" href="https://astraluna.forumactif.com/h7-guidebook-v7" target="_blank" rel="noopener">Guidebook</a>
-          <a class="sel-home-navlink" href="#">Liens utiles</a>
-        </div>
-        <button class="sel-home-navtoggle" data-target="selHomeNavBRow" type="button" aria-label="Replier">&#8744;</button>
-      </nav>
-
-      <div class="sel-home-scrollnav">
-        <button id="selHomeScrollTop" type="button" aria-label="Haut de page">&#10094;</button>
-        <button id="selHomeScrollBottom" type="button" aria-label="Bas de page">&#10094;</button>
       </div>
 
-      <!-- Switcheroo (déplacé ici en JS quand connecté·e) -->
-      <div class="sel-home-switcheroo-slot" id="selHomeSwitcherooSlot"></div>
-
-      <!-- Plugin météo — à intégrer tel quel plus tard, dimensions à respecter -->
-      <div class="sel-home-widget sel-home-weather">
-        <div class="sel-home-widget-label">Plugin météo</div>
+      <!-- Switcheroo (déplacé ici en JS quand connecté·e) + notifications/messages -->
+      <div class="sel-home-switcheroo-row">
+        <div class="sel-home-switcheroo-slot" id="selHomeSwitcherooSlot"></div>
+        <div class="sel-home-icon-row" id="selHomeIconRow">
+          <a class="sel-home-icon-btn" id="selHomeMessages" href="#" aria-label="Messages">&#9993;</a>
+        </div>
       </div>
 
-      <!-- Phase lunaire (widget existant, replacé ici en attendant mieux) -->
+      <!-- Phase lunaire -->
       <div class="sel-home-widget sel-home-moonphase">
         <div id="sel-moon-phase"></div>
       </div>

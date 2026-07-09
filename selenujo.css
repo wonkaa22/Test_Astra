@@ -4695,10 +4695,14 @@ a.sel-post-num-link:hover { color: var(--gold); }
 
 .sel-home-main {
   margin-left: calc(var(--sel-sidebar-w) + var(--sel-sidebar-gutter) * 2);
-  padding: var(--sel-sidebar-gutter) 24px 40px;
+  margin-right: var(--sel-sidebar-gutter);
+  padding: var(--sel-sidebar-gutter) 0 40px;
   min-width: 0;
   transition: margin-left 0.3s ease;
 }
+/* Un peu plus large que le forum-width par défaut (1050px) pour mieux
+   remplir l'espace laissé libre par la colonne, tout en restant centré. */
+.sel-home-main .forum-width { width: 1150px; }
 
 /* ── Colonne fixe ── */
 .sel-home-sidebar {
@@ -4712,13 +4716,14 @@ a.sel-post-num-link:hover { color: var(--gold); }
   z-index: 40;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   transition: transform 0.3s ease;
 }
 .sel-home-sidebar-inner {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: inherit;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-faint) transparent;
   padding: 20px 16px 18px;
@@ -4730,9 +4735,10 @@ a.sel-post-num-link:hover { color: var(--gold); }
 .sel-home-sidebar-inner::-webkit-scrollbar-thumb { background: var(--gold-faint); border-radius: 4px; }
 
 /* Boutons qui chevauchent le bord de la colonne (moitié dedans, moitié dehors).
-   Position: fixed et non enfants de la colonne, car .sel-home-sidebar a
-   overflow:hidden (nécessaire pour arrondir le scroll interne) qui les
-   aurait rognés s'ils débordaient de sa boîte. */
+   Position: fixed et non enfants de la colonne : .sel-home-sidebar n'a plus
+   overflow:hidden (le panneau de notifications doit pouvoir déborder), donc
+   ce n'est plus strictement nécessaire, mais ça reste plus simple à
+   positionner en fixed indépendamment du scroll interne de la colonne. */
 .sel-home-ov-btn {
   position: fixed;
   left: calc(var(--sel-sidebar-gutter) - 18px);
@@ -4781,28 +4787,40 @@ html.sel-sidebar-collapsed .sel-home-reopen { display: flex; }
 html.sel-sidebar-collapsed .sel-home-sidebar { transform: translateX(calc(-100% - var(--sel-sidebar-gutter) - 24px)); }
 html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 
-/* En-tête colonne : invité */
-.sel-home-head { display: flex; align-items: center; gap: 8px; padding-right: 4px; flex-wrap: wrap; }
-.sel-home-head-user { justify-content: space-between; }
+/* En-tête colonne : invité / connecté·e — décalé pour ne pas toucher les
+   boutons qui chevauchent le bord de la colonne (thème + repli). */
+.sel-home-head { display: flex; align-items: center; gap: 8px; padding-right: 4px; padding-left: 26px; flex-wrap: wrap; }
+.sel-home-head-user { flex-direction: column; align-items: stretch; gap: 6px; }
+.sel-home-head-user-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sel-home-account-links { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.sel-home-account-links a {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  color: var(--text-lo);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.sel-home-account-links a:hover { color: var(--gold); }
 .sel-home-pill-btn {
   display: inline-block;
   padding: 7px 15px;
-  border-radius: 99px;
+  border-radius: 8px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   font-family: var(--font-ui);
   font-size: 12px;
   color: var(--text-mid);
   white-space: nowrap;
+  flex-shrink: 0;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 .sel-home-pill-btn:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
 .sel-home-charname {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 21px;
   font-style: italic;
   color: var(--text-hi);
-  line-height: 1.25;
+  line-height: 1.2;
   min-width: 0;
 }
 
@@ -4817,8 +4835,11 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   flex-shrink: 0;
 }
 
-/* Groupes de navigation repliables */
+/* Bloc navigation : les deux groupes de pills + le rail de scroll ancré
+   sur leur bord droit (plutôt qu'une ligne séparée en dessous). */
+.sel-home-navwrap { position: relative; padding-right: 26px; flex-shrink: 0; }
 .sel-home-navgroup { flex-shrink: 0; }
+.sel-home-navgroup + .sel-home-navgroup { margin-top: 6px; }
 .sel-home-navrow {
   display: flex;
   flex-wrap: wrap;
@@ -4830,7 +4851,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 .sel-home-navrow.is-collapsed { max-height: 0; opacity: 0; margin: 0; }
 .sel-home-navlink {
   padding: 7px 13px;
-  border-radius: 99px;
+  border-radius: 8px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   font-family: var(--font-ui);
@@ -4853,11 +4874,17 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 }
 .sel-home-navtoggle:hover { color: var(--gold-dim); }
 
-/* Aller tout en haut / tout en bas — chevrons empilés à la verticale */
+/* Aller tout en haut / tout en bas — chevrons ancrés sur le bord droit
+   du bloc de navigation, centrés verticalement dessus. */
 .sel-home-scrollnav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   flex-shrink: 0;
   padding: 2px 0;
@@ -4879,26 +4906,44 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 #selHomeScrollTop { transform: rotate(90deg); }
 #selHomeScrollBottom { transform: rotate(-90deg); }
 
-/* Emplacement du switcheroo déplacé dans la colonne */
+/* Switcheroo déplacé dans la colonne, avec notifications + messages sur
+   la même ligne */
+.sel-home-switcheroo-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
 .sel-home-switcheroo-slot { flex-shrink: 0; }
 .sel-home-switcheroo-slot:empty { display: none; }
 .sel-home-switcheroo-slot .switcheroo { display: block !important; }
 .sel-home-switcheroo-slot .switcheroo__squircles { flex-wrap: wrap; }
+.sel-home-icon-row { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.sel-home-icon-row:empty { display: none; }
+.sel-home-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  font-size: 14px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.sel-home-icon-btn:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
+/* Le bouton Notiffi déplacé ici reprend le style rond d'origine plutôt
+   que celui, carré, de .sel-home-icon-btn */
+.sel-home-icon-row #notiffi_button { border-radius: 8px; }
+/* Le panneau (340px) est plus large que la colonne (320px) : on le sort
+   du flux en fixed pour qu'il ne soit pas rogné, position calculée en JS
+   (voir selHomePositionNotifPanel dans selenujo.js). */
+.sel-home-icon-row #notiffi_panel { position: fixed; right: auto; }
 
-/* Widgets génériques de la colonne (météo, phase lunaire) */
+/* Widgets génériques de la colonne (phase lunaire) */
 .sel-home-widget {
   background: var(--surface-2);
   border-radius: 14px;
   border: 1px solid var(--border);
   overflow: hidden;
   flex-shrink: 0;
-}
-.sel-home-weather {
-  flex: 1;
-  min-height: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .sel-home-widget-label {
   font-size: 10px;
@@ -4908,8 +4953,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   font-family: var(--font-ui);
   font-weight: 500;
 }
-.sel-home-weather .sel-home-widget-label { padding: 10px 12px; }
-.sel-home-moonphase { min-height: 150px; }
+.sel-home-moonphase { flex: 1; min-height: 150px; }
 .sel-home-moonphase #sel-moon-phase { height: 100%; }
 
 /* Préliens attendus / Recherche RPs — deux cadres côte à côte */

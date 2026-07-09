@@ -4839,7 +4839,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
    sur leur bord droit (plutôt qu'une ligne séparée en dessous). */
 .sel-home-navwrap { position: relative; padding-right: 26px; flex-shrink: 0; }
 .sel-home-navgroup { flex-shrink: 0; }
-.sel-home-navgroup + .sel-home-navgroup { margin-top: 6px; }
+.sel-home-navgroup + .sel-home-navgroup { margin-top: 2px; }
 .sel-home-navrow {
   display: flex;
   flex-wrap: wrap;

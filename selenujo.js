@@ -835,26 +835,35 @@
     }
     return uname;
   }
+  /* setAttribute défensif : si l'id n'existe pas (ex. template FA pas à
+     jour), on ignore plutôt que de planter et de couper le reste du
+     script (tout ce qui suit selHomeSidebar() dans ce fichier). */
+  function setHref(id, href) {
+    var el = document.getElementById(id);
+    if (el) { el.setAttribute('href', href); }
+  }
   function selHomeSidebarState() {
     var loggedIn = !!document.querySelector('#sel-fa-nav a[href*="logout"]');
     var guestEl = document.getElementById('selHomeHeadGuest');
     var userEl = document.getElementById('selHomeHeadUser');
+    if (!guestEl || !userEl) { return; }
     if (!loggedIn) {
       guestEl.style.display = '';
       userEl.style.display = 'none';
-      document.getElementById('selHomeLogin').setAttribute('href', faHref('login'));
-      document.getElementById('selHomeRegister').setAttribute('href', faHref('register'));
+      setHref('selHomeLogin', faHref('login'));
+      setHref('selHomeRegister', faHref('register'));
       return;
     }
     guestEl.style.display = 'none';
     userEl.style.display = '';
     var editHref = faHref('profile');
-    document.getElementById('selHomeLogout').setAttribute('href', faHref('logout'));
-    document.getElementById('selHomeEditProfile').setAttribute('href', editHref);
-    document.getElementById('selHomeViewProfile').setAttribute('href', editHref.split('?')[0]);
-    document.getElementById('selHomeNewTopics').setAttribute('href', '/search?search_id=newposts');
+    setHref('selHomeLogout', faHref('logout'));
+    setHref('selHomeEditProfile', editHref);
+    setHref('selHomeViewProfile', editHref.split('?')[0]);
+    setHref('selHomeNewTopics', '/search?search_id=newposts');
     var name = selFindActiveName();
-    if (name) { document.getElementById('selHomeCharName').textContent = name; }
+    var nameEl = document.getElementById('selHomeCharName');
+    if (name && nameEl) { nameEl.textContent = name; }
     var sw = document.getElementById('switcheroo');
     var slot = document.getElementById('selHomeSwitcherooSlot');
     if (sw && slot && sw.parentNode !== slot) {
@@ -866,8 +875,7 @@
     if (iconRow && notifBtn && notifBtn.parentNode !== iconRow) {
       iconRow.insertBefore(notifBtn, iconRow.firstChild);
     }
-    var pmLink = document.getElementById('selHomeMessages');
-    if (pmLink) { pmLink.setAttribute('href', faHref('privmsg')); }
+    setHref('selHomeMessages', faHref('privmsg'));
   }
   function selHomeCollapseToggle() {
     document.documentElement.classList.toggle('sel-sidebar-collapsed');
@@ -881,10 +889,14 @@
     panel.style.left = r.left + 'px';
     panel.style.right = 'auto';
   }
+  function onClick(id, handler) {
+    var el = document.getElementById(id);
+    if (el) { el.addEventListener('click', handler); }
+  }
   function selHomeBindOnce() {
-    document.getElementById('selHomeCollapseBtn').addEventListener('click', selHomeCollapseToggle);
-    document.getElementById('selHomeReopenBtn').addEventListener('click', selHomeCollapseToggle);
-    document.getElementById('selHomeScrim').addEventListener('click', function() {
+    onClick('selHomeCollapseBtn', selHomeCollapseToggle);
+    onClick('selHomeReopenBtn', selHomeCollapseToggle);
+    onClick('selHomeScrim', function() {
       document.documentElement.classList.remove('sel-sidebar-collapsed');
     });
     document.querySelectorAll('.sel-home-navtoggle').forEach(function(btn) {
@@ -893,10 +905,10 @@
         if (row) { row.classList.toggle('is-collapsed'); }
       });
     });
-    document.getElementById('selHomeScrollTop').addEventListener('click', function() {
+    onClick('selHomeScrollTop', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    document.getElementById('selHomeScrollBottom').addEventListener('click', function() {
+    onClick('selHomeScrollBottom', function() {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
     /* Le panneau Notiffi (340px) déborderait de la colonne (320px) une

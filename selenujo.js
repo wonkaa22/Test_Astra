@@ -973,7 +973,7 @@
 })();
 
 (function selHomeMoonPhase() {
-  var css = '#sel-moon-phase{background:#252a3a !important;border:1px solid rgba(255,255,255,0.07) !important;border-radius:10px !important;padding:16px 18px 14px !important;color:#c8cfe0 !important;width:100% !important;max-width:none !important;position:relative !important;overflow:hidden !important;font-family:Inter,sans-serif !important;box-sizing:border-box !important;display:flex !important;flex-direction:column !important;}'
+  var css = '#sel-moon-phase{background:#252a3a !important;border-radius:14px !important;padding:16px 18px 14px !important;color:#c8cfe0 !important;width:100% !important;max-width:none !important;position:relative !important;overflow:hidden !important;font-family:Inter,sans-serif !important;box-sizing:border-box !important;display:flex !important;flex-direction:column !important;}'
     +'#lune-glow{position:absolute;top:-50px;right:-50px;width:140px;height:140px;pointer-events:none;border-radius:50%;}'
     +'#lune-header{font-size:9px;letter-spacing:0.07em;color:rgba(160,170,200,0.35);margin-bottom:10px;}'
     +'#lune-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.08em;padding:3px 9px;border-radius:99px;margin-bottom:13px;}'
@@ -1000,6 +1000,7 @@
 
   var container = document.getElementById('sel-moon-phase');
   if (!container) return;
+  container.classList.add('sel-cadre-cut', 'sel-cadre-cut--no-left');
   container.innerHTML = '<div id="lune-glow"></div><div id="lune-header">&#x2B21; Face cach&#233;e de la Lune</div><div id="lune-badge"></div><div id="lune-main"><div id="lune-icon"></div><div style="flex:1"><div id="lune-step-name">&#8230;</div><div id="lune-step-desc">&#8230;</div></div></div><div id="lune-sep"></div><div id="lune-progress-label"><span>Progression du cycle</span><span id="lune-pct">0 %</span></div><div id="lune-track"><div id="lune-fill" style="width:0%"></div></div><div id="lune-markers"><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div><div class="lune-dot"></div></div><div id="lune-next"><span id="lune-next-label">PROCHAINE &#201;TAPE &#8594;</span><span id="lune-next-info"><span id="lune-next-glyph" style="font-size:13px"></span> <span id="lune-next-name"></span> <span id="lune-next-days"></span></span></div><div id="lune-footer"><a id="lune-link" href="#">Comprendre les cycles &#8599;</a></div>';
 
   var YEAR_OFFSET = 46, SYNODIC = 29.53058867;

@@ -848,7 +848,11 @@
     }
     guestEl.style.display = 'none';
     userEl.style.display = '';
-    document.getElementById('selHomeProfile').setAttribute('href', faHref('profile'));
+    var editHref = faHref('profile');
+    document.getElementById('selHomeLogout').setAttribute('href', faHref('logout'));
+    document.getElementById('selHomeEditProfile').setAttribute('href', editHref);
+    document.getElementById('selHomeViewProfile').setAttribute('href', editHref.split('?')[0]);
+    document.getElementById('selHomeNewTopics').setAttribute('href', '/search?search_id=newposts');
     var name = selFindActiveName();
     if (name) { document.getElementById('selHomeCharName').textContent = name; }
     var sw = document.getElementById('switcheroo');
@@ -857,9 +861,25 @@
       slot.appendChild(sw);
       sw.style.display = '';
     }
+    var iconRow = document.getElementById('selHomeIconRow');
+    var notifBtn = document.getElementById('notiffi_button');
+    if (iconRow && notifBtn && notifBtn.parentNode !== iconRow) {
+      iconRow.insertBefore(notifBtn, iconRow.firstChild);
+    }
+    var pmLink = document.getElementById('selHomeMessages');
+    if (pmLink) { pmLink.setAttribute('href', faHref('privmsg')); }
   }
   function selHomeCollapseToggle() {
     document.documentElement.classList.toggle('sel-sidebar-collapsed');
+  }
+  function selHomePositionNotifPanel() {
+    var btn = document.getElementById('notiffi_button');
+    var panel = document.getElementById('notiffi_panel');
+    if (!btn || !panel) { return; }
+    var r = btn.getBoundingClientRect();
+    panel.style.top = (r.bottom + 8) + 'px';
+    panel.style.left = r.left + 'px';
+    panel.style.right = 'auto';
   }
   function selHomeBindOnce() {
     document.getElementById('selHomeCollapseBtn').addEventListener('click', selHomeCollapseToggle);
@@ -879,6 +899,12 @@
     document.getElementById('selHomeScrollBottom').addEventListener('click', function() {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
+    /* Le panneau Notiffi (340px) déborderait de la colonne (320px) une
+       fois déplacé ici : repositionné en fixed, calé sur le bouton, à
+       chaque clic (ouverture ou fermeture, sans effet visible si fermé). */
+    var notifTrigger = document.querySelector('#notiffi_button .ntf_button-text') || document.getElementById('notiffi_button');
+    if (notifTrigger) { notifTrigger.addEventListener('click', selHomePositionNotifPanel); }
+    window.addEventListener('resize', selHomePositionNotifPanel);
     if (window.matchMedia && window.matchMedia('(max-width: 1049px)').matches) {
       document.documentElement.classList.add('sel-sidebar-collapsed');
     }

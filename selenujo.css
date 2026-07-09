@@ -4663,7 +4663,7 @@ a.sel-post-num-link:hover { color: var(--gold); }
 
 :root {
   --sel-sidebar-w: 320px;
-  --sel-sidebar-gutter: 32px;
+  --sel-sidebar-gutter: 48px;
   --accent-a: var(--gold);
   --accent-b: #6fcf97;
   --accent-b-dim: rgba(111,207,151,0.65);
@@ -4889,9 +4889,11 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   flex-shrink: 0;
   padding: 2px 0;
 }
+/* Boutons carrés (et non 28×20) : une fois pivotés à ±90°, un rectangle
+   non carré fait paraître le glyphe décentré entre les deux boutons. */
 .sel-home-scrollnav button {
-  width: 28px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4906,32 +4908,65 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 #selHomeScrollTop { transform: rotate(90deg); }
 #selHomeScrollBottom { transform: rotate(-90deg); }
 
-/* Switcheroo déplacé dans la colonne, avec notifications + messages sur
-   la même ligne */
-.sel-home-switcheroo-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+/* Switcheroo déplacé dans la colonne */
 .sel-home-switcheroo-slot { flex-shrink: 0; }
 .sel-home-switcheroo-slot:empty { display: none; }
 .sel-home-switcheroo-slot .switcheroo { display: block !important; }
 .sel-home-switcheroo-slot .switcheroo__squircles { flex-wrap: wrap; }
-.sel-home-icon-row { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.sel-home-icon-row:empty { display: none; }
+
+/* Notifications + messages : gros boutons ronds, centrés, sous le
+   switcheroo — masqués par défaut (invité) via l'attribut style inline,
+   révélés en JS pour les comptes connectés. */
+.sel-home-icon-row { display: flex; align-items: center; justify-content: center; gap: 14px; flex-shrink: 0; }
 .sel-home-icon-btn {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text-mid);
-  font-size: 14px;
+  font-size: 19px;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 .sel-home-icon-btn:hover { color: var(--gold); border-color: var(--gold-faint); background: var(--surface-4); }
-/* Le bouton Notiffi déplacé ici reprend le style rond d'origine plutôt
-   que celui, carré, de .sel-home-icon-btn */
-.sel-home-icon-row #notiffi_button { border-radius: 8px; }
+.sel-home-icon-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--gold);
+  color: var(--surface-2);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  line-height: 1;
+}
+.sel-home-icon-badge:empty { display: none; }
+/* Le bouton Notiffi déplacé ici reprend le même gabarit rond que
+   .sel-home-icon-btn plutôt que sa pilule d'origine */
+.sel-home-icon-row #notiffi_button {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  font-size: 19px;
+}
+.sel-home-icon-row #notiffi_button .unread_count {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+}
 /* Le panneau (340px) est plus large que la colonne (320px) : on le sort
    du flux en fixed pour qu'il ne soit pas rogné, position calculée en JS
    (voir selHomePositionNotifPanel dans selenujo.js). */
@@ -4953,7 +4988,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   font-family: var(--font-ui);
   font-weight: 500;
 }
-.sel-home-moonphase { flex: 1; min-height: 150px; }
+.sel-home-moonphase { min-height: 150px; }
 .sel-home-moonphase #sel-moon-phase { height: 100%; }
 
 /* Préliens attendus / Recherche RPs — deux cadres côte à côte */

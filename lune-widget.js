@@ -4,8 +4,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
     #sel-moon-phase {
       background: #252a3a !important;
-      border: 1px solid rgba(255,255,255,0.07) !important;
-      border-radius: 10px !important;
+      border-radius: 14px !important;
       padding: 16px 18px 14px !important;
       color: #c8cfe0 !important;
       width: 100% !important;
@@ -93,6 +92,9 @@
   // ── HTML ──────────────────────────────────────────────────────────────────
   var container = document.getElementById('sel-moon-phase');
   if (!container) return;
+
+  // Cadre en dégradé (gauche invisible) — classes définies dans selenujo.css
+  container.classList.add('sel-cadre-cut', 'sel-cadre-cut--no-left');
 
   container.innerHTML = `
     <div id="lune-glow"></div>

@@ -161,18 +161,12 @@
         <strong id="sel-welcome-name"></strong>
         <strong class="sel-guest-name" id="sel-guest-name">Terrien&#xB7;ne de passage</strong>
       </div>
-      <div class="sel-text-image-group">
-        <div class="sel-text-block">
-          <div class="sel-text-block-inner">
-            <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
-            <br/>
-            <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
-            <br/>
-            <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
-          </div>
-        </div>
-        <div class="sel-left-image"></div>
+      <div class="sel-home-lore-text">
+        <p>Selenujo est une nation lunaire indépendante, fondée en 1887, lovée sous les dômes pressurisés de la face cachée de la Lune. Ses habitants, les Selenujoj, ont construit une culture à part entière — avec leur propre langue, l'esperanto, leurs propres festivals, leurs propres tensions politiques.</p>
+        <p>Dans les dômes de verre et de kristaloj, la lumière illumine des quartiers aux architectures mêlées. À l'extérieur, la Profunda s'étend dans l'obscurité, habitée par ceux qui ont choisi la liberté au prix du danger.</p>
+        <p>La Sortosipo assure la liaison avec la Terre, une fois par mois. Chaque arrivée est un événement. Chaque départ, une décision irréversible.</p>
       </div>
+      <a class="sel-home-contexte-link" href="https://astraluna.forumactif.com/h7-guidebook-v7" target="_blank" rel="noopener">Contexte &#8594;</a>
     </div>
 
     <!-- Colonne droite -->
@@ -180,7 +174,7 @@
 
       <!-- Staff + Prédéfinis, empilés -->
       <div class="sel-w-staff-col">
-        <div class="sel-widget sel-w-staff sel-grad-frame">
+        <div class="sel-widget sel-w-staff">
           <div class="sel-widget-label">Staff du forum</div>
           <div class="sel-staff-grid">
             <div class="sel-home-staff-card" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795');"><div class="sel-home-staff-card-tint"></div><div class="sel-home-staff-card-name">Humain</div></div>
@@ -188,8 +182,7 @@
             <div class="sel-home-staff-card" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795');"><div class="sel-home-staff-card-tint"></div><div class="sel-home-staff-card-name">Humain</div></div>
           </div>
         </div>
-        <div class="sel-widget sel-w-predefinis sel-grad-frame">
-          <div class="sel-widget-label">Prédéfinis</div>
+        <div class="sel-widget sel-w-predefinis">
           <div class="sel-predef-grid">
             <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 1, blabla</span></div></div>
             <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 2, blabla</span></div></div>
@@ -199,19 +192,19 @@
             <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 6, blabla</span></div></div>
             <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 7, blabla</span></div></div>
             <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 8, blabla</span></div></div>
-            <div class="sel-predef-item"><div class="sel-predef-overlay"><span>Perso 9, blabla</span></div></div>
           </div>
+          <div class="sel-widget-label sel-widget-label--corner">Prédéfinis</div>
         </div>
       </div>
 
       <!-- Derniers messages (déjà généré par le module FA, on garde tel quel) -->
-      <div class="sel-widget sel-w-lastposts sel-grad-frame">
+      <div class="sel-widget sel-w-lastposts">
         <div class="sel-widget-label">Derniers messages</div>
         <!-- BEGIN giefmod_index1 -->{giefmod_index1.MODVAR}<!-- END giefmod_index1 -->
       </div>
 
       <!-- Carousel "En ce moment" — contrôles superposés sur l'image -->
-      <div class="sel-widget sel-w-carousel sel-grad-frame">
+      <div class="sel-widget sel-w-carousel">
         <div class="sel-carousel-body">
           <div class="sel-slide active" style="background-image:url('https://cdna.artstation.com/p/assets/images/images/069/670/218/4k/rebecca-hu-scav104-bg-a000-ext-calm-meadow-wide-v03-rh.jpg?1700690795'); background-size:cover; background-position:center;">
             <div class="sel-slide-date">Date</div>
@@ -227,13 +220,13 @@
           </div>
         </div>
         <div class="sel-carousel-nav sel-carousel-nav--overlay">
-          <button class="sel-carousel-arrow" id="sel-prev">&#8592;</button>
+          <button class="sel-carousel-arrow" id="sel-prev">&lt;</button>
           <div class="sel-carousel-dots">
             <span class="sel-dot active" data-i="0"></span>
             <span class="sel-dot" data-i="1"></span>
             <span class="sel-dot" data-i="2"></span>
           </div>
-          <button class="sel-carousel-arrow" id="sel-next">&#8594;</button>
+          <button class="sel-carousel-arrow" id="sel-next">&gt;</button>
         </div>
       </div>
 

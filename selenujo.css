@@ -330,9 +330,9 @@ img { display: block; max-width: 100%; }
 .admin-header:hover { background: rgba(255,255,255,0.02); }
 
 .admin-title {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: 500;
+  font-family: var(--font-forum-title);
+  font-size: 24px;
+  font-weight: 400;
   color: var(--text-hi);
   letter-spacing: 0.02em;
 }
@@ -520,9 +520,9 @@ img { display: block; max-width: 100%; }
 .cat-header:hover { background: rgba(255,255,255,0.02); }
 
 .cat-title {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 500;
+  font-family: var(--font-forum-title);
+  font-size: 22px;
+  font-weight: 400;
   color: var(--text-hi);
   letter-spacing: 0.02em;
 }

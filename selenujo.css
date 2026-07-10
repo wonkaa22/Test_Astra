@@ -654,10 +654,11 @@ img { display: block; max-width: 100%; }
   gap: 10px;
 }
 .adm-sub-title {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: 600;
-  font-style: italic;
+  font-family: var(--font-forum-title);
+  font-size: 24px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.02em;
   color: var(--text-hi);
   line-height: 1.1;
 }
@@ -753,10 +754,11 @@ img { display: block; max-width: 100%; }
   box-sizing: border-box;
 }
 .hrp-sub-title {
-  font-family: var(--font-serif);
-  font-size: 26px;
-  font-weight: 600;
-  font-style: italic;
+  font-family: var(--font-forum-title);
+  font-size: 24px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.02em;
   color: var(--text-hi);
   line-height: 1.1;
 }

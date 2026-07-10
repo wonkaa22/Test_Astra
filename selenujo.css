@@ -2047,7 +2047,9 @@ button.switcheroo__form-button {
   display: block;
   aspect-ratio: 2/3;
   border-radius: 7px;
-  background: var(--surface-4);
+  background-color: var(--surface-4);
+  background-size: cover;
+  background-position: center;
   border: 1px solid var(--border);
   overflow: hidden;
   position: relative;

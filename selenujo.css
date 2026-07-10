@@ -34,6 +34,8 @@
   /* Typographie */
   --font-serif: 'Cormorant Garamond', serif;
   --font-ui:    'Inter', sans-serif;
+  --font-display: 'Monoton', cursive;
+  --font-deco:  'Amarante', serif;
 
   /* Switcheroo (dark) */
   --switcheroo-text:    rgba(200,207,224,0.75);
@@ -1968,7 +1970,7 @@ button.switcheroo__form-button {
 /* ── Colonne gauche ── */
 .sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; align-self: stretch; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
-.sel-welcome-text em     { font-size: 22px; font-style: italic; color: var(--gold); display: block; }
+.sel-welcome-text em     { font-family: var(--font-display); font-size: 22px; font-style: normal; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
 .sel-guest-name { font-size: 14px; font-weight: 400; color: var(--text-lo); font-style: italic; font-family: var(--font-serif); }
 #sel-navbar:has(a[href*="logout"]) ~ * .sel-guest-name { display: none !important; }
@@ -2034,8 +2036,8 @@ button.switcheroo__form-button {
   text-transform: uppercase;
   color: var(--gold-dim);
   padding: 10px 12px 6px;
-  font-family: var(--font-ui);
-  font-weight: 500;
+  font-family: var(--font-deco);
+  font-weight: 400;
 }
 
 /* Prédéfinis */

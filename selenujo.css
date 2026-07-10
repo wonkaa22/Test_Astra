@@ -1970,7 +1970,7 @@ button.switcheroo__form-button {
 /* ── Colonne gauche ── */
 .sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; align-self: stretch; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
-.sel-welcome-text em     { font-family: var(--font-display); font-size: 22px; font-style: normal; color: var(--gold); display: block; }
+.sel-welcome-text em     { font-family: var(--font-display); font-size: 34px; letter-spacing: 0.02em; font-style: normal; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
 .sel-guest-name { font-size: 14px; font-weight: 400; color: var(--text-lo); font-style: italic; font-family: var(--font-serif); }
 #sel-navbar:has(a[href*="logout"]) ~ * .sel-guest-name { display: none !important; }
@@ -5100,7 +5100,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   box-sizing: border-box;
 }
 .sel-col-right--home .sel-w-staff-col { grid-column: 1; grid-row: 1; align-self: start; }
-.sel-col-right--home .sel-w-staff-col .sel-w-predefinis { grid-column: unset; grid-row: unset; display: flex; flex-direction: column; }
+.sel-col-right--home .sel-w-staff-col .sel-w-predefinis { grid-column: unset; grid-row: unset; align-self: stretch; display: flex; flex-direction: column; }
 .sel-col-right--home .sel-w-lastposts { grid-column: 2; grid-row: 1; max-height: none; }
 .sel-col-right--home .sel-w-carousel { grid-column: 3; grid-row: 1; }
 
@@ -5162,6 +5162,115 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 }
 .sel-col-right--home .sel-slide-date,
 .sel-col-right--home .sel-slide-title { position: relative; z-index: 1; }
+
+/* ── Bienvenue : texte de contexte sans cadre, avec fondu discret ── */
+.sel-home-lore-text {
+  font-family: var(--font-ui);
+  max-height: 210px;
+  overflow-y: auto;
+  padding-right: 10px;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-faint) transparent;
+  mask-image: linear-gradient(180deg, #000 calc(100% - 28px), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 28px), transparent 100%);
+}
+.sel-home-lore-text::-webkit-scrollbar { width: 3px; }
+.sel-home-lore-text::-webkit-scrollbar-thumb { background: var(--gold-faint); border-radius: 3px; }
+.sel-home-lore-text::-webkit-scrollbar-track { background: transparent; }
+.sel-home-lore-text p { font-size: 13px; color: var(--text-mid); line-height: 1.7; margin: 0 0 12px; }
+.sel-home-lore-text p:last-of-type { margin-bottom: 0; }
+
+.sel-home-contexte-link {
+  align-self: flex-end;
+  margin-top: 12px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-faint);
+  padding-bottom: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.sel-home-contexte-link:hover { border-bottom-color: var(--gold); }
+
+/* ── Staff / Prédéfinis / Derniers messages / Carrousel : cadre en
+   dégradé avec un côté volontairement invisible (même logique que
+   la colonne latérale) plutôt que l'anneau continu générique. ── */
+.sel-col-right--home .sel-w-staff,
+.sel-col-right--home .sel-w-predefinis,
+.sel-col-right--home .sel-w-lastposts {
+  background: var(--surface-1);
+  border: none;
+}
+.sel-col-right--home .sel-w-carousel { border: none; }
+.sel-col-right--home .sel-w-staff::before,
+.sel-col-right--home .sel-w-predefinis::before,
+.sel-col-right--home .sel-w-lastposts::before,
+.sel-col-right--home .sel-w-carousel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+/* Coins réels au rayon de la boîte (12px), coins "fantômes" créés par
+   la découpe arrondis (5.5px) pour un embout doux. */
+.sel-col-right--home .sel-w-staff::before      { clip-path: inset(0 6px 0 0 round 12px 5.5px 5.5px 12px); }
+.sel-col-right--home .sel-w-predefinis::before { clip-path: inset(0 0 0 6px round 5.5px 12px 12px 5.5px); }
+.sel-col-right--home .sel-w-lastposts::before  { clip-path: inset(0 0 6px 0 round 12px 12px 5.5px 5.5px); }
+.sel-col-right--home .sel-w-carousel::before   { clip-path: inset(6px 0 0 0 round 5.5px 5.5px 12px 12px); }
+
+/* Staff : images plus hautes (portrait) */
+.sel-home-staff-card { aspect-ratio: 2/3; }
+
+/* Prédéfinis : grille 4 colonnes, vignettes plus hautes, cadre par
+   image (bas + droite invisibles), libellé déplacé en bas à droite */
+.sel-col-right--home .sel-predef-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px 10px 26px; }
+.sel-col-right--home .sel-predef-item { aspect-ratio: 2/3; border: none; }
+.sel-col-right--home .sel-predef-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.25px;
+  background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0 4px 4px 0 round 7px 3px 3px 3px);
+}
+.sel-widget-label--corner { position: absolute; bottom: 8px; right: 10px; padding: 0; z-index: 1; }
+
+/* Carrousel : flèches/points directement sur l'image, sans cadre/pastille */
+.sel-carousel-nav--overlay {
+  background: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  gap: 10px;
+  left: 14px;
+}
+.sel-carousel-nav--overlay .sel-carousel-arrow {
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+.sel-carousel-nav--overlay .sel-carousel-arrow:hover { background: none; color: var(--gold); }
+.sel-col-right--home .sel-dot { box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
 
 /* ── Responsive : colonne en tiroir sous 1049px ──
    .sel-sidebar-collapsed garde toujours le même sens (colonne masquée),

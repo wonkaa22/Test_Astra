@@ -37,6 +37,7 @@
   --font-display: 'Monoton', cursive;
   --font-deco:  'Amarante', serif;
   --font-forum-title: 'Limelight', cursive;
+  --font-cat-title: 'Bowlby One SC', cursive;
 
   /* Switcheroo (dark) */
   --switcheroo-text:    rgba(200,207,224,0.75);
@@ -520,8 +521,8 @@ img { display: block; max-width: 100%; }
 .cat-header:hover { background: rgba(255,255,255,0.02); }
 
 .cat-title {
-  font-family: var(--font-forum-title);
-  font-size: 22px;
+  font-family: var(--font-cat-title);
+  font-size: 28px;
   font-weight: 400;
   color: var(--text-hi);
   letter-spacing: 0.02em;

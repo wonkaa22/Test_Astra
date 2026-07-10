@@ -1970,7 +1970,7 @@ button.switcheroo__form-button {
 /* ── Colonne gauche ── */
 .sel-col-left { display: flex; flex-direction: column; gap: 0; min-height: 0; max-height: 580px; overflow: hidden; align-self: stretch; }
 .sel-welcome-text { font-family: var(--font-serif); margin-bottom: 12px; flex-shrink: 0; }
-.sel-welcome-text em     { font-family: var(--font-display); font-size: 34px; letter-spacing: 0.02em; font-style: normal; color: var(--gold); display: block; }
+.sel-welcome-text em     { font-family: var(--font-display); font-size: 26px; letter-spacing: 0.02em; font-style: normal; color: var(--gold); display: block; }
 .sel-welcome-text strong { font-size: 18px; font-weight: 500; color: var(--text-mid); display: block; margin-top: 2px; }
 .sel-guest-name { font-size: 14px; font-weight: 400; color: var(--text-lo); font-style: italic; font-family: var(--font-serif); }
 #sel-navbar:has(a[href*="logout"]) ~ * .sel-guest-name { display: none !important; }
@@ -5087,6 +5087,12 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 .sel-home-main .sel-banner.sel-grad-frame,
 .sel-home-sidebar.sel-grad-frame { border-radius: 18px; }
 .sel-home-sidebar.sel-grad-frame { border-radius: 20px; }
+
+/* La carte hérite d'une hauteur fixe (620px) pensée pour l'ancien
+   contenu, plus haut que le nouveau texte de contexte sans cadre —
+   ça laissait un grand vide sous "Contexte" et sous les prédéfinis.
+   On la raccourcit pour la variante accueil. */
+.sel-home-main .sel-main-block { height: 420px; max-height: 420px; }
 
 /* ── Carte Bienvenue : colonne droite recomposée (staff+prédéfinis / derniers messages / carrousel) ── */
 .sel-col-right--home {

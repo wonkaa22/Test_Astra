@@ -4706,9 +4706,12 @@ a.sel-post-num-link:hover { color: var(--gold); }
   mask-composite: exclude;
   pointer-events: none;
 }
-.sel-cadre-cut--no-left::before   { clip-path: inset(0 0 0 6px); }
-.sel-cadre-cut--no-top::before    { clip-path: inset(6px 0 0 0); }
-.sel-cadre-cut--no-bottom::before { clip-path: inset(0 0 6px 0); }
+/* Coins réels (côté non coupé) au rayon de la boîte pour se fondre avec
+   le tracé existant ; coins "fantômes" créés par la découpe arrondis
+   légèrement pour un embout doux plutôt qu'une coupe à angle vif. */
+.sel-cadre-cut--no-left::before   { clip-path: inset(0 0 0 6px round 5.5px 14px 14px 5.5px); }
+.sel-cadre-cut--no-top::before    { clip-path: inset(6px 0 0 0 round 5.5px 5.5px 14px 14px); }
+.sel-cadre-cut--no-bottom::before { clip-path: inset(0 0 6px 0 round 14px 14px 5.5px 5.5px); }
 
 .sel-cadre-label-v {
   position: absolute;
@@ -4721,8 +4724,8 @@ a.sel-post-num-link:hover { color: var(--gold); }
   white-space: nowrap;
   z-index: 1;
 }
-.sel-cadre-label-v--left  { top: 8px;    left: -1.75px;  color: var(--accent-a); }
-.sel-cadre-label-v--right { bottom: 8px; right: -1.75px; transform: rotate(180deg); color: var(--accent-b); }
+.sel-cadre-label-v--left  { top: 8px;    left: 0.5px;    color: var(--accent-a); }
+.sel-cadre-label-v--right { bottom: 8px; right: 0.5px;   transform: rotate(180deg); color: var(--accent-b); }
 
 /* ── Coquille générale ── */
 .sel-home-shell { position: relative; }
@@ -5031,7 +5034,7 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
   min-width: 0;
   min-height: 160px;
   background: var(--surface-2);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 10px 12px;
 }
 .sel-mini-pad-left  { padding-left: 21px; }

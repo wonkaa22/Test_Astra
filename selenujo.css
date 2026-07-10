@@ -526,6 +526,19 @@ img { display: block; max-width: 100%; }
   color: var(--text-hi);
   letter-spacing: 0.02em;
 }
+/* FA enveloppe le nom de la catégorie "Administration" dans un <h2>
+   (comportement propre à ce nom réservé — les autres catégories
+   n'ont pas ce wrapper). Le <h2> hérite bien de font-family, mais son
+   style navigateur par défaut (gras, taille et marge propres) écrase
+   le reste : on le neutralise pour qu'il rende identique aux autres
+   titres de catégorie. */
+.cat-title h2 {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+  display: inline;
+}
 
 .cat-toggle {
   background: none;

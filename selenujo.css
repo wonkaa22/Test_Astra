@@ -5096,13 +5096,17 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 /* La carte hérite d'une hauteur fixe (620px) pensée pour l'ancien
    contenu, plus haut que le nouveau texte de contexte sans cadre —
    ça laissait un grand vide sous "Contexte" et sous les prédéfinis.
-   On la raccourcit pour la variante accueil. */
-.sel-home-main .sel-main-block { height: 420px; max-height: 420px; }
+   On la raccourcit pour la variante accueil, et on élargit la colonne
+   gauche (texte de contexte) au passage. */
+.sel-home-main .sel-main-block { height: 420px; max-height: 420px; grid-template-columns: 250px 1fr; }
 
-/* ── Carte Bienvenue : colonne droite recomposée (staff+prédéfinis / derniers messages / carrousel) ── */
+/* ── Carte Bienvenue : colonne droite recomposée (staff+prédéfinis / derniers messages / carrousel) ──
+   "Derniers messages" utilisait 1fr et absorbait tout l'espace restant,
+   d'où sa largeur démesurée — on lui donne une largeur fixe et
+   raisonnable, et on élargit staff/prédéfinis et le carrousel. */
 .sel-col-right--home {
   display: grid;
-  grid-template-columns: 200px 1fr 230px;
+  grid-template-columns: 225px 230px 270px;
   grid-template-rows: 1fr;
   gap: 10px;
   min-height: 0;

@@ -2044,6 +2044,7 @@ button.switcheroo__form-button {
 .sel-w-predefinis { grid-column: 1; grid-row: 1; align-self: start; }
 .sel-predef-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 0 10px 10px; }
 .sel-predef-item {
+  display: block;
   aspect-ratio: 2/3;
   border-radius: 7px;
   background: var(--surface-4);
@@ -2051,6 +2052,8 @@ button.switcheroo__form-button {
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .sel-predef-overlay {
   position: absolute; inset: 0;

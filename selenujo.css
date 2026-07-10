@@ -5093,20 +5093,33 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
 .sel-home-sidebar.sel-grad-frame { border-radius: 18px; }
 .sel-home-sidebar.sel-grad-frame { border-radius: 20px; }
 
+/* .forum-width est figé à 1050px partout ailleurs sur le forum, mais
+   ça laisse un grand vide à droite de la carte quand la colonne
+   latérale est repliée (plus de 1050px deviennent alors disponibles).
+   Sur l'accueil, on la laisse plutôt occuper l'espace réellement
+   disponible, avec un plafond un peu plus généreux. */
+.sel-home-main .forum-width { width: auto; max-width: 1200px; }
+
 /* La carte hérite d'une hauteur fixe (620px) pensée pour l'ancien
    contenu, plus haut que le nouveau texte de contexte sans cadre —
    ça laissait un grand vide sous "Contexte" et sous les prédéfinis.
    On la raccourcit pour la variante accueil, et on élargit la colonne
-   gauche (texte de contexte) au passage. */
-.sel-home-main .sel-main-block { height: 420px; max-height: 420px; grid-template-columns: 250px 1fr; }
+   gauche (texte de contexte) au passage. La largeur de la colonne
+   gauche utilise minmax (pas un px fixe) pour pouvoir rétrécir quand
+   la colonne latérale dépliée réduit l'espace disponible — sinon la
+   grille déborde et le carrousel se retrouve à moitié masqué. */
+.sel-home-main .sel-main-block { height: 420px; max-height: 420px; grid-template-columns: minmax(190px, 250px) 1fr; }
 
 /* ── Carte Bienvenue : colonne droite recomposée (staff+prédéfinis / derniers messages / carrousel) ──
    "Derniers messages" utilisait 1fr et absorbait tout l'espace restant,
-   d'où sa largeur démesurée — on lui donne une largeur fixe et
-   raisonnable, et on élargit staff/prédéfinis et le carrousel. */
+   d'où sa largeur démesurée. On lui donne un poids plus faible qu'aux
+   deux autres colonnes (au lieu de la largeur fixe précédente, qui
+   débordait dès que la colonne latérale dépliée réduisait l'espace
+   disponible) : minmax garde une largeur minimale lisible tout en
+   restant fluide selon la place réellement disponible. */
 .sel-col-right--home {
   display: grid;
-  grid-template-columns: 225px 230px 270px;
+  grid-template-columns: minmax(170px, 1fr) minmax(175px, 1fr) minmax(190px, 1.2fr);
   grid-template-rows: 1fr;
   gap: 10px;
   min-height: 0;
@@ -5309,6 +5322,11 @@ html.sel-sidebar-collapsed .sel-home-main { margin-left: 24px; }
     transition: opacity 0.25s ease;
   }
   html:not(.sel-sidebar-collapsed) .sel-home-scrim { opacity: 1; pointer-events: auto; }
+  /* .sel-home-main .sel-main-block (2 classes) est plus spécifique que
+     .sel-main-block seul seul ci-dessous : sans ce contre-rappel, cette
+     règle gagne quand même la cascade même sous 1049px et empêche la
+     carte de repasser en une seule colonne empilée. */
+  .sel-home-main .sel-main-block { grid-template-columns: 1fr; height: auto; max-height: none; overflow: visible; }
   .sel-col-right--home { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; max-height: none; }
   .sel-col-right--home .sel-w-staff-col { grid-column: 1; grid-row: 1; }
   .sel-col-right--home .sel-w-carousel { grid-column: 2; grid-row: 1; }

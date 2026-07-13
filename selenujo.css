@@ -982,7 +982,7 @@ img { display: block; max-width: 100%; }
   padding-top: 8px;
   padding-bottom: 8px;
   overflow: hidden;
-  width: 50%;
+  width: 100%;
   min-width: 220px;
   max-width: 100%;
   align-self: flex-start;
